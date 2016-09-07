@@ -5,5 +5,6 @@ Cloud-based Spatio-temporal Big Data Visualization
 Copy and paste the contents of .tex files into one of these renders:
 * [overleaf](https://www.overleaf.com/)
 * [papeeria](https://papeeria.com/)
-<br>Learning Resources:
+
+Learning Resources:
 * [12 great resources for getting started with LaTeX](http://www.howtotex.com/general/12-great-resources-for-getting-started-with-latex/)
