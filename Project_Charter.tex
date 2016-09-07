@@ -1,0 +1,129 @@
+\documentclass[a4paper]{article}
+
+% PACKAGES
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage[none]{hyphenat}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tabularx}
+\usepackage{ltxtable}
+\usepackage{xcolor,colortbl}
+\usepackage[yyyymmdd]{datetime}
+\usepackage[final]{pdfpages}
+
+% CONFIGURATIONS
+\definecolor{urllink}{rgb}{.5,.75,.5}
+\definecolor{pdflink}{rgb}{.75,.75,1}
+\definecolor{table_header}{rgb}{.9,.9,.9}
+\hypersetup{
+    colorlinks = false
+    , urlbordercolor  = {urllink}
+    , citebordercolor = {pdflink}
+    , linkbordercolor = {pdflink}
+}
+\renewcommand{\dateseparator}{--}
+\pagestyle{fancy}
+\fancyhf{}
+\chead{Project \project}
+\rfoot{\hyperlink{contents}{TOC}}
+\cfoot{\thepage}
+\renewcommand{\footrulewidth}{1pt}
+
+% VARIABLES
+\def\project{Euclideon}
+\def\Christine{Christine Zhu}
+\def\ChristineNum{s3499001}
+\def\Kim{Kim Heffernan}
+\def\KimNum{s3021242}
+\def\Robert{Robert Marlin}
+\def\RobertNum{s3494109}
+\def\Argyll{Argyll McGhie}
+\def\ArgyllNum{s3494113}
+\def\Shyam{Shyam Nath}
+\def\ShyamNum{s3421215}
+
+\title{Project \project\\PROJECT CHARTER}
+\author{\Christine\\\ChristineNum\and{}\Kim\\\KimNum\and{}\Robert\\\RobertNum\and{}\Argyll\\\ArgyllNum\and{}\Shyam\\\ShyamNum}
+\date{\bigskip\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Project Euclideon (\#2) is a proof-of-concept visualization platform for 3D spatio-temporal data. The primary use case supports data sets gathered from 3D depth scanners and path analysis tools. The visualization platform is capable of display and interaction, on mobile devices, web clients and in particular tiled display walls via the open source SAGE2 platform. Visualization supports basic partly synchronised interaction such as shared camera positioning. Visualization incorporates aspects of further spatial analysis utilizing BeSpaceD.
+
+Project Euclideon is sponsored by \href{mailto:ian.peake@rmit.edu.au?Subject=\project}{Ian Peake}, \href{mailto:janolaf.blech@rmit.edu.au?Subject=\project}{Jan Olaf Blech}, and \href{mailto:keith.foster@rmit.edu.au?Subject=\project}{Keith Foster}.
+
+Commercial - in – Confidence
+\end{abstract}
+
+\newpage
+\section*{Document Control}
+\begin{tabularx}{\textwidth}{|X|}
+  \hline\rowcolor{table_header} File Directory\\
+  \hline Project\_Charter.tex\\
+\hline\end{tabularx}
+\subsection*{Distribution}
+\begin{tabularx}{\textwidth}{|X|X|X|X|}
+  \hline\rowcolor{table_header} Version & Issued & Recipient & Entity/Position\\
+  \hline V $<$Enter No.$>$ & $<$Enter Date$>$ & $<$Enter Full Name$>$ & $<$Enter Position$>$\\
+\hline\end{tabularx}
+\subsection*{Amendment History}
+\begin{tabularx}{\textwidth}{|X|X|X|X|}
+  \hline\rowcolor{table_header} Section & Page & Version & Comment\\
+  \hline V $<$Enter Doc. Section No.$>$ & $<$Enter Page No.$>$ & $<$Enter Version No.$>$ & $<$Enter Comments to explain the reason for the document text or other changes, e.g, Updated text after walkthrough with the stakeholders, or e.g., Updated section after technical consultation$>$\\
+\hline\end{tabularx}
+Add a row for each section update or consolidate if changes are minimal. NOTE: Changes should be tracked within the document if the document is to be re-distributed, so that the audience can quickly see the changes.
+\subsection*{Staff or Entities Consulted}
+\begin{tabularx}{\textwidth}{|X|X|}
+  \hline\rowcolor{table_header} Name & Position/Organisation\\
+  \hline V $<$Enter Name$>$ & $<$Enter Position or Organisation$>$\\
+\hline\end{tabularx}
+Add rows as needed. If not relevant, enter N/A.
+\subsection*{Related Documents}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+  \hline\rowcolor{table_header} Name & Author & Description\\
+  \hline $<$Enter Document Name$>$ & $<$Enter Author$>$ & $<$Enter Document Description$>$\\
+\hline\end{tabularx}
+Add rows as needed. If not relevant enter N/A.
+
+\newpage
+\section*{Preface}
+The purpose of this document is to outline the Charter for Project \project. It serves as an agreement between the project team, the sponsor and the supervisor. It outlines the project’s purpose and how the project will be approached, resourced, managed and delivered.  Any amendments after this document has been signed off will be via addenda.
+
+\tableofcontents
+\newpage
+
+\section{Project Summary}
+$<$Briefly describe the project and its objectives - why the sponsor is offering this project and the main objectives that should be met by the project team$>$.
+
+\section{Project Sponsor}
+The project sponsor is $<$Name and Position$>$ of $<$Organization.$>$ $<$Briefly describe the business / entity within an organizational context, or global context etc.$>$
+
+\section{Stakeholders \& End Users}
+The key $<$organization$>$ stakeholders are $<$Names and Positions.$>$ $<$Briefly describe the stakeholders/end users. Explain why these are all stakeholders – i.e., what their ‘stake’ in the project is.$>$
+
+\section{Appointment of Project Leader}
+The project leader is $<$Name$>$. The project leader was appointed $<$give reasons / skill set / method of appointment and any other details to qualify the appointment.$>$
+
+\section{Project Team Members}
+The project team members and their respective roles are:
+
+$<$List and describe$>$
+
+\section{Project Methodology \& Approach}
+$<$Discuss the approach that the project team will take for delivering the project. Include a statement as to the team’s location (ie at RMIT , or sponsor sites). Discuss the processes that will be followed – e.g, the Rational Unified Process (RUP) and why this is the approach/method.$>$
+
+\section{Project Governance}
+The Governance model is as follows:
+
+$<$Describe the means by which the project will be governed and how decisions will be made. This includes types of communications with the sponsor and any other relevant entities. Also discuss internal project management and controls – reporting, meetings, walkthroughs, milestone sign-offs, issue and risk management approach, change control approach (ie how ‘scope creep’ will be managed,) etc. Clearly indicate who is responsible for what (see 5 above) and also include any escalation procedures for risk and issues management.$>$
+
+\section{Project Scope \& Deliverables}
+$<$List the project’s high level scope and the project’s deliverables – this is more detailed than the summary in section 1. It should also include a statement about timing, product and quality. Please also clearly state that all deliverables will be signed off by the sponsor/stakeholder (as decided and detailed above, in Project Governance)$>$
+
+\end{document}
