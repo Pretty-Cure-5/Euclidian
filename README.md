@@ -1,4 +1,4 @@
-# Euclid-Ian
+# Euclidian
 Cloud-based Spatio-temporal Big Data Visualization
 
 ## TeX files
