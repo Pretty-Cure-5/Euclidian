@@ -1,6 +1,10 @@
 # Euclidian
 Cloud-based Spatio-temporal Big Data Visualization
 
+Sponsored by Ian Peake, Jan Olaf Blech, Keith Foster.
+
+The name of the project is based on Euclideon (the "Unlimited Detail" guys); but the end has been changed to Ian (Peake).
+
 ## TeX files
 Copy and paste the contents of .tex files into one of these renders:
 * [overleaf](https://www.overleaf.com/)
