@@ -12,3 +12,11 @@ Learning Resources:
 ## Server
 IP: 130.56.254.171
 <br>The website is in the /home/web/ directory.
+
+Software:
+* Vim
+* Git
+* JDK 8
+* Scala
+* Node.js
+* Three.js \<script src="/js/three.min.js"\>\</script\>
