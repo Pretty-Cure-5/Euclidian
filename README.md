@@ -8,3 +8,7 @@ Copy and paste the contents of .tex files into one of these renders:
 
 Learning Resources:
 * [12 great resources for getting started with LaTeX](http://www.howtotex.com/general/12-great-resources-for-getting-started-with-latex/)
+
+## Server
+IP: 130.56.254.171
+<br>The website is in the /home/web/ directory.
