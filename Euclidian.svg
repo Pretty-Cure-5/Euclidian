@@ -105,7 +105,7 @@
 </g>
 <!-- SAGE2 -->
 <g id="node12" class="node"><title>SAGE2</title>
-<ellipse fill="#0000ff" stroke="black" cx="378.397" cy="-90" rx="38.1938" ry="18"/>
+<ellipse fill="#8892bf" stroke="black" cx="378.397" cy="-90" rx="38.1938" ry="18"/>
 <text text-anchor="middle" x="378.397" y="-86.3" font-family="Times,serif" font-size="14.00">SAGE2</text>
 </g>
 <!-- ServerSide&#45;&gt;SAGE2 -->
@@ -130,7 +130,7 @@
 </g>
 <!-- ClientSide -->
 <g id="node13" class="node"><title>ClientSide</title>
-<ellipse fill="#0000ff" stroke="black" cx="185.397" cy="-18" rx="48.1917" ry="18"/>
+<ellipse fill="#8892bf" stroke="black" cx="185.397" cy="-18" rx="48.1917" ry="18"/>
 <text text-anchor="middle" x="185.397" y="-14.3" font-family="Times,serif" font-size="14.00">ClientSide</text>
 </g>
 <!-- HTML&#45;&gt;ClientSide -->
