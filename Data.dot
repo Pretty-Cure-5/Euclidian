@@ -1,0 +1,13 @@
+digraph "3D Data Visualisation" {
+    bgcolor=transparent
+    {node[style=filled, fillcolor="#FF0000"] BSD Scala NodeJS}
+    {node[style=filled, fillcolor="#00FF00"] WebGL Three}
+    {node[style=filled, fillcolor="#FF00FF"] SAGE2}
+    {node[style=filled, fillcolor="#00FFFF"] Client}
+    Three[label="Three.js"]
+    BSD[label="BeSpaceD Data"]
+    {rank=same; BSD; Scala; NodeJS;}
+    {rank=same; WebGL; Three;}
+    {rank=same; SAGE2; Client;}
+    BSD -> Scala -> NodeJS -> {WebGL Three} -> SAGE2 -> Client
+}
