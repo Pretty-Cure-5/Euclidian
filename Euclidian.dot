@@ -3,7 +3,8 @@ digraph "Euclidian" {
     {node[style=filled, fillcolor="#FFFF00" group=infrastructure] NeCTAR Linux ServerSide}
     {node[style=filled, fillcolor="#FF0000" group=server] Scala BeSpaceD NodeJS}
     {node[style=filled, fillcolor="#00FF00" group=client] HTML CSS JS Three WebGL}
-    {node[style=filled, fillcolor="#8892bf"] SAGE2 ClientSide}
+    {node[style=filled, fillcolor="#FF00FF"] SAGE2}
+    {node[style=filled, fillcolor="#00FFFF"] ClientSide}
     {rank=same; HTML; CSS; JS;}
     Three[label="Three.js"]
     NeCTAR -> Linux -> ServerSide -> {Scala BeSpaceD SAGE2 WebGL JS CSS HTML}
