@@ -7,6 +7,8 @@
     <script type="text/javascript" src="../libs/three.js"></script>
     <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
+		<script type="text/javascript" src="../datafiles/22.xyz.data.150k.json"></script>
+		<script type="text/javascript" src="../datafiles/22.rgb.data.247k.json"></script>
     <style>
         body {
             /* set margin to 0 and overflow to hidden, to go fullscreen */
@@ -32,12 +34,18 @@
 
     // once everything is loaded, we run our Three.js stuff.
     function init() {
+	
+	    var mydata=JSON.parse(data);
+		var myrgb=JSON.parse(rgb);
+		particleCount=Object.keys(mydata).length;
+		
+		particleCount=140000;
 
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
 
         // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 15000);
 
         // create a render and set the size
         var renderer = new THREE.WebGLRenderer();
@@ -47,49 +55,92 @@
         renderer.shadowMapEnabled = true;
 
         // create the ground plane
-        var planeGeometry = new THREE.PlaneGeometry(60, 20);
-        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var planeGeometry = new THREE.PlaneBufferGeometry(50, 25);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0x0000ff});
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.receiveShadow = true;
 
         // rotate and position the plane
-        plane.rotation.x = -0.5 * Math.PI;
-        plane.position.x = 15;
+        plane.rotation.x = -0.6 * Math.PI;
+        plane.position.x = -10;
         plane.position.y = 0;
         plane.position.z = 0;
 
-        // add the plane to the scene
-        scene.add(plane);
+       // add the plane to the scene
+        //scene.add(plane);
 
         // create a cube
-        var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.castShadow = true;
+        var cubeGeometry = new THREE.BoxGeometry(.1, .1, .1);
+    
+		 
+       var Coef = 30;
+	   var cube = []; 
+	   
+	   var mostX=0;
+	   var mostY=0;
+	   var mostZ=0;
+	   
+        for (i = 0; i < particleCount; i++) {
+
+		
+		var coOrd=mydata[i].DP.split(",");
+		var c=myrgb[i].C.split(",");
+			//alert(coOrd[0]);
+        	
+			//color = new THREE.Color( myrgb[i].C );
+        var r =  (c[0]);  
+		var g =  (c[1]);
+		var b =  (c[2]);
+		var x=coOrd[0];
+		var y=coOrd[1];
+		var z=coOrd[2];
+		
+		
+		//console.log(rgb+"\n");
+		  // color.setRGB(r,g,b);
+		
+		
+         var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
+      
+	    cube[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube[i].castShadow = false;
 
         // position the cube
-        cube.position.x = -4;
-        cube.position.y = 3;
-        cube.position.z = 0;
+		
+		
+		
+			/*	cube[i].position.x = Math.abs(coOrd[0]) * Coef; 
+			 cube[i].position.y = Math.abs(coOrd[1])*Coef;
+			cube[i].position.z = Math.abs(coOrd[2])*Coef;
+     */
+	 
+	        cube[i].position.x = coOrd[0]*Coef+5; 
+			 cube[i].position.y = coOrd[1]*Coef+30;
+			cube[i].position.z = coOrd[2]*Coef-2;
+	 
+	 
         // add the cube to the scene
-        scene.add(cube);
+		if ((x+y+z)>200){
+		console.log(i+": "+cube[i].position.x +", "+ cube[i].position.y +", "+cube[i].position.z+"rgb"+myrgb[i].C+"\n")
 
+		}
+		else{
+        scene.add(cube[i]);
+		}
+		
+		}
       
-	  cube.position.x = -4;
-        cube.position.y = 3;
-        cube.position.z = 7;
-        // add the cube to the scene
-        scene.add(cube);
+	
 
         // position and point the camera to the center of the scene
-        camera.position.x = -30;
-        camera.position.y = 40;
-        camera.position.z = 30;
+        camera.position.x = 10;
+        camera.position.y = 100;
+        camera.position.z = 80;
         camera.lookAt(scene.position);
 
         // add spotlight for the shadows
         var spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(-40, 60, -10);
+        spotLight.position.set(-140, 160, -10);
         spotLight.castShadow = true;
         scene.add(spotLight);
 
