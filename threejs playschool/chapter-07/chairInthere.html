@@ -5,8 +5,8 @@
 <head>
     <title>CZ Trial</title>
     <script type="text/javascript" src="../libs/three.js"></script>
-	<script type="text/javascript" src="aicause.22.json"></script>
-    <script type="text/javascript" src="../libs/stats.js"></script>
+	<script type="text/javascript" src="../datafiles/test.json"></script>
+	<script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
 	
     <style>
@@ -50,7 +50,7 @@
         windowHalfX = WIDTH / 2;
         windowHalfY = HEIGHT / 2;
 
-        fieldOfView = 25;
+        fieldOfView = 200;
         aspectRatio = WIDTH / HEIGHT;
         nearPlane = 1;
         farPlane = 10000;
@@ -84,13 +84,14 @@
 
         geometry = new THREE.Geometry(); /*	NO ONE SAID ANYTHING ABOUT MATH! UGH!	*/
 
-		var mydata=JSON.parse(data)	;
+		var mydata=JSON.parse(data);
+		
 		particleCount=Object.keys(mydata).length;
 		//alert(particleCount);
         //particleCount = 20000; /* Leagues under the sea */
 
         
-var Coef = 1500;
+var Coef = .5;
         for (i = 0; i < particleCount; i++) {
 			var coOrd=mydata[i].DP.split(",");
 			//alert(coOrd[0]);
@@ -129,10 +130,10 @@ var Coef = 1500;
         parameterCount = parameters.length;
 
       i=0;
-     //   for (i = 0; i < parameterCount; i++) {
+        for (i = 0; i < parameterCount; i++) {
 
             color = parameters[i][0];
-          //  size = parameters[i][1];
+           size = parameters[i][1];
 			
 			
             materials[i] = new THREE.PointCloudMaterial({
@@ -141,12 +142,12 @@ var Coef = 1500;
 
             particles = new THREE.PointCloud(geometry, materials[i]);
 
-          //  particles.rotation.x = Math.random() * 6;
-           // particles.rotation.y =  200000;
-           // particles.rotation.z = Math.random() * 6;
+            particles.rotation.x = Math.random() * 6;
+            particles.rotation.y =  200000;
+            particles.rotation.z = Math.random() * 6;
 
             scene.add(particles);
-     //   }
+        }
 
       
         renderer = new THREE.WebGLRenderer(); /*	Rendererererers particles.	*/
