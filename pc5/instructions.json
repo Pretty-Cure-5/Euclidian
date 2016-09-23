@@ -1,0 +1,21 @@
+{
+	"main_script": "pc5.js",
+	"icon": "pc5.jpg",
+	"width": 800,
+	"height": 500,
+	"animation": true,
+	"resize": "free",
+	"dependencies": [
+		"libs/three.js",
+		"libs/stats.js",
+		"libs/dat.gui.js",
+		"file.json"
+		
+	],
+	"title": "pc5.js",
+	"version": "1.0.0",
+	"description": "A Three.js model loader example (adapted from http://threejs.org)",
+	"keywords": [ "beautiful", "pc5", "animation" ],
+	"author": "Chritsine Zhu",
+	"license": "SAGE2-Software-License"
+}
