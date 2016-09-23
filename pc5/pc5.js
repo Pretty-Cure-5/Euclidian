@@ -36,26 +36,25 @@ var pc5 = SAGE2_WebGLApp.extend({
 		this.frame  = 0;
 		this.width  = this.element.clientWidth;
 		this.height = this.element.clientHeight;
-		this.windowHalfX=this.width/2;
-		this.windowHalfY=this.height/2;
+		
 		var fieldOfView=75;
 		var aspectRatio=this.width/this.height;
 		var nearPlane=1;
 		var farPlane=3000;
 		var cameraZ=farPlane/3;
 		var fogHex=0x000000;
-		var fogDensity=0.0007;
-		this.materials=[];
+		var fogDensity=0007;
+		var materials=[];
 		this.particles=null;
 		this.mouseX=0;
 		this.mouseY=0;
-		this.dragging=false;
+		
 		this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
 		this.scene    = new THREE.Scene();
 		this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
 		this.geometry=new THREE.Geometry();
 		
-		var mydata=JSON.parse(DPdata);
+		var mydata=JSON.parse(data);
 		var particleCount=Object.keys(mydata).length;
 		
 		for (var i=0;i<particleCount;i++)
@@ -91,11 +90,13 @@ var pc5 = SAGE2_WebGLApp.extend({
 		 for (var i = 0; i < parameterCount; i++) {
 
             var color = this.parameters[i][0];
-            var Size = this.parameters[i][1];
+            var size = this.parameters[i][1];
 
-            this.materials[i] = new THREE.PointCloudMaterial({size: Size});
+            materials[i] = new THREE.PointCloudMaterial({
+                size: size
+            });
 
-            this.particles = new THREE.PointCloud(this.geometry, this.materials[i]);
+            this.particles = new THREE.PointCloud(geometry, materials[i]);
 
             this.particles.rotation.x = Math.random() * 6;
             this.particles.rotation.y = Math.random() * 6;
@@ -114,9 +115,6 @@ var pc5 = SAGE2_WebGLApp.extend({
 		
 		
 		this.renderer.render(this.scene, this.camera);
-		
-	
-		
 		this.controls.finishedAddingControls();
 	},
 
@@ -124,16 +122,16 @@ var pc5 = SAGE2_WebGLApp.extend({
 	},
 
 	draw: function(date) {
-		var time=this.t*0.05;
-		this.camera.position.x =(this.mouseX-this.camera.position.x)*0.05+time;
-		this.camera.position.y +=(this.mouseY-this.camera.position.y)*0.05+time;
+		var time=this.t*0.0005;
+		this.camera.position.x +=(this.mouseX-this.camera.position.x)*0.05;
+		this.camera.position.y +=(this.mouseY-this.camera.position.y)*0.05;
 		this.camera.lookAt(this.scene.position);
 		for (var i=0;i<this.scene.children.length;i++)
 		{
 			var object=this.scene.children[i];
 			if (object instanceof THREE.PointCloud)
 			{
-				object.rotation.y=time*(i < 4 ? i + 1 : -(i + 1));
+				object.rotatoin.y=time*(i < 4 ? i + 1 : -(i + 1));
 			}
 		}
 		
@@ -158,20 +156,10 @@ var pc5 = SAGE2_WebGLApp.extend({
 	},
 
 	event: function(eventType, position, user_id, data, date) {
-		
-		
-		
-			if(eventType==="pointerMove") 
-			{
-				this.mouseX=position.x -this.windowHalfX;
-				this.mouseY=position.y - this.windowHalfY;
-				
-				this.refresh(date);
-			}
-			
-			
-		}
-		
+		//this.refresh(date);
+	}
+	
+	
 	
 
 });

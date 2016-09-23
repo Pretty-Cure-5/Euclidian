@@ -9,7 +9,7 @@
 		"libs/three.js",
 		"libs/stats.js",
 		"libs/dat.gui.js",
-		"file.json"
+		"file.js"
 		
 	],
 	"title": "pc5.js",
