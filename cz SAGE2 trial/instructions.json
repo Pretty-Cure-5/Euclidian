@@ -1,0 +1,21 @@
+{
+	"main_script": "CZ_Trial.js",
+	"icon": "CZ_Pic.jpg",
+	"width": 800,
+	"height": 500,
+	"animation": true,
+	"resize": "free",
+	"dependencies": [
+		"scripts/three.min.js",
+		"scripts/OrbitControls.js",
+		"scripts/ctm/lzma.js",
+		"scripts/ctm/ctm.js",
+		"scripts/ctm/CTMLoader.js"
+	],
+	"title": "CZ_Trial.js",
+	"version": "1.0.0",
+	"description": "A Three.js OpenCTM model loader example (adapted from http://threejs.org)",
+	"keywords": [ "three", "3d", "animation" ],
+	"author": "Luc Renambot <renambot@gmail.com>",
+	"license": "SAGE2-Software-License"
+}
