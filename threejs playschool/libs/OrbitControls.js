@@ -305,7 +305,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
         if ( scope.enabled === false ) return;
         if ( scope.userZoom === false ) return;
-
+         passive: true;
         var delta = 0;
 
         if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9

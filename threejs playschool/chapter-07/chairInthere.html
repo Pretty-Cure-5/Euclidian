@@ -7,6 +7,7 @@
     <script type="text/javascript" src="../libs/three.js"></script>
 	<script type="text/javascript" src="../datafiles/22.xyz.data.150k.json"></script>
 		<script type="text/javascript" src="../datafiles/22.rgb.data.247k.json"></script>
+			<script type="text/javascript" src="../datafiles/xyz.30RAW.json"></script>
 	<script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
 	
@@ -121,16 +122,16 @@ var sphere = new THREE.Mesh(
 		
         geometry = new THREE.Geometry(); /*	NO ONE SAID ANYTHING ABOUT MATH! UGH!	*/
 
-		var mydata=JSON.parse(data);
+		var mydata=JSON.parse(xyz);
 		var myrgb=JSON.parse(rgb);
 		particleCount=Object.keys(mydata).length;
 		//alert(particleCount);
         //particleCount = 20000; /* Leagues under the sea */
 
         
-var Coef = 100;
+var Coef = 200;
         for (i = 0; i < particleCount; i++) {
-			var coOrd=mydata[i].DP.split(",");
+			var coOrd=mydata[i];
 			//alert(coOrd[0]);
             var vertex = new THREE.Vector3();
 			
@@ -147,9 +148,14 @@ var Coef = 100;
 			/*alert(vertex.x);
 			alert(vertex.y);
 			alert(vertex.z);*/
-			console.log(i+": "+vertex.x +", "+vertex.y +", "+vertex.z+"rgb"+myrgb[i].C+"\n")
+		//	console.log(i+": "+vertex.x +", "+vertex.y +", "+vertex.z+"rgb"+myrgb[i].C+"\n")
+			
+			if(coOrd[2]<0){
+			
+			}
+			else{
             geometry.vertices.push(vertex);
-        }
+        }}
 
         /*	We can't stop here, this is bat country!	*/
 
@@ -187,9 +193,9 @@ var Coef = 100;
             particles = new THREE.PointCloud(geometry, materials[i]);
 
             particles.rotation.x = Math.random() * 6;
-            particles.rotation.y =  200000;
+       //     particles.rotation.y =  200000;
             particles.rotation.z = Math.random() * 6;
-materials[i].color.setHSL(myrgb[i].C);
+            materials[i].color.setHSL(myrgb[i].C);
             scene.add(particles);
    
 
@@ -224,13 +230,13 @@ materials[i].color.setHSL(myrgb[i].C);
 		function render() {
         var time = Date.now() * 0.00005;
 
-        //camera.position.x += (mouseX - camera.position.x) * 1.1;
-        //camera.position.y += (-mouseY - camera.position.y) * 0.2;
-        //camera.position.z += (-mouseY - camera.position.z) * 1.0;
+        camera.position.x += (mouseX - camera.position.x) * 2.1;
+       // camera.position.y += (-mouseY - camera.position.y) * 0.2;
+        camera.position.z += (-mouseY - camera.position.z) * 2.0;
 		
 		camera.position.x = 800;;
         camera.position.y = 1500;
-        //camera.position.z = 5000;
+        camera.position.z = 5000;
 		
 	  // console.log(camera.position.z + "\n");
 	   
@@ -242,8 +248,8 @@ materials[i].color.setHSL(myrgb[i].C);
 
             if (object instanceof THREE.PointCloud) {
            //object.rotation.y=4500;
-		//	object.rotation.y = time * (i < 4 ? i + 1 : -(i + 1));
-			 //  object.rotation.z = time * (i < 4 ? i + 1 : -(i + 1));
+			//object.rotation.y = time * (i < 4 ? i + 1 : -(i + 1));
+			object.rotation.z = time * (i < 4 ? i + 1 : -(i + 1));
             object.rotation.x = time * (i < 4 ? i + 1 : -(i + 1));
 			// console.log(object.rotation.y + "\n");
             }
