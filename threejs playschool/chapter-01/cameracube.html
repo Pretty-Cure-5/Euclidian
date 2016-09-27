@@ -7,28 +7,28 @@
     <script type="text/javascript" src="../libs/three.js"></script>
     <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
-		<script type="text/javascript" src="../datafiles/xyz.30RAW.json"></script>
-		<script type="text/javascript" src="../datafiles/color.json"></script>
-		
-		<script type="text/javascript" src="../libs/OBJLoader.js"></script>
+        <script type="text/javascript" src="../datafiles/xyz.30RAW.json"></script>
+        <script type="text/javascript" src="../datafiles/color.json"></script>
+
+        <script type="text/javascript" src="../libs/OBJLoader.js"></script>
     <script type="text/javascript" src="../libs/MTLLoader.js"></script>
     <script type="text/javascript" src="../libs/OBJMTLLoader.js"></script>
-	<script type="text/javascript" src="../libs/OrbitControls.js"></script>
-	  <script type="text/javascript" src="../libs/stats.js"></script>
+    <script type="text/javascript" src="../libs/OrbitControls.js"></script>
+      <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
     <script type="text/javascript" src="../libs/chroma.js"></script>
     <script type="text/javascript" src="../libs/FlyControls.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	
-	
-	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+
     <style>
         body {
             /* set margin to 0 and overflow to hidden, to go fullscreen */
             margin: 0;
             overflow: hidden;
-			}
-			.webgl {
+            }
+            .webgl {
     height:100vh;
     width:100vw;
 }
@@ -42,12 +42,12 @@
     color:black;
     background-color:white;
 }
-			
-			
-			
-			
-			
-        
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -83,12 +83,12 @@ animate();
 
 function init() {
     //camera
-	
-	X1 =0;
-	Y1 =0;
-	Z1 =0;
-	
-	
+
+    X1 =0;
+    Y1 =0;
+    Z1 =0;
+
+
     camera = new THREE.PerspectiveCamera(45, w / h, 1, 5000);
     camera.position.set(0, 200, -500);
 
@@ -107,9 +107,9 @@ function init() {
     helper.setColors(0x0000ff, 0x808080);
     scene.add(axes);
   //  scene.add(helper);
-  
+
   //TEXT FOR COORDS
-  
+
 
 
     // Torus Geometry
@@ -117,63 +117,63 @@ function init() {
     new THREE.MeshNormalMaterial());
     torus.position.set(0, 0, 0);
    // scene.add(torus);
-	
-	
-	  var mydata=JSON.parse(xyz);
-		var myrgb=JSON.parse(rgb);
-		particleCount=Object.keys(mydata).length;
-		
-		particleCount=150000;
-	
-	    var cubeGeometry = new THREE.BoxGeometry(.2, .2, .2);
+
+
+      var mydata=JSON.parse(xyz);
+        var myrgb=JSON.parse(rgb);
+        particleCount=Object.keys(mydata).length;
+
+        particleCount=150000;
+
+        var cubeGeometry = new THREE.BoxGeometry(.2, .2, .2);
        var Coef = 100;
-	   var cube = []; 
-	   var p = 0;
-	   var colorsmall=0;
+       var cube = [];
+       var p = 0;
+       var colorsmall=0;
        for (i = 0; i < particleCount; i++) {
-	   console.log(i);
-		var X=mydata[i][0]*Coef;
-	    var Y=(mydata[i][2]*Coef-(Coef*2.5))*-1;
-	    var Z=(mydata[i][1]*Coef);
-		
-		
-		colorsmall++;
-		if (colorsmall==100){
-		colorsmall=0;
-		}
-		var hexString=myrgb[colorsmall];
-		
-		var color1 = new THREE.Color("#"+hexString);
-	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
-		//  var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
+       console.log(i);
+        var X=mydata[i][0]*Coef;
+        var Y=(mydata[i][2]*Coef-(Coef*2.5))*-1;
+        var Z=(mydata[i][1]*Coef);
+
+
+        colorsmall++;
+        if (colorsmall==100){
+        colorsmall=0;
+        }
+        var hexString=myrgb[colorsmall];
+
+        var color1 = new THREE.Color("#"+hexString);
+        var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
+        //  var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
         cube[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
         cube[i].castShadow = false;
-	        cube[i].position.x = X; 
-			 cube[i].position.y = Y;
-			cube[i].position.z = Z;
-	 
-	 
-	 
-	      // add the cube to the scene
-		var ify=50005500;
-		
-		
-		if (X>X1){X1=X;}
-		if (Y>Y1){Y1=Y;}
-		if (Z>Z1){Z1=Z;}
-	console.log(X1+" "+Y1+" "+Z1);
-	
-	
-	
-		if (Y<20||Y>90||X>100||Z>100){
-		console.log(p++);
-		
-		}
-		else{
+            cube[i].position.x = X;
+             cube[i].position.y = Y;
+            cube[i].position.z = Z;
+
+
+
+          // add the cube to the scene
+        var ify=50005500;
+
+
+        if (X>X1){X1=X;}
+        if (Y>Y1){Y1=Y;}
+        if (Z>Z1){Z1=Z;}
+    console.log(X1+" "+Y1+" "+Z1);
+
+
+
+        if (Y<20||Y>90||X>100||Z>100){
+        console.log(p++);
+
+        }
+        else{
         scene.add(cube[i]);
-		}
-		
-		}
+        }
+
+        }
 
     //Hemisphere Light
     light = new THREE.HemisphereLight(0xffbf67, 0x15c6ff);
