@@ -20,9 +20,9 @@ IP: 43.240.97.247
 
 Software:
 * SAGE2 /home/ubuntu/sage2/
-* Vim
-* Git
-* JDK 8
-* Scala
 * Node.js
 * Three.js
+* JDK 8
+* Scala 2.11.8
+* Git
+* Vim
