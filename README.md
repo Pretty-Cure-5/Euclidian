@@ -14,13 +14,15 @@ Learning Resources:
 * [12 great resources for getting started with LaTeX](http://www.howtotex.com/general/12-great-resources-for-getting-started-with-latex/)
 
 ## Server
-IP: 130.56.254.171
-<br>The website is in the /home/web/ directory.
+IP: 43.240.97.247
+<br>[SAGE2 UI](https://43.240.97.247:9090/index.html)
+<br>[SAGE2 Overview Display](http://43.240.97.247:9292/display.html?clientID=-1)
 
 Software:
+* SAGE2 /home/ubuntu/sage2/
 * Vim
 * Git
 * JDK 8
 * Scala
 * Node.js
-* Three.js \<script src="/js/three.min.js"\>\</script\>
+* Three.js
