@@ -1,0 +1,19 @@
+{
+    "main_script": "euclidian.js",
+    "icon": "logo.png",
+    "width": 800,
+    "height": 500,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "lib/three.min.js",
+        "lib/jquery-3.1.0.min.js",
+        "data.js"
+    ],
+    "title": "Euclidian",
+    "version": "1.0.0",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
