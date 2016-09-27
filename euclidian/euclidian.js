@@ -36,12 +36,23 @@ var euclidian = SAGE2_WebGLApp.extend({
         this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
         this.geometry=new THREE.Geometry();
 
-        //var mydata=DPdata;
-        var mydata = JSON.parse("data.json");
-        var particleCount=Object.keys(mydata).length;
+        var mydata = (function() {
+            var file = null;
+            console.log(file);
+            $.ajax({
+                'async': false,
+                'global': false,
+                'url': "http://43.240.97.247:80/data.json",
+                'dataType': "json",
+                'success': function (data) {console.log(data);}
+            });
+            return file;
+        })();
+
+        var particleCount=mydata.length;
 
         for (var i=0;i<particleCount;i++) {
-            var coOrd=mydata[i].DP.split(",");
+            var coOrd=mydata[i];
             var vertex = new THREE.Vector3();
             vertex.x = coOrd[0];
             vertex.y = coOrd[1];
