@@ -5,8 +5,7 @@ Sponsored by Ian Peake, Jan Olaf Blech, and Keith Foster.
 
 The name of the project is based on Euclideon (the "Unlimited Detail" guys); but the end has been changed to Ian (Peake).
 
-The logo.png is: Flaming Lotus of Enlightenment, centered upon Point Cloud Galaxy.
-<br>(Enlighten = Render)
+The logo.png is: Flaming [Lotus](https://en.wikipedia.org/wiki/Lotus_position) of [Enlightenment](https://en.wikipedia.org/wiki/Rendering_%28computer_graphics%29), centered upon Point Cloud Galaxy.
 
 ## Server
 IP: 43.240.97.247
