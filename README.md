@@ -3,7 +3,7 @@ Cloud-based Spatio-temporal Big Data Visualization
 
 Sponsored by Ian Peake, Jan Olaf Blech, and Keith Foster.
 
-The name of the project is based on Euclideon (the "Unlimited Detail" guys); but the end has been changed to Ian (Peake).
+The name of the project is based on [Euclideon](https://en.wikipedia.org/wiki/Euclideon) (the "Unlimited Detail" guys); but the end has been changed to Ian (Peake).
 
 The logo.png is: Flaming [Lotus](https://en.wikipedia.org/wiki/Lotus_position) of [Enlightenment](https://en.wikipedia.org/wiki/Rendering_%28computer_graphics%29), centered upon Point Cloud Galaxy.
 
