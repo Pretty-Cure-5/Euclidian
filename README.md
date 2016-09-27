@@ -22,7 +22,7 @@ Software:
 * SAGE2 /home/ubuntu/sage2/
 * Node.js
 * Three.js
-* JDK 8
+* Java 8
 * Scala 2.11.8
 * Git
 * Vim
