@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # System-wide update script for Ubuntu/NeCTAR.
-# (This just needs to be called by a web-based request; unimplemented.)
+# (This just needs to be called by a web-based request; unimplemented because it needs admin.)
 
 ################################################################################
 # Configuration                                                                #
