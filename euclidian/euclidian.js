@@ -8,7 +8,7 @@
  * @class euclidian
  */
 var euclidian = SAGE2_WebGLApp.extend({
-        init: function(data) {
+    init: function(data) {
         this.SAGE2Init("div", data);
 
         this.resizeEvents = "continuous";
@@ -36,22 +36,12 @@ var euclidian = SAGE2_WebGLApp.extend({
         this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
         this.geometry=new THREE.Geometry();
 
-        var loader = new THREE.JSONLoader();
-        loader.load('data.json', function(geometry) {
-            /*
-            var mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial());
-            mesh.position.x =500;
-            mesh.position.y =100;
-            mesh.position.z =500;
-            scene.add(mesh);
-            */
-            this.mydata = geometry;
-        });
 
-        var particleCount=this.mydata.length;
+
+        var particleCount=xyz.length;
 
         for (var i=0;i<particleCount;i++) {
-            var coOrd=this.mydata[i];
+            var coOrd=xyz[i];
             var vertex = new THREE.Vector3();
             vertex.x = coOrd[0];
             vertex.y = coOrd[1];
