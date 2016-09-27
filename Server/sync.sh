@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Synchronisation script to pull apps from GitHub into SAGE2.
-# (This just needs to be called by a web-based request; see the README file.)
+# (This just needs to be called by a web-based request; see the README.md file.)
 
 ################################################################################
 # Configuration                                                                #
