@@ -6,17 +6,17 @@
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../libs/three.js",
+        "../lib/three.js",
         "data.js",
-		"../libs/OBJLoader.js",
-        "../libs/MTLLoader.js",
-        "../libs/OBJMTLLoader.js",
-        "../libs/OrbitControls.js",
-	    "../libs/stats.js",
-        "../libs/dat.gui.js",
-        "../libs/chroma.js",
-        "../libs/FlyControls.js"
-		
+		"../lib/OBJLoader.js",
+        "../lib/MTLLoader.js",
+        "../lib/OBJMTLLoader.js",
+        "../lib/OrbitControls.js",
+	    "../lib/stats.js",
+        "../lib/dat.gui.js",
+        "../lib/chroma.js",
+        "../lib/FlyControls.js"
+
     ],
     "title": "Euclidian 30 Spin",
     "version": "1.0.1",
