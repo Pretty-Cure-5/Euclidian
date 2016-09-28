@@ -1,0 +1,29 @@
+{
+    "main_script": "Euclidian30orbital.js",
+    "icon": "logo.png",
+    "width": 1800,
+    "height": 800,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "../lib/three.js",
+        "data.js",
+		"../lib/OBJLoader.js",
+        "../lib/MTLLoader.js",
+        "../lib/OBJMTLLoader.js",
+        "../lib/OrbitControls.js",
+	    "../lib/stats.js",
+        "../lib/dat.gui.js",
+        "../lib/chroma.js",
+        "../lib/FlyControls.js",
+		"../lib/jquery-3.1.0.min.js",
+		"../lib/jquery-1.9.0.js"
+		
+    ],
+    "title": "Euclidian 30 Orbital",
+    "version": "1.0.1",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
