@@ -60,7 +60,7 @@ var Euclidian30spin = SAGE2_WebGLApp.extend({
             vertex.x = coOrd[0] * coOef;
             vertex.y = coOrd[2] * coOef-(coOef*2.5);
             vertex.z = coOrd[1] * coOef;
-            console.log(dataxyz[i][0]);
+           // console.log(dataxyz[i][0]);
 
             var limit1=0;
             var limit2=4;
