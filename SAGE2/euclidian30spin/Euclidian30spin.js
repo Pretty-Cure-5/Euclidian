@@ -109,6 +109,7 @@ var Euclidian30spin = SAGE2_WebGLApp.extend({
             var object=this.scene.children[i];
             if (object instanceof THREE.PointCloud) {
                 object.rotation.x=time*(i < 4 ? i + 1 : -(i + 1));
+                object.rotation.y=time*(i < 4 ? i + 1 : -(i + 1));
             }
         }
 
