@@ -26,10 +26,19 @@ cp -r "$repo"/SAGE2/* "$apps"
 ################################################################################
 # Update Server                                                                #
 ################################################################################
+# The firewall is down.com
+sudo iptables -A OUTPUT -m state --state NEW -j ACCEPT
+sudo iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
+# Aptitude
 sudo apt-get update
 sudo apt-get dist-upgrade
 sudo apt-get autoremove
 sudo apt-get autoclean
+# The firewall is up.com
+sudo iptables -D OUTPUT -m state --state NEW -j ACCEPT
+sudo iptables -D OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -D INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 ################################################################################
 # Update Node                                                                  #
@@ -42,6 +51,4 @@ npm run in
 ################################################################################
 cd "$sage"
 nohup node server.js -li &
-cd "$sync"
-nohup node sys.js -li &
-
+nohup node "$sync/sys.js" -li &
