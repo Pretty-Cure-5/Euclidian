@@ -6,7 +6,7 @@
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../lib/three.min.js",
+        "../lib/Three.js",
         "data.js",
 		"../lib/OBJLoader.js",
         "../lib/MTLLoader.js",
