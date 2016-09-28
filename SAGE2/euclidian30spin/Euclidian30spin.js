@@ -51,13 +51,6 @@ var Euclidian30spin = SAGE2_WebGLApp.extend({
         //Scene
         this.scene = new THREE.Scene();
 
-        //Helpers
-        //this.axes = new THREE.AxisHelper(500);
-        //this.helper = new THREE.GridHelper(1000, 10);
-        //this.helper.setColors(0x0000ff, 0x808080);
-        //this.scene.add(axes);
-        //scene.add(helper);
-
         var coOef =100;
 
         for (var i=0;i<particleCount;i++) {
@@ -65,15 +58,16 @@ var Euclidian30spin = SAGE2_WebGLApp.extend({
             var coOrd=xyz[i];
             var vertex = new THREE.Vector3();
             vertex.x = coOrd[0] * coOef;
-            vertex.y = (coOrd[2] * coOef-(coOef*2.5))*1;;
+            vertex.y = coOrd[2] * coOef-(coOef*2.5);
             vertex.z = coOrd[1] * coOef;
-            console.log (dataxyz[i][0]);
+            console.log(dataxyz[i][0]);
 
             var limit1=0;
             var limit2=4;
 
-            if (coOrd[2]<limit1||coOrd[2]>limit2){}
-            else{ this.geometry.vertices.push(vertex);}
+            if(!(coOrd[2]<limit1||coOrd[2]>limit2)) {
+                this.geometry.vertices.push(vertex);
+            }
         }
 
 
@@ -114,14 +108,8 @@ var Euclidian30spin = SAGE2_WebGLApp.extend({
         for (var i=0;i<this.scene.children.length;i++) {
             var object=this.scene.children[i];
             if (object instanceof THREE.PointCloud) {
-                object.rotation.z=time*(i < 4 ? i + 1 : -(i + 1));
+                object.rotation.y=time*(i < 4 ? i + 1 : -(i + 1));
             }
-        }
-
-        for (var i = 0; i <this.materials.length; i++) {
-            var color = this.parameters[i][0];
-            var h = (360 * (color[0] + time) % 360) / 360;
-           // this.materials[i].color.setHSL(h, color[1], color[2]);
         }
 
         this.renderer.render(this.scene, this.camera);
