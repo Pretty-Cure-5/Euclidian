@@ -1,0 +1,27 @@
+{
+    "main_script": "Euclidian30spin.js",
+    "icon": "logo.png",
+    "width": 1800,
+    "height": 800,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "../libs/three.js",
+        "data.js",
+		"../libs/OBJLoader.js",
+        "../libs/MTLLoader.js",
+        "../libs/OBJMTLLoader.js",
+        "../libs/OrbitControls.js",
+	    "../libs/stats.js",
+        "../libs/dat.gui.js",
+        "../libs/chroma.js",
+        "../libs/FlyControls.js"
+		
+    ],
+    "title": "Euclidian 30 Spin",
+    "version": "1.0.1",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
