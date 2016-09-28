@@ -1,24 +1,6 @@
-// SAGE2 is available for use under the SAGE2 Software License
-//
-// University of Illinois at Chicago's Electronic Visualization Laboratory (EVL)
-// and University of Hawai'i at Manoa's Laboratory for Advanced Visualization and
-// Applications (LAVA)
-//
-// See full text, terms and conditions in the LICENSE.txt included file
-//
-// Copyright (c) 2015
-
-//
-// original SAGE implementation: Luc Renambot
-// contributed by Garry Keltie
-//     garry.keltie@gmail.com
-//
-
-
 "use strict";
 
 /* global THREE */
-
 
 /**
  * WebGL 3D application, inherits from SAGE2_WebGLApp
@@ -27,7 +9,7 @@
  */
 var CZ_Trial = SAGE2_WebGLApp.extend({
 
-        init: function(data) {
+    init: function(data) {
         this.SAGE2Init("div", data);
 
         this.resizeEvents = "continuous";

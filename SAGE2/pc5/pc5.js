@@ -109,11 +109,11 @@ var pc5 = SAGE2_WebGLApp.extend({
     },
 
     event: function(eventType, position, user_id, data, date) {
-            if(eventType==="pointerMove") {
-                this.mouseX=position.x -this.windowHalfX;
-                this.mouseY=position.y - this.windowHalfY;
+        if(eventType==="pointerMove") {
+            this.mouseX=position.x -this.windowHalfX;
+            this.mouseY=position.y - this.windowHalfY;
 
-                this.refresh(date);
-            }
+            this.refresh(date);
         }
+    }
 });
