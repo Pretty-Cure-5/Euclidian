@@ -6,7 +6,7 @@
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "libs/three.js",
+        "../lib/three.js",
         "file.js"
     ],
     "title": "Euclidian",
