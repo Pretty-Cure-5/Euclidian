@@ -14,7 +14,7 @@ const exec = require('child_process').exec;
 console.log("Creating server...");
 http.createServer(function(request, response) {
     function r(body) {
-        var head = '<!DOCTYPE html><html><head><title>Pretty Cure Server</title></head><body>';
+        var head = '<!DOCTYPE html><html><head><title>Pretty Cure Server</title><meta charset="utf-8"></head><body>';
         var tail = '</body></html>';
 
         // Send the HTTP header

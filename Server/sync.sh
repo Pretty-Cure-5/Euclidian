@@ -14,7 +14,7 @@ apps="$sage"/public/uploads/apps/
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
 #killall node
-kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')"; ps x
+kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 
 ################################################################################
 # Update Apps                                                                  #

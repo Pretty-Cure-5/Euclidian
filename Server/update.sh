@@ -9,6 +9,7 @@ home=/home/ubuntu
 repo="$home"/Euclidian
 sage="$home"/sage2
 apps="$sage"/public/uploads/apps/
+sync="$repo"/Server
 
 ################################################################################
 # http://thewebsiteisdown.com/                                                 #
@@ -41,3 +42,6 @@ npm run in
 ################################################################################
 cd "$sage"
 nohup node server.js -li &
+cd "$sync"
+nohup node sys.js -li &
+
