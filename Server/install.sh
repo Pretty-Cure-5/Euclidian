@@ -21,6 +21,7 @@ sudo apt-get autoclean
 # GitHub
 ################################################################################
 cd "$home"
+sudo apt-get install git
 git clone https://github.com/Pretty-Cure-5/Euclidian.git
 
 ################################################################################
