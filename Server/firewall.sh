@@ -47,10 +47,15 @@ iptables  -A OUTPUT -p icmp   --icmp-type   echo-reply   -j ACCEPT
 iptables  -A OUTPUT -p icmp   --icmp-type   echo-request -j ACCEPT
 iptables  -A INPUT  -p icmp   --icmp-type   echo-reply   -j ACCEPT
 
+# Octocat.
+# https://help.github.com/articles/what-ip-addresses-does-github-use-that-i-should-whitelist/
+iptables -A INPUT  -p tcp -s 192.30.252.0/22 --match multiport --dports 22,80,443,9418 -j ACCEPT
+iptables -A OUTPUT -p tcp -d 192.30.252.0/22 --match multiport --sports 22,80,443,9418 -j ACCEPT
+
 # Personal invitations.
 while read address; do
     iptables -A INPUT  -p tcp -s $address/32 --match multiport --dports $ports -j ACCEPT
-    iptables -A OUTPUT -p tcp -d $address/32 -j ACCEPT
+    iptables -A OUTPUT -p tcp -d $address/32 --match multiport --sports $ports -j ACCEPT
 done <$phonebook
 
 # Ruling sustained!
