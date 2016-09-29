@@ -15,10 +15,10 @@ sync="$repo"/Server
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
 killall node
+
 # The firewall is down.com
-sudo iptables -A OUTPUT -m state --state NEW -j ACCEPT
-sudo iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT
 
 ################################################################################
 # Update Apps                                                                  #
@@ -26,11 +26,11 @@ sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
 cd "$repo"
 git pull --all
 cp -r "$repo"/SAGE2/* "$apps"
+# TODO: minimise JS/JSON files here; and the sync.sh file.
 
 ################################################################################
 # Update Server                                                                #
 ################################################################################
-# Aptitude
 sudo apt-get update
 sudo apt-get dist-upgrade
 sudo apt-get autoremove
@@ -50,6 +50,5 @@ nohup node server.js -li &
 nohup node "$sync/sys.js" -li &
 
 # The firewall is up.com
-sudo iptables -D OUTPUT -m state --state NEW -j ACCEPT
-sudo iptables -D OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -D INPUT  -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -D OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -D INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT

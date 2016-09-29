@@ -22,6 +22,7 @@ kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 cd "$repo"
 git pull --all
 cp -r "$repo"/SAGE2/* "$apps"
+# TODO: minimise JS/JSON files here; and the update.sh file.
 
 ################################################################################
 # The website is up.com                                                        #
