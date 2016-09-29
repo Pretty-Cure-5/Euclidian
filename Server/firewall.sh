@@ -49,8 +49,21 @@ iptables  -A INPUT  -p icmp   --icmp-type   echo-reply   -j ACCEPT
 
 # Octocat.
 # https://help.github.com/articles/what-ip-addresses-does-github-use-that-i-should-whitelist/
-iptables -A INPUT  -p tcp -s 192.30.252.0/22 --match multiport --dports 22,80,443,9418 -j ACCEPT
-iptables -A OUTPUT -p tcp -d 192.30.252.0/22 --match multiport --sports 22,80,443,9418 -j ACCEPT
+iptables -A INPUT  -p tcp -s 192.30.252.0/22 --match multiport --sports 22,80,443,9418 -j ACCEPT
+iptables -A OUTPUT -p tcp -d 192.30.252.0/22 --match multiport --dports 22,80,443,9418 -j ACCEPT
+
+# DNS.
+dns='43.240.99.250 8.8.8.8 43.240.99.251'
+for each in $dns; do
+    iptables -A INPUT  -p udp -s "$each" --sport 53 -j ACCEPT
+    iptables -A OUTPUT -p udp -d "$each" --dport 53 -j ACCEPT
+    iptables -A INPUT  -p tcp -s "$each" --sport 53 -j ACCEPT
+    iptables -A OUTPUT -p tcp -d "$each" --dport 53 -j ACCEPT
+done
+
+# Localhost.
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
 
 # Personal invitations.
 while read address; do
