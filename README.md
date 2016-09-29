@@ -17,6 +17,7 @@ IP: 43.240.97.247
 <br>[SAGE2 UI](https://43.240.97.247:9090/index.html)
 <br>[SAGE2 Overview Display](http://43.240.97.247:9292/display.html?clientID=-1)
 <br>[Upload GitHub SAGE2 directory to server SAGE2 apps](http://43.240.97.247:1337/sync)
+<br>[Invite an IP address to the server](http://43.240.97.247:1337/firewall?ip=)
 
 Software:
 * SAGE2 /home/ubuntu/sage2/
