@@ -1,5 +1,5 @@
 /*
-nohup node sys.js -li
+nohup node sys.js -li &
 vim sys.js; node sys.js -li
 */
 console.log("Maintenance script...");
@@ -65,6 +65,7 @@ http.createServer(function(request, response) {
                 if(keys[0] == 'ip') {
                     if(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(query.ip)) {
                         r('<span style="color:green">' + query.ip + ' has been invited to the Pretty Cure party! :D</span>');
+                        console.log(query.ip + '; Invited! :D');
                         const child = exec(
                             'sh /home/ubuntu/Euclidian/Server/ip_address.sh ' + query.ip
                             , (error, stdout, stderr) => {
@@ -73,6 +74,9 @@ http.createServer(function(request, response) {
                                     return;
                                 }
                                 console.log(query.ip + '; Invited! :D');
+                                console.log('Error: ' + error)
+                                console.log('STDout: ' + stdout)
+                                console.log('STDerr: ' + stderr)
                             }
                         );
                     } else {

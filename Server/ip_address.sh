@@ -6,4 +6,4 @@
 ports=22,80,443,1337,9090,9292
 
 sudo iptables -A INPUT  -p tcp -s $1/32 --match multiport --dports $ports -j ACCEPT
-sudo iptables -A OUTPUT -p tcp -d $1/32 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d $1/32 --match multiport --sports $ports -j ACCEPT
