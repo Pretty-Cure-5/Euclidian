@@ -53,12 +53,13 @@ iptables -A INPUT  -p tcp -s 192.30.252.0/22 --match multiport --sports 22,80,44
 iptables -A OUTPUT -p tcp -d 192.30.252.0/22 --match multiport --dports 22,80,443,9418 -j ACCEPT
 
 # DNS.
+#cat /etc/resolv.conf
 dns='43.240.99.250 8.8.8.8 43.240.99.251'
 for each in $dns; do
-    iptables -A INPUT  -p udp -s "$each" --sport 53 -j ACCEPT
-    iptables -A OUTPUT -p udp -d "$each" --dport 53 -j ACCEPT
-    iptables -A INPUT  -p tcp -s "$each" --sport 53 -j ACCEPT
-    iptables -A OUTPUT -p tcp -d "$each" --dport 53 -j ACCEPT
+    iptables -A INPUT  -p udp -s "$each" --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p udp -d "$each" --dport 53 -m state --state ESTABLISHED     -j ACCEPT
+    iptables -A INPUT  -p tcp -s "$each" --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp -d "$each" --dport 53 -m state --state ESTABLISHED     -j ACCEPT
 done
 
 # Localhost.
