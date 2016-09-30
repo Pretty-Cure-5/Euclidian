@@ -28,10 +28,28 @@ Software:
 * Git
 * Vim
 
+## Coding Convention
+```javascript
+while(standard) {
+    if(we_follow_protocol) {
+        console.log('We will succeed.');
+    } else {
+        console.log('We risk failure.');
+    }
+}
+```
+* Indentation: 4 spaces
+* Brackets: Egyptian
+
+## MD files
+* [GitHub Guide: Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
+
 ## TeX files
 Copy and paste the contents of .tex files into one of these renders:
 * [overleaf](https://www.overleaf.com/)
 * [papeeria](https://papeeria.com/)
+
+*(Overleaf has a source-code view, and a rich-text view; which is like using a WYSIWYG word processor.)*
 
 Learning Resources:
 * [12 great resources for getting started with LaTeX](http://www.howtotex.com/general/12-great-resources-for-getting-started-with-latex/)
