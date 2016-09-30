@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-<'
+<<WHEN
 This script rules in favour of an IP address.
     ./ip_address.sh $command $ip_address
 $command
@@ -7,7 +7,7 @@ $command
     D = rm
 $ip_address
     IPv4
-'
+WHEN
 
 # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 ports=22,80,443,1337,9090,9292
