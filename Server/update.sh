@@ -14,7 +14,7 @@ sync="$repo"/Server
 ################################################################################
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
-killall node
+killall node npm
 kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 
 # The firewall is down.com
