@@ -15,6 +15,7 @@ sync="$repo"/Server
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
 killall node
+kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 
 # The firewall is down.com
 sudo iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
