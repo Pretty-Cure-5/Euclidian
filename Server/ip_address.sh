@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
-# This script rules in favour of an IP address.
-#   ./ip_address.sh $ip_address
+<'
+This script rules in favour of an IP address.
+    ./ip_address.sh $command $ip_address
+$command
+    A = mk
+    D = rm
+$ip_address
+    IPv4
+'
 
 # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 ports=22,80,443,1337,9090,9292
 
-sudo iptables -A INPUT  -p tcp -s $1/32 --match multiport --dports $ports -j ACCEPT
-sudo iptables -A OUTPUT -p tcp -d $1/32 --match multiport --sports $ports -j ACCEPT
+sudo iptables -$1 INPUT  -p tcp -s $2/32 --match multiport --dports $ports -j ACCEPT
+sudo iptables -$1 OUTPUT -p tcp -d $2/32 --match multiport --sports $ports -j ACCEPT
