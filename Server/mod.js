@@ -1,4 +1,13 @@
-const fs = require('fs');
+/*
+vim mod.js; node sys.js -li
+*/
+
+const
+    fs = require('fs')
+    , url = require('url')
+    , exec = require('child_process').exec
+    , queryString = require('querystring')
+;
 
 exports.checkExternal = (request) => {
     return request.url.startsWith('/bro/');

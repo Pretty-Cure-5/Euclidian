@@ -8,9 +8,6 @@ console.log('Booting the 1337 server...');
 console.log('Importing modules...');
 const
     http = require('http')
-    , url = require('url')
-    , exec = require('child_process').exec
-    , queryString = require('querystring')
     , mod = require('./mod.js')
 ;
 
