@@ -103,7 +103,8 @@ const firewall = (response, query) => {
                     + ' has been invited to the Pretty Cure party! :D'
                 );
                 let child = exec(
-                    'sh /home/ubuntu/Euclidian/Server/ip_address.sh A ' + query.ip
+                    'sh /home/ubuntu/Euclidian/Server/ip_address.sh A '
+                    + query.ip
                     , (error, stdout, stderr) => {
                         if (error) {
                             console.error(`exec error: ${error}`);
