@@ -1,13 +1,13 @@
 {
     "main_script": "pc5.js",
-    "icon": "pc5.jpg",
+    "icon": "../shared/img/pc5.jpg",
     "width": 800,
     "height": 500,
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../lib/three.min.js",
-        "file.js"
+        "../shared/lib/three.min.js",
+        "../shared/dat/file.js"
     ],
     "title": "Euclidian",
     "version": "1.0.0",

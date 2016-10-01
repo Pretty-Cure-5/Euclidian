@@ -1,24 +1,22 @@
 {
     "main_script": "Euclidian30orbital.js",
-    "icon": "logo.png",
+    "icon": "../shared/img/logo.png",
     "width": 1800,
     "height": 800,
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../lib/three.js",
-        "data.js",
-		"../lib/OBJLoader.js",
-        "../lib/MTLLoader.js",
-        "../lib/OBJMTLLoader.js",
-        "../lib/OrbitControls.js",
-	    "../lib/stats.js",
-        "../lib/dat.gui.js",
-        "../lib/chroma.js",
-        "../lib/FlyControls.js",
-		"../lib/jquery-3.1.0.min.js"
-		
-		
+        "../shared/lib/three.js",
+        "../shared/lib/OBJLoader.js",
+        "../shared/lib/MTLLoader.js",
+        "../shared/lib/OBJMTLLoader.js",
+        "../shared/lib/OrbitControls.js",
+        "../shared/lib/stats.js",
+        "../shared/lib/dat.gui.js",
+        "../shared/lib/chroma.js",
+        "../shared/lib/FlyControls.js",
+        "../shared/lib/jquery-3.1.0.min.js",
+        "../shared/dat/datafloor.js"
     ],
     "title": "Euclidian 30 Orbital",
     "version": "1.0.1",

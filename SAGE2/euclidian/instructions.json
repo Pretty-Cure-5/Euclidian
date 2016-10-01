@@ -1,14 +1,14 @@
 {
     "main_script": "euclidian.js",
-    "icon": "logo.png",
+    "icon": "../shared/img/logo.png",
     "width": 800,
     "height": 500,
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../lib/three.min.js",
-        "../lib/jquery-3.1.0.min.js",
-        "data.js"
+        "../shared/lib/three.min.js",
+        "../shared/lib/jquery-3.1.0.min.js",
+        "../shared/dat/data.js"
     ],
     "title": "Euclidian",
     "version": "1.0.0",

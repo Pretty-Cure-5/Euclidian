@@ -1,13 +1,13 @@
 {
     "main_script": "CZ_Trial.js",
-    "icon": "CZ_Pic.jpg",
+    "icon": "../shared/img/CZ_Pic.jpg",
     "width": 800,
     "height": 500,
     "animation": true,
     "resize": "free",
     "dependencies": [
-        "../lib/three.min.js",
-        "../lib/OrbitControls.js"
+        "../shared/lib/three.min.js",
+        "../shared/lib/OrbitControls.js"
     ],
     "title": "CZ_Trial.js",
     "version": "1.0.0",
