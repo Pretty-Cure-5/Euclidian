@@ -133,6 +133,9 @@ var EuclidianZoom_Drag = SAGE2_WebGLApp.extend({
 			this.refresh(date);
 		}
 		
+		else if (eventType === "pointerRelease" && (data.button === "left")) {
+				this.dragging = false;
+			}
 		
 		
 		else if (eventType==="widgetEvent")
