@@ -1,0 +1,26 @@
+{
+    "main_script": "EuclidianZoom_Drag.js",
+    "icon": "logo.png",
+    "width": 1800,
+    "height": 800,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "../lib/Three.js",
+        "../lib/OBJLoader.js",
+        "../lib/MTLLoader.js",
+        "../lib/OBJMTLLoader.js",
+        "../lib/OrbitControls.js",
+        "../lib/stats.js",
+        "../lib/dat.gui.js",
+        "../lib/chroma.js",
+        "../lib/FlyControls.js",
+        "data.js"
+    ],
+    "title": "Euclidian Zomm and Drag",
+    "version": "1.0.1",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
