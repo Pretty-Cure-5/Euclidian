@@ -7,7 +7,7 @@
     <script type="text/javascript" src="../libs/three.js"></script>
     <script type="text/javascript" src="../libs/stats.js"></script>
     <script type="text/javascript" src="../libs/dat.gui.js"></script>
-		<script type="text/javascript" src="../datafiles/3xyz.30.json"></script>
+	<script type="text/javascript" src="../datafiles/NFxyz.30.json"></script>
 		<script type="text/javascript" src="../datafiles/color.json"></script>
 		
 		<script type="text/javascript" src="../libs/OBJLoader.js"></script>
@@ -116,7 +116,7 @@ function init() {
 		var myrgb=JSON.parse(rgb);
 		particleCount=Object.keys(mydata).length;
 		
-		particleCount=150000;
+		//particleCount=150000;
 	
 	    var cubeGeometry = new THREE.BoxGeometry(.6, .01, .6);
 		 var cubeGeometryY = new THREE.BoxGeometry(.6, 1.2, .6);
@@ -181,7 +181,7 @@ function init() {
 			cube[i] = new THREE.Mesh(cubeGeometryY, cubeMaterial);
 		}
 		
-		else if(Y+1.2<OLDY||Y-1.2>OLDY){
+		else if(Y+.8<OLDY||Y-.8>OLDY){
 		cube[i] = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
 			
 		}
@@ -207,7 +207,7 @@ function init() {
 	
 	
 	
-		if (Y<5||Y>90||X>120||Z>120){
+		if (Y<0||Y>90||X>120||Z>120){
 		console.log(p++);
 		if (Y<5){
 		console.log("the size of Y "+mydata[i][2]);
