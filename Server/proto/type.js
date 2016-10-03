@@ -91,13 +91,15 @@ var groupByProximity = (xyz, distance) => {
         // for "point" in group
         for(var p in xyz[g][1]) {
             // need a format [x,y,z,r,g,b] will do, or [x,y,z,hex]
-            xyz[g][1][p] = xyz[g][1][p].concat(colour)
+            //xyz[g][1][p] = xyz[g][1][p].concat(colour)
+            xyz[g][0] = colour;
             // ungrouping
-            rgb.push(xyz[g][1][p]);
+            //rgb.push(xyz[g][1][p]);
         }
     }
     /** escape **/
-    return rgb;
+    return xyz;
+    //return rgb;
 };
 
 // could run this as node.js, or in the browser; see how long it takes
