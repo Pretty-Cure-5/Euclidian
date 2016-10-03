@@ -87,6 +87,7 @@ var groupByProximity = (xyz, distance) => {
     for(var g in xyz) {
         // random colour hex
         var colour = ((1<<24)*Math.random()|0).toString(16);
+        while(colour.length<6) {colour+='0';}
         // for "point" in group
         for(var p in xyz[g][1]) {
             // need a format [x,y,z,r,g,b] will do, or [x,y,z,hex]
