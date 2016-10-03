@@ -31,6 +31,7 @@ var groupByProximity = (xyz, distance) => {
     const merge = (p, tmp) => {
         var i=0, j=0;
         tmp.push(newGroup('tmp'));
+        // for "group" in tmp
         for(var g in tmp) {
             if(-1<p[0].indexOf(tmp[g][0])) {
                 tmp[c-1][1] = tmp[c-1][1].concat(tmp[g][1]);
@@ -76,19 +77,24 @@ var groupByProximity = (xyz, distance) => {
             rgb[p[0][0]][1].push(p[1]);
         }
     }
-    // xyz should be empty by this point (rgb is grouped).
+    // xyz should be empty by this point (rgb is grouped); free to use.
     if(xyz.length!=0) {console.log('ERR: Leaking!')};
+    xyz = rgb;
+    rgb = [];
     /** colourise **/
-    var nog = rgb.length; // number of groups; how many different colours needed.
-    // for "group" in rgb
-    for(var g in rgb) {
+    var nog = xyz.length; // number of groups; how many different colours needed.
+    // for "group" in xyz
+    for(var g in xyz) {
+        // random colour hex
+        var colour = ((1<<24)*Math.random()|0).toString(16);
         // for "point" in group
-        for(var p in rgb[g][1]) {
+        for(var p in xyz[g][1]) {
             // need a format [x,y,z,r,g,b] will do, or [x,y,z,hex]
-            console.log(g,rgb[g][1][p]);
+            xyz[g][1][p] = xyz[g][1][p].concat(colour)
+            // ungrouping
+            rgb.push(xyz[g][1][p]);
         }
     }
-    // after need to do ungrouping; the easy part
     /** escape **/
     return rgb;
 };
