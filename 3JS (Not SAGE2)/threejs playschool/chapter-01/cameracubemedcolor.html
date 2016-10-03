@@ -138,11 +138,18 @@ function init() {
 	   var p = 0;
 	   var colorsmall=0;
 	   var colorspace=0;
+	   
+	   
+	   group = new THREE.Group();
+	   
+	   
+	   
        for (i = 0; i < particleCount; i++) {
 	 //  console.log(i);
 		var X=mydata[i][0]*Coef;
 	    var Y=(mydata[i][2]*Coef-(Coef*2.5))*-1;
 	    var Z=(mydata[i][1]*Coef);
+		
 		
 		if (i>2){
 		var OLDY= (mydata[i-1][2]*Coef-(Coef*2.5))*-1;
@@ -155,45 +162,53 @@ function init() {
 		
 		colorsmall++;
 		if (Y<37){
-		hexString="00308F";
+		hexString="00308F";//darkblue
 	    }
-		else if (Y<50){
-		hexString="008000";
+		else if (Y<60){
+		hexString="008000";//darkgreen
 		}
-		else if (Y<160){
+		else if (Y<67){
+		console.log("the Y" +mydata[i][2]);
+		hexString="BFFF00";
+		
+		}
+		else if (Y<460){
 		hexString="FDEE00";
+		hexString="008000";//darkgreen
 		}
 		else if (Y<500){
-		hexString="BFFF00";
+		hexString="008000";//darkgreen
 		}
 		
 		if (Y+1<OLDY||Y-1>NEWY){
 			hexString="FF007F";
+			hexString="008000";
 		}
 		
 		
 		
 		var color1 = new THREE.Color("#"+hexString);
 	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
-		//  var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
-        
+		var mesh;
 		if (Y+1<OLDY||Y-1>NEWY){
-			cube[i] = new THREE.Mesh(cubeGeometryY, cubeMaterial);
+			mesh = new THREE.Mesh(cubeGeometryY, cubeMaterial);
 		}
 		
 		else if(Y+.8<OLDY||Y-.8>OLDY){
-		cube[i] = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
+		mesh = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
 			
 		}
 		else{
-		cube[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		mesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 		}
 		
-        cube[i].castShadow = false;
-	        cube[i].position.x = X; 
-			 cube[i].position.y = Y;
-			cube[i].position.z = Z;
-	 
+        mesh.castShadow = false;
+	        mesh.position.x = X; 
+			 mesh.position.y = Y;
+			mesh.position.z = Z;
+	 	mesh.matrixAutoUpdate = false;
+					mesh.updateMatrix();
+					
 	 
 	 
 	      // add the cube to the scene
@@ -207,15 +222,15 @@ function init() {
 	
 	
 	
-		if (Y<0||Y>90||X>120||Z>120){
-		console.log(p++);
-		if (Y<5){
-		console.log("the size of Y "+mydata[i][2]);
+		if (Y<20||Y>90||X>120||Z>120){
+		//console.log(p++);
+		if (Y<25){
+		//console.log("the size of Y "+mydata[i][2]);
 		}}
 		else{
-        scene.add(cube[i]);
+        group.add( mesh );
 		}
-		
+		scene.add(group);
 		}
 
     //Hemisphere Light
@@ -263,10 +278,12 @@ function init() {
 
 
 function animate() {
-   // TWEEN.update();
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    controls.update();
+  
+    setTimeout( function() {
+        requestAnimationFrame( animate );
+    }, 1000 / 40 ); //=25fps I think
+    renderer.render(scene, camera);;
+	controls.update();
 }
 
 

@@ -110,7 +110,8 @@ function init() {
   
   //TEXT FOR COORDS
   
-	
+	var groupCubes = new THREE.Object3D();
+	var group = new THREE.Group();
 	
 	  var mydata=JSON.parse(xyz);
 		var myrgb=JSON.parse(rgb);
@@ -183,11 +184,13 @@ function init() {
 		
 		else if(Y+1.2<OLDY||Y-1.2>OLDY){
 		cube[i] = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
+		
 			console.log("dont display");
 		}
 		else{
 		cube[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
 		}
+		
 		
         cube[i].castShadow = false;
 	        cube[i].position.x = X; 
@@ -212,10 +215,12 @@ function init() {
 		//scene.add(cube[i]);
 		}
 		else{
-        scene.add(cube[i]);
+		
+        group.add(cube[i]);
 		}
 		
 		}
+		scene.add(group);
 
     //Hemisphere Light
     light = new THREE.HemisphereLight(0xffbf67, 0x15c6ff);

@@ -9,6 +9,9 @@
                 */
 var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 init: function(data) {
+					
+				
+					
                 this.SAGE2Init("div", data);
 
                 this.resizeEvents = "continuous";
@@ -56,7 +59,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		this.orbitControls.maxDistance = 500;
 		this.orbitControls.autoRotate  = true;
 		this.orbitControls.zoomSpeed   = 0.1;
-		this.speed = 1;
+		this.speed = 0;
 		this.orbitControls.autoRotateSpeed = this.speed; // 30 seconds per round when fps is 60
 
 
@@ -79,9 +82,12 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	   var colorspace=0;
 		    
 		
-		        var cubeGeometry = new THREE.BoxGeometry(.6, .01, .6);
+		        var cubeGeometryFlat = new THREE.BoxGeometry(2, .01, 2);
 		        var cubeGeometryY = new THREE.BoxGeometry(.6, 1.2, .6);
 		        var cubeGeometryNothing = new THREE.BoxGeometry(.0, .0, .0);
+				
+				//all the cubes go into this group
+				this.group = new THREE.Group();
 		
 			    //adding floor
 		        var floorspace = new THREE.BoxGeometry(coOef*2.5, 0, coOef*2.5);
@@ -96,7 +102,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		        this.scene.add(floor);
 				
 	 
-		
+		var removethirdFlat=0;
 		
                     for (i = 0; i < particleCount; i++) {
 	 //  console.log(i);
@@ -114,16 +120,16 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		var hexString="00308F";
 		
 		colorsmall++;
-		if (Y<37){
+		if (Y<0.37*coOef){
 		hexString="00308F";
 	    }
-		else if (Y<50){
+		else if (Y<.5*coOef){
 		hexString="008000";
 		}
-		else if (Y<160){
+		else if (Y<.7*coOef){
 		hexString="FDEE00";
 		}
-		else if (Y<500){
+		else if (Y<5*coOef){
 		hexString="BFFF00";
 		}
 		
@@ -135,24 +141,29 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 		var color1 = new THREE.Color("#"+hexString);
 	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
-		//  var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
+	    this.mesh;
         
-		if (Y+1<OLDY||Y-1>NEWY){
-			cube[i] = new THREE.Mesh(cubeGeometryY, cubeMaterial);
+		if (Y+coOef/100<OLDY||Y-coOef/100>NEWY){
+			removethirdFlat=0;
+			this.mesh = new THREE.Mesh(cubeGeometryY, cubeMaterial);
 		}
 		
 		else if(Y+.8<OLDY||Y-.8>OLDY){
-		cube[i] = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
+		removethirdFlat=0;
+		this.mesh = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
 			
 		}
 		else{
-		cube[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		this.mesh = new THREE.Mesh(cubeGeometryFlat, cubeMaterial);
+		removethirdFlat++;
 		}
 		
-        cube[i].castShadow = false;
-	        cube[i].position.x = X; 
-			 cube[i].position.y = Y;
-			cube[i].position.z = Z;
+        this.mesh.castShadow = false;
+	        this.mesh.position.x = X; 
+			 this.mesh.position.y = Y;
+			this.mesh.position.z = Z;
+	 	this.mesh.matrixAutoUpdate = false;
+					this.mesh.updateMatrix();
 	 
 	 
 	 
@@ -167,15 +178,21 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	
 	
 	
-		if (Y<10||Y>90||X>120||Z>120){
+		if (Y<coOef/10||Y>.9*coOef||X>1.2*coOef||Z>1.2*coOef){
 		console.log(p++);
-		if (Y<5){
+		if (Y<.5*coOef){
 		console.log("the size of Y "+dataxyz[i][2]);
 		}}
-		else{
-        this.scene.add(cube[i]);
+			else{
+		if (removethirdFlat!=10){		
+        this.group.add( this.mesh );
+		}
+		else{	
+        removethirdFlat=0;
 		}
 		
+		}
+		this.scene.add(this.group);
 		}
 	
 	
@@ -222,10 +239,12 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 },
 	
 	            event: function animate() {
-                // TWEEN.update();
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-                controls.update();
+					
+             setTimeout( function() {
+        requestAnimationFrame( animate );
+    }, 1000 / 40 ); //=25fps I think
+    renderer.render(scene, camera);;
+	controls.update();
 		
 },
 
@@ -270,10 +289,10 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 			
 			case "ZoomIn":
 						
-						this.orbitControls.scale(20);
+						this.orbitControls.scale(100);
 						break;
 			case "ZoomOut":
-						this.orbitControls.scale(-20);
+						this.orbitControls.scale(-100);
 						break;
 			case "Spin+":
 						this.speed =this.speed+0.2;
