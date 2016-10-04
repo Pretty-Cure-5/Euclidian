@@ -111,7 +111,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	 
 		
 		
-        for (i = 0; i < particleCount; i+=2) {
+        for (var i = 0; i < particleCount; i+=2) {
 	 //  console.log(i);
 		var X=dataxyz[i][0]*coOef;
 	    var Y=(dataxyz[i][2]*coOef-(coOef*2.5))*-1;
