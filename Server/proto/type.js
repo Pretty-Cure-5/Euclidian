@@ -61,20 +61,12 @@ var groupByProximity = (xyz, distance, riddle) => {
         return tmp;
     };
     const genColours = () => {
-        const
-            range = [...Array(2).keys()]
-            , m   = ['88','FF']
-            , n   = ['00','FF']
-        ;
+        const range = [...Array(2).keys()], m = ['88','FF'], n = ['00','FF'];
         var a = [[],[]];
-        for(var r in range) {
-            for(var g in range) {
-                for(var b in range) {
-                    a[0].push(m[r]+m[g]+m[b]);
-                    a[1].push(n[r]+n[g]+n[b]);
-                }
-            }
-        }
+        for(var r in range) {for(var g in range) {for(var b in range) {
+            a[0].push(m[r]+m[g]+m[b]);
+            a[1].push(n[r]+n[g]+n[b]);
+        }}}
         return a[0].concat(a[1]);
     };
     /** grouping **/
