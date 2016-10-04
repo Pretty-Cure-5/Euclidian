@@ -1,17 +1,14 @@
 // newCube(size); makes a hollow cube
 const newCube = (s) => {
     var xyz = [];
-    for(var x in [...Array(s).keys()]) {
-        for(var y in [...Array(s).keys()]) {
-            for(var z in [...Array(s).keys()]) {
-                if(x==0||y==0||z==0||x==s-1||y==s-1||z==s-1){
-                    xyz.push([parseInt(x),parseInt(y),parseInt(z)]);
-                }
-            }
+    var range = [...Array(s).keys()];
+    for(var x in range) {for(var y in range) {for(var z in range) {
+        if(x==0||y==0||z==0||x==s-1||y==s-1||z==s-1){
+            xyz.push([parseInt(x),parseInt(y),parseInt(z)]);
         }
-    }
+    }}}
     return xyz;
-}
+};
 var cube = newCube(3);
 //console.log(cube);
 
@@ -63,6 +60,23 @@ var groupByProximity = (xyz, distance, riddle) => {
         tmp[c-1][1] = tmp[c-1][1].concat(p[1]);
         return tmp;
     };
+    const genColours = () => {
+        const
+            range = [...Array(2).keys()]
+            , m   = ['88','FF']
+            , n   = ['00','FF']
+        ;
+        var a = [[],[]];
+        for(var r in range) {
+            for(var g in range) {
+                for(var b in range) {
+                    a[0].push(m[r]+m[g]+m[b]);
+                    a[1].push(n[r]+n[g]+n[b]);
+                }
+            }
+        }
+        return a[0].concat(a[1]);
+    };
     /** grouping **/
     while(xyz.length) {
         // pull out a "point" from xyz, and push empty "group" array into point
@@ -97,17 +111,21 @@ var groupByProximity = (xyz, distance, riddle) => {
     if(xyz.length!=0) {console.log('ERR: Leaking!')};
     xyz = rgb;
     rgb = [];
-    /** selective breeding **/
+    /** selective regrouping **/
     // for "group" in xyz
-    for(g in xyz){if(xyz[g][1].length<riddle){delete xyz[g];}}
+    for(var g in xyz){if(xyz[g][1].length<riddle){delete xyz[g];}}
     xyz=xyz.filter(function(n){return n!==undefined});
     /** colourise **/
-    var nog = xyz.length; // number of groups; how many different colours needed.
+    var colours = genColours();
     // for "group" in xyz
     for(var g in xyz) {
         // random colour hex
-        var colour = ((1<<24)*Math.random()|0).toString(16);
-        while(colour.length<6) {colour+='0';}
+        //var colour = ((1<<24)*Math.random()|0).toString(16);
+        //while(colour.length<6) {colour+='0';}
+        // selective colour hex
+        var z = g;
+        while(colours.length<=z) {z-=colours.length;}
+        colour = colours[z];
         // for "point" in group
         for(var p in xyz[g][1]) {
             // need a format [x,y,z,r,g,b] will do, or [x,y,z,hex]
