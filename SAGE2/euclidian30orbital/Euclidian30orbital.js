@@ -1,6 +1,6 @@
-"use            strict";
+"use strict";
 
-/*              global THREE */
+/* global THREE */
 
 /**
                 * WebGL 3D application, inherits from SAGE2_WebGLApp
@@ -39,17 +39,17 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
                 this.geometry=new THREE.Geometry();
                 this.id = "div" + data.id;
-                //DATA for the model
+               
+
+			   //DATA for the model
                 var dataxyz = xyz;
                 var particleCount=Object.keys(dataxyz).length;
+				//particleCount=500;
 				
 				var X1 =0;
 				var Y1 =0;
 				var	Z1 =0;
-		        //particleCount=500;
-		
-		
-	
+		    
                 this.camera.position.set(0, 200, -500);
 
                //controls
@@ -60,7 +60,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		this.orbitControls.autoRotate  = true;
 		this.orbitControls.zoomSpeed   = 1.0;
 		this.speed = 0;
-		this.orbitControls.autoRotateSpeed = this.speed; // 30 seconds per round when fps is 60
+		this.orbitControls.autoRotateSpeed = this.speed; 
 
 
                 //Scene
@@ -74,14 +74,21 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 //  scene.add(helper);
 		
 		
-		
+		//Varibles to control the data display
 	   var coOef = 100;
 	   var cube = []; 
 	   var p = 0;
 	   var colorsmall=0;
 	   var colorspace=0;
+	   
+	  //this is determin how many flat cubes
+	  var removeExcessFlat=0; 
+	  var removeCountTotal = 7;
+	  var addcube1=0;
+	  var addcube2= 3;	
 		    
-		
+			
+				//varibles for the different cub sizes
 		        var cubeGeometryFlat = new THREE.BoxGeometry(2, .01, 2);
 		        var cubeGeometryY = new THREE.BoxGeometry(.6, 1.2, .6);
 		        var cubeGeometryNothing = new THREE.BoxGeometry(.0, .0, .0);
@@ -102,7 +109,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		        this.scene.add(floor);
 				
 	 
-		var removethirdFlat=0;
+		
 		
         for (i = 0; i < particleCount; i+=2) {
 	 //  console.log(i);
@@ -148,14 +155,14 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 		
 		
-        
+         
 		if (Y+coOef/100<OLDY||Y-coOef/100>NEWY){
-			removethirdFlat=0;
+			removeExcessFlat=0;
 			this.mesh = new THREE.Mesh(cubeGeometryY, cubeMaterial);
 		}
 		
 		else if(Y+.8<OLDY||Y-.8>OLDY){
-		removethirdFlat=0;
+		removeExcessFlat=0;
 		this.mesh = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
 			
 		}
@@ -165,17 +172,13 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		}
 		
         this.mesh.castShadow = false;
-	        this.mesh.position.x = X; 
-			 this.mesh.position.y = Y;
+	    this.mesh.position.x = X; 
+		this.mesh.position.y = Y;
 		this.mesh.position.z = Z;
 	 	this.mesh.matrixAutoUpdate = false;
 		this.mesh.updateMatrix();
 	 
 	 
-	 
-	      // add the cube to the scene
-		var ify=50005500;
-		
 		
 		if (X>X1){X1=X;}
 		if (Y>Y1){Y1=Y;}
@@ -190,14 +193,16 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		//console.log("the size of Y "+dataxyz[i][2]);
 		}}
 			else{
-		if (removethirdFlat<7){	
-			if (removethirdFlat==0||removethirdFlat==3){
+		if (removeExcessFlat<removeCountTotal){	
+			if (removeExcessFlat==addcube1||removeExcessFlat==addcube2){
+				
+		// add the cube to the scene	
         this.group.add( this.mesh );
 			}
-		removethirdFlat++;
+		removeExcessFlat++;
 		}
 		else{	
-        removethirdFlat=0;
+        removeExcessFlat=0;
 		}
 		
 		}
@@ -224,22 +229,23 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 // render the scene
     
   
-
+				//camera postitions
                 this.posX = this.camera.position.x - 80;
                 this.posY = this.camera.position.y + 120;
                 this.posZ = this.camera.position.z - 80;
 	
 	            this.camera.position.set(this.posX, this.posY, this.posZ);
                 this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-	            console.log(typeof(document.getElementById(this.id)));
+			
+				
 	            document.getElementById(this.id).appendChild(this.renderer.domElement);
 	            this.renderer.render(this.scene, this.camera);
 	   
-//adding the widget controls
+            //adding the widget controls
       
-	  this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
+	    this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
 		this.controls.addButton({type: "zoom-out", position: 11, identifier: "ZoomOut"});
-	     this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
+	    this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
 	
 		this.controls.finishedAddingControls();
@@ -248,15 +254,15 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
      
                 },
 	
-	            event: function animate() {
+	         /*  event: function animate() {
 					
              setTimeout( function() {
         requestAnimationFrame( animate );
     }, 1000 / 40 ); //=25fps I think
-    renderer.render(scene, camera);;
+    renderer.render(scene, camera);
 	controls.update();
 		
-},
+},*/
 
                 load: function(date) {
                 },
