@@ -55,10 +55,10 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
 		this.orbitControls.maxPolarAngle = Math.PI / 2;
-		this.orbitControls.minDistance = 200;
+		this.orbitControls.minDistance = 0;
 		this.orbitControls.maxDistance = 500;
 		this.orbitControls.autoRotate  = true;
-		this.orbitControls.zoomSpeed   = 0.1;
+		this.orbitControls.zoomSpeed   = 1.0;
 		this.speed = 0;
 		this.orbitControls.autoRotateSpeed = this.speed; // 30 seconds per round when fps is 60
 
@@ -92,7 +92,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 			    //adding floor
 		        var floorspace = new THREE.BoxGeometry(coOef*2.5, 0, coOef*2.5);
 		        var floorcolor = new THREE.Color("#E7FEFF");
-	            var floorMaterial = new THREE.MeshLambertMaterial({color: floorcolor});
+	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
 		        var floor = new THREE.Mesh(floorspace, floorMaterial);
 		
 		        floor.castShadow = false;
@@ -104,7 +104,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	 
 		var removethirdFlat=0;
 		
-                    for (i = 0; i < particleCount; i++) {
+        for (i = 0; i < particleCount; i+=2) {
 	 //  console.log(i);
 		var X=dataxyz[i][0]*coOef;
 	    var Y=(dataxyz[i][2]*coOef-(coOef*2.5))*-1;
@@ -140,8 +140,14 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 		
 		var color1 = new THREE.Color("#"+hexString);
-	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
+	   var cubeMaterial = new THREE.MeshBasicMaterial({
+		color: color1,
+		wireframe:true
+		});
 	    this.mesh;
+		
+		
+		
         
 		if (Y+coOef/100<OLDY||Y-coOef/100>NEWY){
 			removethirdFlat=0;
@@ -155,15 +161,15 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		}
 		else{
 		this.mesh = new THREE.Mesh(cubeGeometryFlat, cubeMaterial);
-		removethirdFlat++;
+		
 		}
 		
         this.mesh.castShadow = false;
 	        this.mesh.position.x = X; 
 			 this.mesh.position.y = Y;
-			this.mesh.position.z = Z;
+		this.mesh.position.z = Z;
 	 	this.mesh.matrixAutoUpdate = false;
-					this.mesh.updateMatrix();
+		this.mesh.updateMatrix();
 	 
 	 
 	 
@@ -181,11 +187,14 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		if (Y<coOef/10||Y>.9*coOef||X>1.2*coOef||Z>1.2*coOef){
 		console.log(p++);
 		if (Y<.5*coOef){
-		console.log("the size of Y "+dataxyz[i][2]);
+		//console.log("the size of Y "+dataxyz[i][2]);
 		}}
 			else{
-		if (removethirdFlat!=10){		
+		if (removethirdFlat<7){	
+			if (removethirdFlat==0||removethirdFlat==3){
         this.group.add( this.mesh );
+			}
+		removethirdFlat++;
 		}
 		else{	
         removethirdFlat=0;
@@ -216,9 +225,9 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
     
   
 
-                this.posX = this.camera.position.x - 100;
-                this.posY = this.camera.position.y + 400;
-                this.posZ = this.camera.position.z - 100;
+                this.posX = this.camera.position.x - 80;
+                this.posY = this.camera.position.y + 120;
+                this.posZ = this.camera.position.z - 80;
 	
 	            this.camera.position.set(this.posX, this.posY, this.posZ);
                 this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -227,7 +236,8 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	            this.renderer.render(this.scene, this.camera);
 	   
 //adding the widget controls
-              this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
+      
+	  this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
 		this.controls.addButton({type: "zoom-out", position: 11, identifier: "ZoomOut"});
 	     this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
@@ -299,7 +309,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;
 			case "Spin-":
-			this.speed =this.speed-0.2;
+		             	this.speed =this.speed-0.2;
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;
 			default:

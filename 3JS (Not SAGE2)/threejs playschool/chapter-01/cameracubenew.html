@@ -175,7 +175,10 @@ function init() {
 		
 		
 		var color1 = new THREE.Color("#"+hexString);
-	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
+	    var cubeMaterial = new THREE.MeshBasicMaterial({
+		color: color1,
+		wireframe:true
+		});
 		//  var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0500});
         
 		if (Y+1<OLDY||Y-1>NEWY){
@@ -217,6 +220,7 @@ function init() {
 		else{
 		
         group.add(cube[i]);
+		
 		}
 		
 		}
