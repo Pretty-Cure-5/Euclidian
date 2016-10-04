@@ -30,7 +30,7 @@ Minimum size of a group.
 If groups have fewer than riddle points, they will be filtered out.
 Strip out outlying points; groups with less than "n" number of points in them.
 **/
-var groupByProximity = (xyz, distance, riddle) => {
+const groupByProximity = (xyz, distance, riddle) => {
     /** variables **/
     var c = 0;// number of groups (group_number for next group)
     var rgb = [];// this groups xyz by proximity
@@ -65,7 +65,7 @@ var groupByProximity = (xyz, distance, riddle) => {
         var a = [[],[]];
         for(var r in range) {for(var g in range) {for(var b in range) {
             a[0].push(m[r]+m[g]+m[b]);
-            a[1].push(n[r]+n[g]+n[b]);
+            if(!((r==0)&&(g==0)&&(b==0))) {a[1].push(n[r]+n[g]+n[b])};
         }}}
         return a[0].concat(a[1]);
     };
@@ -111,13 +111,10 @@ var groupByProximity = (xyz, distance, riddle) => {
     var colours = genColours();
     // for "group" in xyz
     for(var g in xyz) {
-        // random colour hex
-        //var colour = ((1<<24)*Math.random()|0).toString(16);
-        //while(colour.length<6) {colour+='0';}
         // selective colour hex
         var z = g;
         while(colours.length<=z) {z-=colours.length;}
-        colour = colours[z];
+        var colour = colours[z];
         // for "point" in group
         for(var p in xyz[g][1]) {
             // need a format [x,y,z,r,g,b] will do, or [x,y,z,hex]
@@ -139,7 +136,6 @@ console.log(rgb.length);
 console.log(rgb);
 
 /*
-The colours are just random at the moment; I need figure how to divvy it up between "n" number of groups...
 I'm going to work on comparing angles/distances of the groups.
 The problem is that if anything is connected to the floor, it will be the same colour as the floor; which is where the angles will come in.
 I could also use the angle to flatten the groups into a plane...
