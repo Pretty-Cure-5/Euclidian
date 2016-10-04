@@ -18,21 +18,35 @@ var cube = newCube(3);
 // This cube has bits missing to divide it into two groups for two colours.
 var cube = [
     [0,0,0],[0,0,1],[0,0,2],[0,1,0],[0,1,1],[0,1,2],[0,2,0],[0,2,1],[0,2,2],
-    [2,0,0],[2,0,1],[2,0,2],[2,1,0],[2,1,1],[2,1,2],[2,2,0],[2,2,1],[2,2,2]
+    [2,0,0],[2,0,1],[2,0,2],[2,1,0],[2,1,1],[2,1,2],[2,2,0],[2,2,1],[2,2,2],
+    [3,3,3],[3,3,4]
 ];
-var groupByProximity = (xyz, distance) => {
+/**
+xyz:
+xyz=[[x,y,z],[x,y,z],[x,y,z]];
+
+distance:
+Defines the grouping threshold.
+
+riddle:
+Minimum size of a group.
+If groups have fewer than riddle points, they will be filtered out.
+Strip out outlying points; groups with less than "n" number of points in them.
+**/
+var groupByProximity = (xyz, distance, riddle) => {
     /** variables **/
     var c = 0;// number of groups (group_number for next group)
     var rgb = [];// this groups xyz by proximity
     /** functions **/
     const newGroup=(id)=>{c+=1;return [id,[]]}; // group[0] = group_number, push [x,y,z] into group[1]
     const distance3D=(a,b)=>{return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2)+Math.pow(a[2]-b[2],2));};
-    const unique=(a)=>a.filter(function(item,pos){return a.indexOf(item)==pos;});
+    const unique=(a)=>a.filter((item,pos)=>{return a.indexOf(item)==pos;});
     const merge = (p, tmp) => {
         var i=0, j=0;
         tmp.push(newGroup('tmp'));
         // for "group" in tmp
         for(var g in tmp) {
+            // is point in the group?
             if(-1<p[0].indexOf(tmp[g][0])) {
                 tmp[c-1][1] = tmp[c-1][1].concat(tmp[g][1]);
                 delete tmp[g];
@@ -41,7 +55,9 @@ var groupByProximity = (xyz, distance) => {
                 if(i && j) {tmp[g][0]-=i; j-=1;}
             }
         }
+        // removed deleted groups
         tmp=tmp.filter(function(n){return n!==undefined});
+        // c is global
         c=tmp.length;
         tmp[c-1][0] = c-1;
         tmp[c-1][1] = tmp[c-1][1].concat(p[1]);
@@ -81,6 +97,10 @@ var groupByProximity = (xyz, distance) => {
     if(xyz.length!=0) {console.log('ERR: Leaking!')};
     xyz = rgb;
     rgb = [];
+    /** selective breeding **/
+    // for "group" in xyz
+    for(g in xyz){if(xyz[g][1].length<riddle){delete xyz[g];}}
+    xyz=xyz.filter(function(n){return n!==undefined});
     /** colourise **/
     var nog = xyz.length; // number of groups; how many different colours needed.
     // for "group" in xyz
@@ -104,6 +124,14 @@ var groupByProximity = (xyz, distance) => {
 
 // could run this as node.js, or in the browser; see how long it takes
 // put xyz instead of cube
-var rgb = groupByProximity(cube,1.5);
+var rgb = groupByProximity(cube,1.5,3);
 console.log(rgb.length);
 console.log(rgb);
+
+/*
+The colours are just random at the moment; I need figure how to divvy it up between "n" number of groups...
+I'm going to work on comparing angles/distances of the groups.
+The problem is that if anything is connected to the floor, it will be the same colour as the floor; which is where the angles will come in.
+I could also use the angle to flatten the groups into a plane...
+k-means
+*/
