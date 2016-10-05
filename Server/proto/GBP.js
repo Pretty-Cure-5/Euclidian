@@ -73,7 +73,7 @@ const groupByProximity = (xyz, distance, riddle) => {
             let tmp;
             [nog, tmp] = gbp_newGroup(nog, 'tmp');
             rgb.push(tmp);
-            rgb = gbp_merge(p, rgb);
+            rgb = gbp_merge(nog, p, rgb);
             rgb[p[0][0]][1].push(p[1]);
         } else if(p[0].length < 1) {
             // new group
