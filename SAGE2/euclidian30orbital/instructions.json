@@ -15,7 +15,10 @@
         "../shared/lib/dat.gui.js",
         "../shared/lib/chroma.js",
         "../shared/lib/FlyControls.js",
-        "../shared/dat/datafloor.js"
+		"../shared/dat/Nfxyz.16.js",
+		"../shared/dat/Nfxyz.18.js",
+		"../shared/dat/Nfxyz.20.js",
+		"../shared/dat/Nfxyz.30.js"
     ],
     "title": "Euclidian 30 Orbital",
     "version": "1.0.1",

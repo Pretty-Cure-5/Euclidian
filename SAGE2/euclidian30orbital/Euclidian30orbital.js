@@ -9,10 +9,10 @@
                 */
 var Euclidian30orbital = SAGE2_WebGLApp.extend({
     init: function(data) {
+		
+		
 	            this.SAGE2Init("div", data);
-
                 this.resizeEvents = "continuous";
-
                 this.element.id = "div" + data.id;
                 this.frame  = 0;
                 this.width  = this.element.clientWidth;
@@ -36,13 +36,22 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
                 this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
                 this.geometry=new THREE.Geometry();
                 this.id = "div" + data.id;
-               
+                this.modelNumber =30;
+				
+				this.modelnumberArray=[xyz30,xyz20,xyz18,xyz16];
 
 			   //DATA for the model
-                var dataxyz = xyz;
-                var particleCount=Object.keys(dataxyz).length;
+                this.dataxyz = this.modelnumberArray[0];//xyz16;//+this.modelNumber;
+				
+				this.build(data);
+	},
+	build: function(data){	
+	
+				this.particleCount=Object.keys(this.dataxyz).length;
 				//particleCount=500;
 				
+				this.repeat=0;
+				console.log(this.repeat++);
 				var X1 =0;
 				var Y1 =0;
 				var	Z1 =0;
@@ -101,22 +110,22 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		        this.group.add(floor);
 				
 	 
+		console.log(this.repeat++);
 		
-		
-        for (var i = 0; i < particleCount; i++) {
-			
+        for (var i = 0; i < this.particleCount; i++) {
+		console.log(this.repeat++);	
 		addcube2= Math.floor((Math.random() * 7) + 1);	
 			
 	 //  console.log(i);
-		var X=dataxyz[i][0]*coOef;
-	    var Y=(dataxyz[i][2]*coOef-(coOef*2.5))*-1;
-	    var Z=(dataxyz[i][1]*coOef);
+		var X=this.dataxyz[i][0]*coOef;
+	    var Y=(this.dataxyz[i][2]*coOef-(coOef*2.5))*-1;
+	    var Z=(this.dataxyz[i][1]*coOef);
 		
 		if (i>2){
-		var OLDY= (dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
+		var OLDY= (this.dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
 		}
-		if (i<particleCount-1){
-		var NEWY= (dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
+		if (i<this.particleCount-1){
+		var NEWY= (this.dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
 		}
 		
 		var hexString="00308F";
@@ -226,9 +235,9 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
     
   
 				//camera postitions
-                this.posX = this.camera.position.x - 80;
-                this.posY = this.camera.position.y + 120;
-                this.posZ = this.camera.position.z - 80;
+                this.posX = this.camera.position.x - 50;
+                this.posY = this.camera.position.y + 80;
+                this.posZ = this.camera.position.z - 50;
 	
 	            this.camera.position.set(this.posX, this.posY, this.posZ);
                 this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -245,7 +254,9 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		this.controls.addButton({type: "zoom-out", position: 11, identifier: "ZoomOut"});
 	    this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
-	
+		
+	this.controls.addButton({type: "prev", position: 2, identifier: "Prev"});
+		
 		this.controls.finishedAddingControls();
 		
 		
@@ -262,12 +273,13 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 },*/
  load: function(date) {
+	 
     },
 
     draw: function(date) {
-		this.orbitControls.update();
 		
-        this.renderer.render(this.scene, this.camera);
+		this.orbitControls.update();
+		this.renderer.render(this.scene, this.camera);
     },
 
     resize: function(date) {
@@ -298,8 +310,9 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 		else if (eventType==="widgetEvent")
 		{
-			console.log(data);
-			switch (data.identifier) {
+			switch (data.identifier)
+            
+			{
 				
 				   // this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		// this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
@@ -318,7 +331,14 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
             case "Spin-":
 						this.speed--;
 						this.orbitControls.autoRotateSpeed = this.speed;
-						break;						
+						break;	
+		    case "Prev":
+						this.dataxyz = this.modelnumberArray[2];
+						console.log(this.modelnumberArray[2][0])
+						this.build(data);
+						break;	
+
+						
 			default:
 						console.log("No handler for:", data.identifier);
 						return;
