@@ -298,15 +298,27 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		
 		else if (eventType==="widgetEvent")
 		{
+			console.log(data);
 			switch (data.identifier) {
+				
+				   // this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
+		// this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
 			
 			case "ZoomIn":
 						
-						this.orbitControls.scale(20);
+						this.orbitControls.scale(100);
 						break;
 			case "ZoomOut":
-						this.orbitControls.scale(-20);
+						this.orbitControls.scale(-100);
 						break;
+            case "Spin+":
+		             	this.speed++;
+						this.orbitControls.autoRotateSpeed = this.speed;
+						break;
+            case "Spin-":
+						this.speed--;
+						this.orbitControls.autoRotateSpeed = this.speed;
+						break;						
 			default:
 						console.log("No handler for:", data.identifier);
 						return;
