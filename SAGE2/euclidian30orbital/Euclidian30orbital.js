@@ -51,7 +51,7 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 				//particleCount=500;
 				
 				this.repeat=0;
-				console.log(this.repeat++);
+				//console.log(this.repeat++);
 				var X1 =0;
 				var Y1 =0;
 				var	Z1 =0;
@@ -113,7 +113,7 @@ var Euclidian30orbital = SAGE2_WebGLApp.extend({
 		console.log(this.repeat++);
 		
         for (var i = 0; i < this.particleCount; i++) {
-		console.log(this.repeat++);	
+		//console.log(this.repeat++);	
 		addcube2= Math.floor((Math.random() * 7) + 1);	
 			
 	 //  console.log(i);
