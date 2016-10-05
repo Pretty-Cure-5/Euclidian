@@ -46,7 +46,7 @@ const handleInternal = (request, response) => {
             firewall(response, query);
             break;
         default:
-            TIF(response, 'black', 'Hello World! :D');
+            hello_world(response);
             break;
     }
 };
@@ -61,7 +61,7 @@ const TIF = (response, colour, body) => {
         + '<link'
         + ' rel="shortcut icon" type="image/x-icon" href="/bro/favicon.ico"/>'
         + '<style>'
-        + '*{font-family:monospace,sans-serif;}'
+        + 'body{font-family:monospace,sans-serif;}'
         + '</style>'
         + '</head><body>'
         + '<span style="color:' + colour + '">'
@@ -132,6 +132,57 @@ const firewall = (response, query) => {
     }
 };
 
+const hello_world = (response) => {
+    let
+        link = (a, b) => '<a href="' + a + '" target="_blank">' + b + '</a>'
+        , server = '43.240.97.247'
+    ;
+    TIF(
+        response
+        , 'blue'
+        , 'Welcome to Palmier Kingdom! :D'
+        + '<br/><br/><br/>'
+        + link('https://' + server + ':9090/index.html', 'SAGE2 UI')
+        + '<br/>'
+        + link(
+            'http://' + server + ':9292/display.html?clientID=-1'
+            , 'SAGE2 Overview Display'
+        )
+        + '<br/>'
+        + link(
+            'http://' + server + ':1337/sync', 'GitHub-NeCTAR synchronisation'
+        )
+        + '<br/>'
+        + link(
+            'http://' + server + ':1337/firewall?ip='
+            , 'Firewall Invitations'
+        )
+        + '<br/><br/><br/>'
+        + link('https://github.com/Pretty-Cure-5/Euclidian', 'GitHub')
+        + '<br/>'
+        + link(
+            'https://trello.com/b/ARauINZx/pretty-cure-secret-base-scrum-board'
+            , 'Trello'
+        )
+        + '<br/>'
+        + link('https://web.skype.com/en/', 'Skype')
+        + '<br/><br/><br/>'
+        + link(
+            'https://docs.google.com/spreadsheets/d/'
+            + '1PNBJMEwX-8fp1xYTyLk_5K_6TfWP3BsGcwKvCsfWj64/'
+            + 'edit?ts=57c8b3d4#gid=1910985826'
+            , 'PC5 Resources'
+        )
+        + '<br/>('
+        + link(
+            'http://web.archive.org/web/20160124014556/'
+            + 'http://bob.bob.bofh.org/~robm/knowledge/computer-rite.html'
+            , 'Secret'
+        )
+        + ')'
+    );
+};
+
 // Self Modularity
 module.exports = {
     checkExternal   : checkExternal
@@ -140,4 +191,5 @@ module.exports = {
     , TIF           : TIF
     , sync          : sync
     , firewall      : firewall
+    , hello_world   : hello_world
 }

@@ -48,7 +48,8 @@ npm run in
 ################################################################################
 cd "$sage"
 nohup node server.js -li &
-nohup node "$sync/sys.js" -li &
+cd "$sync"
+nohup node sys.js -li &
 
 # The firewall is up.com
 sudo iptables -D OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
