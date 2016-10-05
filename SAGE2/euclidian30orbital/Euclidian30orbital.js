@@ -7,12 +7,9 @@
                 *
                 * @class Euclidian30orbital
                 */
-var             Euclidian30orbital = SAGE2_WebGLApp.extend({
-                init: function(data) {
-					
-				
-					
-                this.SAGE2Init("div", data);
+var Euclidian30orbital = SAGE2_WebGLApp.extend({
+    init: function(data) {
+	            this.SAGE2Init("div", data);
 
                 this.resizeEvents = "continuous";
 
@@ -66,12 +63,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 //Scene
                 this.scene = new THREE.Scene();
 
-                // Helpers
-              //  this.axes = new THREE.AxisHelper(500);
-              //  this.helper = new THREE.GridHelper(1000, 10);
-               // this.helper.setColors(0x0000ff, 0x808080);
-              //  this.scene.add(axes);
-                //  scene.add(helper);
+          
 		
 		
 		//Varibles to control the data display
@@ -83,9 +75,9 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	   
 	  //this is determin how many flat cubes
 	  var removeExcessFlat=0; 
-	  var removeCountTotal = 7;
-	  var addcube1=0;
-	  var addcube2= 3;	
+	  var removeCountTotal = 10;
+	  var addcube1=0; // this has to be 0 or none of the outliners will be created
+	  var addcube2; //this is a random number set inside the loop
 		    
 			
 				//varibles for the different cub sizes
@@ -106,12 +98,15 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	            floor.position.x = 0; 
 		        floor.position.y = 0;
 		        floor.position.z = 0;
-		        this.scene.add(floor);
+		        this.group.add(floor);
 				
 	 
 		
 		
-        for (var i = 0; i < particleCount; i+=2) {
+        for (var i = 0; i < particleCount; i++) {
+			
+		addcube2= Math.floor((Math.random() * 7) + 1);	
+			
 	 //  console.log(i);
 		var X=dataxyz[i][0]*coOef;
 	    var Y=(dataxyz[i][2]*coOef-(coOef*2.5))*-1;
@@ -145,10 +140,9 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 		}
 		
 		
-		
-		var color1 = new THREE.Color("#"+hexString);
+	   this.color = new THREE.Color("#"+hexString);
 	   var cubeMaterial = new THREE.MeshBasicMaterial({
-		color: color1,
+		color: this.color,
 		wireframe:true
 		});
 	    this.mesh;
@@ -187,12 +181,14 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	
 	
 	
-		if (Y<coOef/10||Y>.9*coOef||X>1.2*coOef||Z>1.2*coOef){
-		console.log(p++);
-		if (Y<.5*coOef){
-		//console.log("the size of Y "+dataxyz[i][2]);
-		}}
-			else{
+		if (Y<coOef/10||Y>.9*coOef||X>1.1*coOef||Z>1.1*coOef){
+		//this checks if its noise from the kinect and does not display
+		// this may not work on other models
+		//Y only uses from 10% to 90% of the range.
+		//X and Z are removing whats beyond field of vision
+		}
+		
+		else{
 		if (removeExcessFlat<removeCountTotal){	
 			if (removeExcessFlat==addcube1||removeExcessFlat==addcube2){
 				
@@ -220,7 +216,7 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
                 });
                 this.renderer.setClearColor(0xffffff, 1)
                 this.renderer.setSize(this.width, this.height);
-                // this.id.append(this.renderer.domElement);
+               // this.id.append(this.renderer.domElement);
                 //this.id.push(this.renderer);
   
                 // add the output of the renderer to the html element
@@ -237,11 +233,13 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	            this.camera.position.set(this.posX, this.posY, this.posZ);
                 this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 			
-				
+				this.renderer.render(this.scene, this.camera);
 	            document.getElementById(this.id).appendChild(this.renderer.domElement);
-	            this.renderer.render(this.scene, this.camera);
+	            
 	   
             //adding the widget controls
+			
+	
       
 	    this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
 		this.controls.addButton({type: "zoom-out", position: 11, identifier: "ZoomOut"});
@@ -263,25 +261,24 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 	controls.update();
 		
 },*/
+ load: function(date) {
+    },
 
-                load: function(date) {
-                },
+    draw: function(date) {
+		this.orbitControls.update();
+		
+        this.renderer.render(this.scene, this.camera);
+    },
 
-                draw: function(date) {
-					
-					this.orbitControls.update();
-		            this.renderer.render(this.scene, this.camera);
-                },
+    resize: function(date) {
+        this.width  = this.element.clientWidth;
+        this.height = this.element.clientHeight;
+        this.renderer.setSize(this.width, this.height);
 
-                resize: function(date) {
-                this.width  = this.element.clientWidth;
-                this.height = this.element.clientHeight;
-                this.renderer.setSize(this.width, this.height);
+        this.refresh(date);
+    },
 
-                this.refresh(date);
-                },
-
-                   event: function(eventType, position, user_id, data, date) {
+    event: function(eventType, position, user_id, data, date) {
         if(eventType==="pointerPress" && (data.button==="left")) {
             this.orbitControls.mouseDown(position.x,position.y,0);
 			this.dragging=true;
@@ -305,18 +302,10 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 			
 			case "ZoomIn":
 						
-						this.orbitControls.scale(100);
+						this.orbitControls.scale(20);
 						break;
 			case "ZoomOut":
-						this.orbitControls.scale(-100);
-						break;
-			case "Spin+":
-						this.speed =this.speed+0.2;
-						this.orbitControls.autoRotateSpeed = this.speed;
-						break;
-			case "Spin-":
-		             	this.speed =this.speed-0.2;
-						this.orbitControls.autoRotateSpeed = this.speed;
+						this.orbitControls.scale(-20);
 						break;
 			default:
 						console.log("No handler for:", data.identifier);
@@ -327,14 +316,4 @@ var             Euclidian30orbital = SAGE2_WebGLApp.extend({
 			this.refresh(date);
 		}
     }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 });

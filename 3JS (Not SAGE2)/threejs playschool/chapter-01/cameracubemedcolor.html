@@ -118,9 +118,10 @@ function init() {
 		
 		//particleCount=150000;
 	
-	    var cubeGeometry = new THREE.BoxGeometry(.6, .01, .6);
+	    var cubeGeometry = new THREE.BoxGeometry(1.6, .01, 1.6);
 		 var cubeGeometryY = new THREE.BoxGeometry(.6, 1.2, .6);
 		  var cubeGeometryNothing = new THREE.BoxGeometry(.0, .0, .0);
+		  
 		  
 		  //adding floor
 		  var floorspace = new THREE.BoxGeometry(250, 0, 250);
@@ -142,7 +143,10 @@ function init() {
 	   
 	   group = new THREE.Group();
 	   
-	   
+	   xLength=.6;
+	   zLength=.6;
+	   yLength=.1;
+	   growing = 0;
 	   
        for (i = 0; i < particleCount; i++) {
 	 //  console.log(i);
@@ -168,7 +172,7 @@ function init() {
 		hexString="008000";//darkgreen
 		}
 		else if (Y<67){
-		console.log("the Y" +mydata[i][2]);
+	//	console.log("the Y" +mydata[i][2]);
 		hexString="BFFF00";
 		
 		}
@@ -190,24 +194,49 @@ function init() {
 		var color1 = new THREE.Color("#"+hexString);
 	    var cubeMaterial = new THREE.MeshLambertMaterial({color: color1});
 		var mesh;
-		if (Y+1<OLDY||Y-1>NEWY){
-			mesh = new THREE.Mesh(cubeGeometryY, cubeMaterial);
-		}
+		var meshgrow;
 		
-		else if(Y+.8<OLDY||Y-.8>OLDY){
+		if (Y+.2<OLDY||Y-.2>NEWY){
+		mesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		zLength=.6;
+		growing=0;
+		
+		if(Y+1.8<OLDY||Y-1.8>OLDY){
 		mesh = new THREE.Mesh(cubeGeometryNothing, cubeMaterial);
 			
 		}
-		else{
-		mesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		
+		mesh.castShadow = false;
+	    mesh.position.x = X; 
+		mesh.position.y = Y;
+		mesh.position.z = Z;
+	 	mesh.matrixAutoUpdate = false;
+		mesh.updateMatrix();
+		
+		
 		}
 		
-        mesh.castShadow = false;
-	        mesh.position.x = X; 
-			 mesh.position.y = Y;
-			mesh.position.z = Z;
-	 	mesh.matrixAutoUpdate = false;
-					mesh.updateMatrix();
+		
+		else{
+		if(growing>1){
+		scene.remove(cube[i-growing]);
+		console.log("removing cube")
+		}
+		growing++;
+		zLength=zLength+.2;
+		
+		var cubeGeometrygrow = new THREE.BoxGeometry(xLength, .02, zLength);
+		cube[i-growing] = new THREE.Mesh(cubeGeometrygrow, cubeMaterial);
+		
+		 cube[i-growing].position.x = X; 
+		cube[i-growing].position.y = Y;
+		cube[i-growing].position.z = Z;
+		
+		scene.add(cube[i-growing])
+		
+		}
+		
+        
 					
 	 
 	 
@@ -229,6 +258,8 @@ function init() {
 		}}
 		else{
         group.add( mesh );
+		
+		
 		}
 		scene.add(group);
 		}
