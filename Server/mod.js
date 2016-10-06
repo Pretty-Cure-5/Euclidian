@@ -194,7 +194,7 @@ const config = (response, query) => {
         , r_height = /\d+/
         , hex      = '003366'
         , r_hex    = /\d{6}/
-        , rgba     = '255,0,0,0.5'
+        , rgba     = '255,0,0,1.0'
         , r_rgba   = /\d{1,3},\d{1,3},\d{1,3},\d\.\d/
         , keys = Object.keys(query)
     ;
