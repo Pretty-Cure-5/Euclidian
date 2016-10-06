@@ -51,7 +51,7 @@ cfg="/*
     , host:\"$server\"
     , port: 9090
     , index_port: 9292
-    , background:{color:\"#$hex\",watermark:{svg: \"images/sage2.svg\",color:\"rgba($rgba)\"}}
+    , background:{color:\"#$hex\",watermark:{svg:\"images/sage2.svg\",color:\"rgba($rgba)\"}}
     , audio: {
         initialVolume: 8,
     }
