@@ -291,7 +291,7 @@ const hello_world = (response) => {
         )
         + '<br/>'
         + link(
-            'http://' + server + ':1337/config?cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,0.5'
+            'http://' + server + ':1337/config?cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,1.0'
             , 'SAGE2 Reconfigurations'
         )
         + '<br/><br/><br/>'
