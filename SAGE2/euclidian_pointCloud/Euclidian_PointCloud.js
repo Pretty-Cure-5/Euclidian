@@ -5,9 +5,9 @@
 /**
  * WebGL 3D application, inherits from SAGE2_WebGLApp
  *
- * @class Euclidian30spin
+ * @class Euclidian_PointCloud
  */
-var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
+var Euclidian_PointCloud = SAGE2_WebGLApp.extend({
     init: function(data) {
         this.SAGE2Init("div", data);
 
@@ -36,31 +36,36 @@ var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
         this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
         this.geometry=new THREE.Geometry();
 
-        var dataxyz = xyz;
-        var particleCount=Object.keys(dataxyz).length;
+        this.dataxyz = datamenuXYZ[0];
+        this.particleCount=Object.keys(this.dataxyz).length;
 
         //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
-        this.camera.position.set(0,1000,-500);
+        //camera postitions
+                this.posX = this.camera.position.x + 0;
+                this.posY = this.camera.position.y + 0;
+                this.posZ = this.camera.position.z + 0;
+	
+	            this.camera.position.set(this.posX, this.posY, this.posZ);
+				
+				this.camera.position.set(0,200,-500);
+				this.camera.lookAt(20, 20, 20);
+				//this.camera.lookAt(this.scene.position);
 
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
 		this.orbitControls.maxPolarAngle = Math.PI / 2;
-		this.orbitControls.minDistance = 200;
-		this.orbitControls.maxDistance = 500;
+		this.orbitControls.minDistance = 0;
+		this.orbitControls.maxDistance = 5000;
 		this.orbitControls.autoRotate  = true;
-		this.orbitControls.zoomSpeed   = 5;
-		this.orbitControls.autoRotateSpeed = 12.0; // 30 seconds per round when fps is 60
-
-		
-		
-		
-		
+		this.orbitControls.zoomSpeed   = 1.0;
+		this.speed = 0;
+		this.orbitControls.autoRotateSpeed = this.speed; 
         //Scene
-        this.scene = new THREE.Scene();
-		var coOef =10;
+         this.scene = new THREE.Scene();
+		var coOef =100;
 		
 		 //adding floor
-		        var floorspace = new THREE.BoxGeometry(coOef*2.5, 0, coOef*2.5);
+		        var floorspace = new THREE.BoxGeometry(coOef*3.5, 0, coOef*2.5);
 		        var floorcolor = new THREE.Color("#E7FEFF");
 	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
 		        var floor = new THREE.Mesh(floorspace, floorMaterial);
@@ -70,27 +75,38 @@ var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
 		        floor.position.y = 0;
 		        floor.position.z = 0;
 		        this.scene.add(floor);
-		
-		
-		
 
-        
-
-        for (var i=0;i<particleCount;i++) {
+        for (var i=0;i<this.particleCount;i++) {
             //console.log(i);
-            var coOrd=xyz[i];
+            var coOrd=this.dataxyz[i];
             var vertex = new THREE.Vector3();
+			this.vertexTop = new THREE.Vector3();
+			this.vertexBottom = new THREE.Vector3();
 			
-            vertex.x = coOrd[0] * coOef;
-            vertex.y = coOrd[2] * coOef-(coOef*2.5);
+			vertex.x = coOrd[0] * coOef;
+            vertex.y = (coOrd[2] * coOef-coOef*2.5)*-1;
             vertex.z = coOrd[1] * coOef;
-           var Y=-vertex.y;
+			
+			
+            this.vertexTop.x = vertex.x;
+            this.vertexTop.y = vertex.y*.999;
+            this.vertexTop.z = vertex.z;
+			
+			
+			
+			this.vertexBottom.x = vertex.x;
+            this.vertexBottom.y = vertex.y*1.01;
+            this.vertexBottom.z = vertex.z;
+			
+			
+           
+		var Y=vertex.y;
 		   
-		   if (i>2){
-		var OLDY= (dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
+		if (i>2){
+		var OLDY= (this.dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
 		}
-		if (i<particleCount-1){
-		var NEWY= (dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
+		if (i<this.particleCount-1){
+		var NEWY= (this.dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
 		}
 		
 		var hexString=0x00308F;
@@ -121,6 +137,11 @@ var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
             var limit2=4;
 
             if(!(coOrd[2]<limit1||coOrd[2]>limit2)) {
+				
+				 this.geometry.vertices.push(this.vertexTop);
+				 this.geometry.colors.push(vertexColor);
+				  this.geometry.vertices.push(this.vertexBottom);
+				  this.geometry.colors.push(vertexColor);
                 this.geometry.vertices.push(vertex);
 				this.geometry.colors.push(vertexColor);
 			
@@ -132,22 +153,23 @@ var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
 
 
         
-        var Size = 1;//this.parameters[i][1];
+        var Size = coOef/50;//this.parameters[i][1];
         
         this.particles = new THREE.PointCloud(this.geometry, new THREE.PointCloudMaterial({size: Size, vertexColors:true, opacity:0.7}));
-        this.particles.rotation.x = Math.random() * 6;
-        this.particles.rotation.y = Math.random() * 6;
-        this.particles.rotation.z = Math.random() * 6;
+       
+		this.particles.rotation.x = 0;//Math.random() * 6;
+        this.particles.rotation.y = 0;//Math.random() * 6;
+        this.particles.rotation.z = 0;//Math.random() * 6;
         this.scene.add(this.particles);
-		this.camera.lookAt(this.scene.position);
+		
         this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setClearColor(new THREE.Color(0xc0c0c0,1.0));//0xC0C0C0
         this.renderer.setSize(this.width, this.height);
         this.element.appendChild(this.renderer.domElement);
         this.renderer.render(this.scene, this.camera);
-		this.controls.addButton({type: "zoom-in", position: 12, identifier: "ZoomIn"});
-		this.controls.addButton({type: "zoom-out", position: 11, identifier: "ZoomOut"});
 		
+		this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
+		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
         this.controls.finishedAddingControls();
     },
 
@@ -197,6 +219,14 @@ var EuclidianZoom_Drag_Color = SAGE2_WebGLApp.extend({
 			case "ZoomOut":
 						this.orbitControls.scale(-20);
 						break;
+			case "Spin+":
+		             	this.speed++;
+						this.orbitControls.autoRotateSpeed = this.speed;
+						break;
+            case "Spin-":
+						this.speed--;
+						this.orbitControls.autoRotateSpeed = this.speed;
+						break;	
 			default:
 						console.log("No handler for:", data.identifier);
 						return;

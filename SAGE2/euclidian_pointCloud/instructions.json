@@ -1,0 +1,31 @@
+{
+    "main_script": "Euclidian_PointCloud.js",
+    "icon": "../shared/img/logo.png",
+    "width": 1200,
+    "height": 800,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "../lib/Three.js",
+        "../lib/OBJLoader.js",
+        "../lib/MTLLoader.js",
+        "../lib/OBJMTLLoader.js",
+        "../lib/OrbitControls.js",
+        "../lib/stats.js",
+        "../lib/dat.gui.js",
+        "../lib/chroma.js",
+        "../lib/FlyControls.js",
+		"../shared/dat/NFxyz.16.js",
+		"../shared/dat/NFxyz.18.js",
+		"../shared/dat/NFxyz.20.js",
+		"../shared/dat/NFxyz.30.js",
+		"../shared/dat/datamenu.js"
+        
+    ],
+    "title": "Euclidian_PointCloud",
+    "version": "1.0.1",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
