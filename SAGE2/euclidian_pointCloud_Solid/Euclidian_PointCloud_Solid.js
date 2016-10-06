@@ -5,9 +5,9 @@
 /**
  * WebGL 3D application, inherits from SAGE2_WebGLApp
  *
- * @class Euclidian_PointCloud
+ * @class Euclidian_PointCloud_Solid
  */
-var Euclidian_PointCloud = SAGE2_WebGLApp.extend({
+var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
     init: function(data) {
         this.SAGE2Init("div", data);
 
