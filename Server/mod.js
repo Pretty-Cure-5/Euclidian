@@ -45,6 +45,9 @@ const handleInternal = (request, response) => {
         case 'firewall':
             firewall(response, query);
             break;
+        case 'config':
+            config(response, query);
+            break;
         default:
             hello_world(response);
             break;
@@ -75,10 +78,55 @@ const TIF = (response, colour, body) => {
     response.end  (tail           );
 };
 
+const debate = (parameters) => {
+    let message = '';
+    if(0 < parameters[0].length) {
+        message += 'REQ: ?'
+        for(var r in parameters[0]) {
+            message += parameters[0][r] + '=';
+            if(r < parameters[0].length -1) {message += '&';}
+        }
+    }
+    if(0 < parameters[1].length) {
+        message += 'OPT: ?'
+        for(var r in parameters[1]) {
+            message += parameters[1][r] + '=';
+            if(r < parameters[1].length -1) {message += '&';}
+        }
+    }
+    return message;
+}
+
+const underflow = (response, parameters) => {
+    let message = 'ERR: Too many parameters!<br>';
+    message += debate(parameters);
+    TIF(response, 'red', message);
+}
+
+const ufo = (response, parameters) => {
+    let message = 'ERR: Unrecognised variable!<br>';
+    message += debate(parameters);
+    TIF(response, 'red', message);
+}
+
+const overflow = (response, parameters) => {
+    let message = 'ERR: Too many parameters!<br>';
+    message += debate(parameters);
+    TIF(response, 'red', message);
+}
+
+const invalid = (response, v, r) => {// var, regexp
+    TIF(
+        response
+        , 'red'
+        , 'ERR: Invalid "' + v + '" variable!<br>REQ: ' + r
+    );
+}
+
 // GitHub-NeCTAR Synchronisation
 const sync = (response) => {
     let child = exec(
-        'sh /home/ubuntu/Euclidian/Server/sync.sh'
+        'bash /home/ubuntu/Euclidian/Server/sync.sh'
         , (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
@@ -92,10 +140,14 @@ const sync = (response) => {
 
 // Firewall Invitations
 const firewall = (response, query) => {
-    let keys = Object.keys(query);
+    let
+        keys = Object.keys(query)
+        , r = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+        , parameters = [['ip'],[]]
+    ;
     if(keys.length == 1) {
         if(keys[0] == 'ip') {
-            if(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(query.ip)) {
+            if(r.test(query.ip)) {
                 TIF(
                     response
                     , 'green'
@@ -103,7 +155,7 @@ const firewall = (response, query) => {
                     + ' has been invited to the Pretty Cure party! :D'
                 );
                 let child = exec(
-                    'sh /home/ubuntu/Euclidian/Server/ip_address.sh A '
+                    'bash /home/ubuntu/Euclidian/Server/ip_address.sh A '
                     + query.ip
                     , (error, stdout, stderr) => {
                         if (error) {
@@ -114,23 +166,103 @@ const firewall = (response, query) => {
                     }
                 );
             } else {
-                TIF(
-                    response
-                    , 'red'
-                    , 'ERR: Invalid IP address!<br>REQ: x.x.x.x'
-                );
+                invalid(response, keys[0], r)
             }
         } else {
-            TIF(response, 'red', 'ERR: Unrecognised variable!<br>REQ: ?ip=');
+            ufo(response, parameters);
         }
     } else {
         if(keys.length < 1) {
-            TIF(response, 'red', 'ERR: Missing parameter!<br>REQ: ?ip=');
+            underflow(response, parameters);
         } else {
-            TIF(response, 'red', 'ERR: Too many parameters!<br>REQ: ?ip=');
+            overflow(response, parameters);
         }
     }
 };
+
+// SAGE2 Reconfigurations
+const config = (response, query) => {
+    let
+        parameters = [[], ['cols', 'rows', 'width', 'height', 'hex', 'rgba']]
+        , cols     = '2'
+        , r_cols   = /\d+/
+        , rows     = '1'
+        , r_rows   = /\d+/
+        , width    = '1920'
+        , r_width  = /\d+/
+        , height   = '1080'
+        , r_height = /\d+/
+        , hex      = '003366'
+        , r_hex    = /\d{6}/
+        , rgba     = '255,0,0,0.5'
+        , r_rgba   = /\d{1,3},\d{1,3},\d{1,3},\d\.\d/
+        , keys = Object.keys(query)
+    ;
+    if(6 < keys.length) {
+        overflow(response, parameters);
+    } else if(keys.length < 1) {
+        underflow(response, parameters);
+    }
+    for(let e of keys) {
+        console.log(e);
+        switch(e) {
+            case 'cols':
+                if(r_cols.test(query.cols)) {cols = query.cols;}
+                else {invalid(response, e, r_cols);}
+                break;
+            case 'rows':
+                if(r_rows.test(query.rows)) {rows = query.rows;}
+                else {invalid(response, e, r_rows);}
+                break;
+            case 'width':
+                if(r_width.test(query.width)) {width = query.width;}
+                else {invalid(response, e, r_width);}
+                break;
+            case 'height':
+                if(r_height.test(query.height)) {height = query.height;}
+                else {invalid(response, e, r_height);}
+                break;
+            case 'hex':
+                if(r_hex.test(query.hex)) {hex = query.hex;}
+                else {invalid(response, e, r_query);}
+                break;
+            case 'rgba':
+                if(r_rgba.test(query.rgba)) {rgba = query.rgba;}
+                else {invalid(response, e, r_rgba);}
+                break;
+            default:
+                ufo(response, parameters);
+                break;
+        }
+    }
+    let args =
+        cols     + ' '
+        + rows   + ' '
+        + width  + ' '
+        + height + ' '
+        + hex    + ' '
+        + rgba
+    TIF(
+        response
+        , 'green'
+        , 'cols      : ' + cols   + '<br/>'
+        + 'rows      : ' + rows   + '<br/>'
+        + 'width     : ' + width  + '<br/>'
+        + 'height    : ' + height + '<br/>'
+        + 'background: ' + hex    + '<br/>'
+        + 'foreground: ' + rgba
+    );
+    let child = exec(//sage2.sh cols rows width height hex/bg rgba/fg
+        'bash /home/ubuntu/Euclidian/Server/sage2.sh ' + args
+        , (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log('Reconfigure SAGE2 with ' + args);
+        }
+    );
+}
 
 const hello_world = (response) => {
     let
@@ -156,6 +288,10 @@ const hello_world = (response) => {
         + link(
             'http://' + server + ':1337/firewall?ip='
             , 'Firewall Invitations'
+        )
+        + '<br/>'
+        + link(
+            'http://' + server + ':1337/config?cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,0.5'
         )
         + '<br/><br/><br/>'
         + link('https://github.com/Pretty-Cure-5/Euclidian', 'GitHub')
@@ -189,7 +325,13 @@ module.exports = {
     , handleExternal: handleExternal
     , handleInternal: handleInternal
     , TIF           : TIF
+    , debate        : debate
+    , underflow     : underflow
+    , ufo           : ufo
+    , overflow      : overflow
+    , invalid       : invalid
     , sync          : sync
     , firewall      : firewall
+    , config        : config
     , hello_world   : hello_world
 }
