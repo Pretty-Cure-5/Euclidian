@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 # Post-installation script for NeCTAR Ubuntu 16.04 LTS (Xenial) amd64.
 # # cat IP addresses into ~/phonebook for the firewall scripts
-# $ wget -O- 'https://github.com/Pretty-Cure-5/Euclidian/blob/master/Server/install.sh' | bash;
+# $ wget -O- 'https://raw.githubusercontent.com/Pretty-Cure-5/Euclidian/master/Server/install.sh' | bash;
 
 ################################################################################
 # Human required!                                                              #
 ################################################################################
 printf \\ec;
+# This just gets ignored; WHY?!?
 read -r -p 'Have you got a ~/phonebook? [y/n] ' response;
 response=${response,,}; # case insensitivity
 if [[ $response =~ ^(no|n)$ ]]; then # RTFM
     printf '\nWell, what are you waiting for; an invitation?!?\n\n';
     exit 1;
 fi;
+# Bloody asynchronous handling!?!
 printf '\nI assume you know what you are doing...\n';
 sleep 2;
+# This is where it kicks off after wget has finally died.
 printf '\nHere, before you go; take care of this...\n';
 sleep 2;
 printf '\n';
