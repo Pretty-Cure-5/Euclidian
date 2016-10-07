@@ -13,20 +13,17 @@ The [logo.png](https://github.com/Pretty-Cure-5/Euclidian/blob/master/SAGE2/eucl
 * [Tatt](http://bestcelebritystyle.com/26-exceptional-white-lotus-tattoo-ideas/26-exceptional-white-lotus-tattoo-ideas-12/)
 
 ## Server
-IP: 43.240.97.247
-<br>[SAGE2 UI](https://43.240.97.247:9090/index.html)
-<br>[SAGE2 Overview Display](http://43.240.97.247:9292/display.html?clientID=-1)
-<br>[Upload GitHub SAGE2 directory to server SAGE2 apps](http://43.240.97.247:1337/sync)
-<br>[Invite an IP address to the server](http://43.240.97.247:1337/firewall?ip=)
+[http://43.240.97.247:1337/](http://43.240.97.247:1337/)
 
 Software:
 * SAGE2 /home/ubuntu/sage2/
-* Node.js
+* NPM 3.10.3
+* Node.js 6.7
 * Three.js
 * Java 8
 * Scala 2.11.8
-* Git
-* Vim
+* Git 2.7.4
+* Vim 7.4
 
 ## Coding Convention
 ```javascript
