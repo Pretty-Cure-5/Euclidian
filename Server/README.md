@@ -6,7 +6,7 @@
 # sweet home
 home=/home/ubuntu;
 
-# ip numbers
+# server address
 cat<<<___.___.___.___>"$home"/server;
 
 # ip numbers (as many as you want)
