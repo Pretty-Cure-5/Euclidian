@@ -8,7 +8,7 @@
 read -r home < <(head -n 1 ./etc/home);
 repo="$home"/Euclidian;
 sage="$home"/sage2;
-apps= ~/Documents/SAGE2_Media/apps/;
+apps="$home"/Documents/SAGE2_Media/apps/;
 
 ################################################################################
 # Update Apps                                                                  #

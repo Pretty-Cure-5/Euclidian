@@ -8,10 +8,9 @@
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-read -r home < <(head -n 1 ./etc/home);
-github=https://raw.githubusercontent.com;
-firewall="$github"/Pretty-Cure-5/Euclidian/master/Server/firewall.sh;
+home=/home/ubuntu
 project=https://github.com/Pretty-Cure-5/Euclidian.git
+server="$home"/Euclidian/Server/
 # https://bitbucket.org/sage2/sage2/wiki/
 sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
 # http://openjdk.java.net/install/
@@ -92,17 +91,18 @@ cd "$home";
 git clone "$project";
 
 ################################################################################
+# Firewall                                                                     #
+################################################################################
+cd "$server";
+./firewall.sh
+
+################################################################################
 # Decruftification                                                             #
 ################################################################################
 cd "$home";
 rm "$scala";
 sudo apt-get -y autoremove;
 sudo apt-get -y autoclean;
-
-################################################################################
-# Firewall                                                                     #
-################################################################################
-wget -O- "$firewall" | bash;
 
 ################################################################################
 # Testification                                                                #

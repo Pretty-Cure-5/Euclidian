@@ -5,7 +5,6 @@
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-cd  ~/Euclidian/Server;
 read -r home  < <(head -n 1 ./etc/home);
 read -r ports < <(head -n 1 ./etc/loopholes);
 phonebook="$home"/phonebook;
@@ -90,5 +89,5 @@ done <"$phonebook";
 ################################################################################
 # Ruling sustained!                                                            #
 ################################################################################
-sudo ip6tables-save >/etc/iptables/rules.v6;
-sudo iptables-save  >/etc/iptables/rules.v4;
+sudo bash -c "ip6tables-save >/etc/iptables/rules.v6";
+sudo bash -c "iptables-save  >/etc/iptables/rules.v4";
