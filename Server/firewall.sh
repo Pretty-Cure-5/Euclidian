@@ -5,6 +5,7 @@
 ################################################################################
 # Configuration                                                                #
 ################################################################################
+cd  ~/Euclidian/Server;
 read -r home  < <(head -n 1 ./etc/home);
 read -r ports < <(head -n 1 ./etc/loopholes);
 phonebook="$home"/phonebook;
