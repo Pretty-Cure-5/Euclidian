@@ -8,9 +8,13 @@
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-home=/home/ubuntu
-project=https://github.com/Pretty-Cure-5/Euclidian.git
+#home=/home/ubuntu
+github=https://raw.githubusercontent.com
+read -r home < <(
+    wget -O- "$github"/Pretty-Cure-5/Euclidian/master/Server/etc/home
+);
 server="$home"/Euclidian/Server/
+project=https://github.com/Pretty-Cure-5/Euclidian.git
 # https://bitbucket.org/sage2/sage2/wiki/
 sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
 # http://openjdk.java.net/install/
@@ -22,9 +26,10 @@ scala=scala-2.11.8.deb;
 ################################################################################
 # Human required!                                                              #
 ################################################################################
+sleep 1;
 printf \\ec;
 # This just gets ignored; WHY?!?
-read -r -p 'Have you got a ~/phonebook? [y/n] ' response </dev/tty;
+read -rp 'Have you got a ~/phonebook and a ~/server? [y/n] ' response </dev/tty;
 # Self-interfacing scripts!!! :D
 response=${response,,}; # case insensitivity
 if [[ $response =~ ^(no|n)$ ]]; then # RTFM
