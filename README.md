@@ -13,7 +13,7 @@ The [logo.png](https://github.com/Pretty-Cure-5/Euclidian/blob/master/SAGE2/eucl
 * [Tatt](http://bestcelebritystyle.com/26-exceptional-white-lotus-tattoo-ideas/26-exceptional-white-lotus-tattoo-ideas-12/)
 
 ## Server
-[http://43.240.97.247:1337/](http://43.240.97.247:1337/)
+[http://115.146.88.61:1337/](http://115.146.88.61:1337/)
 
 Software:
 * SAGE2 /home/ubuntu/sage2/
