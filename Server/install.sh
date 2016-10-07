@@ -1,14 +1,32 @@
 #!/usr/bin/env bash
+# [admin-based interface]
 # Post-installation script for NeCTAR Ubuntu 16.04 LTS (Xenial) amd64.
-# # cat IP addresses into ~/phonebook for the firewall scripts
+
+# cat IP addresses into ~/phonebook and ~/server before running
 # $ wget -O- 'https://raw.githubusercontent.com/Pretty-Cure-5/Euclidian/master/Server/install.sh' | bash;
+
+################################################################################
+# Configuration                                                                #
+################################################################################
+read -r home < <(head -n 1 ./etc/home);
+github=https://raw.githubusercontent.com;
+firewall="$github"/Pretty-Cure-5/Euclidian/master/Server/firewall.sh;
+project=https://github.com/Pretty-Cure-5/Euclidian.git
+# https://bitbucket.org/sage2/sage2/wiki/
+sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
+# http://openjdk.java.net/install/
+jre=openjdk-8-jre;
+jdk=openjdk-8-jdk;
+# http://www.scala-lang.org/download/
+scala=scala-2.11.8.deb;
 
 ################################################################################
 # Human required!                                                              #
 ################################################################################
 printf \\ec;
 # This just gets ignored; WHY?!?
-read -r -p 'Have you got a ~/phonebook? [y/n] ' response;
+read -r -p 'Have you got a ~/phonebook? [y/n] ' response </dev/tty;
+# Self-interfacing scripts!!! :D
 response=${response,,}; # case insensitivity
 if [[ $response =~ ^(no|n)$ ]]; then # RTFM
     printf '\nWell, what are you waiting for; an invitation?!?\n\n';
@@ -21,22 +39,10 @@ sleep 2;
 printf '\nHere, before you go; take care of this...\n';
 sleep 2;
 printf '\n';
-yes | sudo apt-get -y install --force-yes iptables-persistent
+yes | sudo apt-get -y install --force-yes iptables-persistent;
 printf '\nYou are no longer required; this will take a long time...\n';
 sleep 5;
 printf '\n';
-
-################################################################################
-# Configuration                                                                #
-################################################################################
-home=/home/ubuntu/;
-# https://bitbucket.org/sage2/sage2/wiki/
-sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
-# http://openjdk.java.net/install/
-jre=openjdk-8-jre;
-jdk=openjdk-8-jdk;
-# http://www.scala-lang.org/download/
-scala=scala-2.11.8.deb;
 
 ################################################################################
 # Update Server                                                                #
@@ -83,7 +89,7 @@ npm install node-demux;
 # GitHub                                                                       #
 ################################################################################
 cd "$home";
-git clone https://github.com/Pretty-Cure-5/Euclidian.git;
+git clone "$project";
 
 ################################################################################
 # Decruftification                                                             #
@@ -96,7 +102,7 @@ sudo apt-get -y autoclean;
 ################################################################################
 # Firewall                                                                     #
 ################################################################################
-wget -O- 'https://github.com/Pretty-Cure-5/Euclidian/blob/master/Server/firewall.sh' | bash;
+wget -O- "$firewall" | bash;
 
 ################################################################################
 # Testification                                                                #
@@ -117,4 +123,3 @@ javac  -version;
 # You know nothing Jon Snow...until; it is known! :D                           #
 ################################################################################
 printf '\nReboot, then check your firewall!\n\n';
-

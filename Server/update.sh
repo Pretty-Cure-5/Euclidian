@@ -1,56 +1,56 @@
 #!/usr/bin/env bash
-# System-wide update script for Ubuntu/NeCTAR.
-# (This just needs to be called by a web-based request; unimplemented because it needs admin.)
+# [admin-based interface]
+# System-wide update script for Ubuntu/NeCTAR
 
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-home=/home/ubuntu
-repo="$home"/Euclidian
-sage="$home"/sage2
-apps="$sage"/public/uploads/apps/
-sync="$repo"/Server
+read -r home < <(head -n 1 ./etc/home);
+repo="$home"/Euclidian;
+sage="$home"/sage2;
+apps="$sage"/public/uploads/apps;
+sync="$repo"/Server;
 
 ################################################################################
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
-killall node npm
+killall node npm;
 kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 
 # The firewall is down.com
-sudo iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT
+sudo iptables -A OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT;
+sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT;
 
 ################################################################################
 # Update Apps                                                                  #
 ################################################################################
-cd "$repo"
-git pull --all
-cp -r "$repo"/SAGE2/* "$apps"
+cd "$repo";
+git pull --all;
+cp -r "$repo"/SAGE2/* "$apps";
 # TODO: minimise JS/JSON files here; and the sync.sh file.
 
 ################################################################################
 # Update Server                                                                #
 ################################################################################
-sudo apt-get update
-sudo apt-get dist-upgrade
-sudo apt-get autoremove
-sudo apt-get autoclean
+sudo apt-get -y update;
+sudo apt-get -y dist-upgrade;
+sudo apt-get -y autoremove;
+sudo apt-get -y autoclean;
 
 ################################################################################
 # Update Node                                                                  #
 ################################################################################
-cd "$sage"
-npm run in
+cd "$sage";
+npm run in;
 
 ################################################################################
 # The website is up.com                                                        #
 ################################################################################
-cd "$sage"
+cd "$sage";
 nohup node server.js -li &
-cd "$sync"
+cd "$sync";
 nohup node sys.js -li &
 
 # The firewall is up.com
-sudo iptables -D OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -D INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT
+sudo iptables -D OUTPUT -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT;
+sudo iptables -D INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT;

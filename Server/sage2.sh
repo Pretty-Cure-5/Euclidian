@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
+# [web-based interface]
+# SAGE2 Reconfigurations
 
-#sage2.sh 2 1 1920 1080 003366 255,0,0,0.5
-#sage2.sh cols rows width height hex/bg rgba/fg
+# sage2.sh cols rows width height hex/bg rgba/fg
+# $ sage2.sh 2 1 1920 1080 003366 255,0,0,1.0
 
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-home=/home/ubuntu;
+read -r home < <(head -n 1 ./etc/home);
+repo="$home"/Euclidian/SAGE2/;
 sage="$home"/sage2;
 conf="$sage"/config;
-platform=Ubuntu;
+read -r platform < <(head -n 1 ./etc/platform);
 application=Euclidian;
 server=localhost;
 configuration=pc5;
 #cat>server<<<43.240.97.247;
 ##server=43.240.97.247;
-###server="$(cat ./server)";
+###server="$(cat "$home"/server)";
 
 # which ffmpeg;
 ffmpeg=/usr/bin/ffmpeg;

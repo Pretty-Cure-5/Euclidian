@@ -11,6 +11,12 @@ const
     , queryString = require('querystring')
 ;
 
+// Invariable Variables
+const
+    home     = fs.readFileSync('./etc/home')
+    , server = fs.readFileSync(home + '/server')
+;
+
 // handleExternal || handleInternal
 const checkExternal = (request) => {
     return request.url.startsWith('/bro/');
@@ -126,7 +132,7 @@ const invalid = (response, v, r) => {// var, regexp
 // GitHub-NeCTAR Synchronisation
 const sync = (response) => {
     let child = exec(
-        'bash /home/ubuntu/Euclidian/Server/sync.sh'
+        'bash ' + home + '/Euclidian/Server/sync.sh'
         , (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
@@ -155,7 +161,7 @@ const firewall = (response, query) => {
                     + ' has been invited to the Pretty Cure party! :D'
                 );
                 let child = exec(
-                    'bash /home/ubuntu/Euclidian/Server/ip_address.sh A '
+                    'bash ' + home + '/Euclidian/Server/ip_address.sh A '
                     + query.ip
                     , (error, stdout, stderr) => {
                         if (error) {
@@ -253,7 +259,7 @@ const config = (response, query) => {
         + 'foreground: ' + rgba
     );
     let child = exec(//sage2.sh cols rows width height hex/bg rgba/fg
-        'bash /home/ubuntu/Euclidian/Server/sage2.sh ' + args
+        'bash ' + home + '/Euclidian/Server/sage2.sh ' + args
         , (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
@@ -265,10 +271,7 @@ const config = (response, query) => {
 }
 
 const hello_world = (response) => {
-    let
-        link = (a, b) => '<a href="' + a + '" target="_blank">' + b + '</a>'
-        , server = '43.240.97.247'
-    ;
+    let link = (a, b) => '<a href="' + a + '" target="_blank">' + b + '</a>';
     TIF(
         response
         , 'blue'
@@ -291,10 +294,20 @@ const hello_world = (response) => {
         )
         + '<br/>'
         + link(
-            'http://' + server + ':1337/config?cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,1.0'
+            'http://' + server + ':1337/config?'
+            + 'cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,1.0'
             , 'SAGE2 Reconfigurations'
         )
         + '<br/><br/><br/>'
+        + link(
+            'https://dashboard.rc.nectar.org.au/project/instances/', 'NeCTAR'
+        )
+        + '<br/>'
+        + link(
+            'https://github.com/Pretty-Cure-5/Euclidian/commits/master'
+            , 'GitHub Changes'
+        )
+        + '<br/>'
         + link('https://github.com/Pretty-Cure-5/Euclidian', 'GitHub')
         + '<br/>'
         + link(

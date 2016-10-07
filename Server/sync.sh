@@ -1,31 +1,31 @@
 #!/usr/bin/env bash
-# Synchronisation script to pull apps from GitHub into SAGE2.
-# (This just needs to be called by a web-based request; see the README.md file.)
+# [web-based interface]
+# GitHub-NeCTAR Synchronisation
 
 ################################################################################
 # Configuration                                                                #
 ################################################################################
-home=/home/ubuntu
-repo="$home"/Euclidian
-sage="$home"/sage2
-apps="$sage"/public/uploads/apps/
+read -r home < <(head -n 1 ./etc/home);
+repo="$home"/Euclidian;
+sage="$home"/sage2;
+apps= ~/Documents/SAGE2_Media/apps/;
 
 ################################################################################
 # http://thewebsiteisdown.com/                                                 #
 ################################################################################
-killall npm #node
+killall npm; #node;
 kill -9 "$(ps x | awk '/node server\.js -li/{print $1}')";
 
 ################################################################################
 # Update Apps                                                                  #
 ################################################################################
-cd "$repo"
-git pull --all
-cp -r "$repo"/SAGE2/* "$apps"
+cd "$repo";
+git pull --all;
+cp -r "$repo"/SAGE2/* "$apps";
 # TODO: minimise JS/JSON files here; and the update.sh file.
 
 ################################################################################
 # The website is up.com                                                        #
 ################################################################################
-cd "$sage"
+cd "$sage";
 nohup node server.js -li &

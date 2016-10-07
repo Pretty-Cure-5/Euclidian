@@ -7,16 +7,20 @@ console.log('Booting the 1337 server...');
 ////////////////////////////////////////////////////////////////////////////////
 console.log('Importing modules...');
 const
-    http = require('http')
+    http  = require('http')
+    , fs  = require('fs');
     , mod = require('./mod.js')
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+// ~
 // $ ifconfig
 // https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 console.log('Declaring constants...');
 const
-    server = '43.240.97.247'
-    , port = 1337
+    home     = fs.readFileSync('./etc/home')
+    , server = fs.readFileSync(home + '/server')
+    , port   = 1337
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
