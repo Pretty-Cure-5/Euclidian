@@ -18,7 +18,7 @@ read -r ports < <(head -n 1 ./etc/loopholes);
 read -r home  < <(head -n 1 ./etc/home     );
 
 # Invitation-based logging.
-[ $1 == A ] && cat>>"$home"/invitations<<<"$2 @ $(date +%F\ %T)";
+[ $1 == A ] && cat>>"$home"/invitations<<<"$2 @ $(date +%F\ %T.%N)";
 
 # (Un)Invite IP addresses.
 sudo iptables -$1 INPUT  -p tcp -s $2/32 --match multiport --dports $ports -j ACCEPT
