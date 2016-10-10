@@ -15,6 +15,10 @@ DOC
 
 # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 read -r ports < <(head -n 1 ./etc/loopholes);
+read -r home  < <(head -n 1 ./etc/home     );
+
+# Invitational Logging
+[ $1 == A ] && cat>>"$home"/invitations<<<$2;
 
 sudo iptables -$1 INPUT  -p tcp -s $2/32 --match multiport --dports $ports -j ACCEPT
 sudo iptables -$1 OUTPUT -p tcp -d $2/32 --match multiport --sports $ports -j ACCEPT
