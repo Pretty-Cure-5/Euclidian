@@ -8,7 +8,6 @@
     "dependencies": [
         "../shared/lib/Three.js",
         "../shared/lib/OrbitControls.js",
-        "../shared/lib/chroma.js",
         "../shared/dat/data.js"
     ],
     "title": "Euclidian Zomm and Drag",
