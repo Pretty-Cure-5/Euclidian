@@ -27,40 +27,40 @@ my $sage = "$home/Documents/SAGE2_Media/apps";
 ################################################################################
 # GitHub-NeCTAR synchronisation.                                               #
 ################################################################################
-print "Synchronising the local repository...\n";
+#print "Synchronising the local repository...\n";
 `command cd \Q$repo\E; /usr/bin/git pull --all;`;
 
 ################################################################################
 # Remove SAGE2 apps.                                                           #
 ################################################################################
-print "Removing $sage...\n";
+#print "Removing $sage...\n";
 `/bin/rm -rf \Q$sage\E;`;
 
 ################################################################################
 # Compact and copy GH apps into SAGE2 apps.                                    #
 ################################################################################
-print "Compacting/copying Git\@SAGE2...\n" . '%'x80 . "\n";
+#print "Compacting/copying Git\@SAGE2...\n" . '%'x80 . "\n";
 foreach my $file(split /\n/, `/usr/bin/find \Q$apps\E;`) {
     if(-d $file) { # mkdir namespace
         $file =~ s/^\Q$apps/$sage/;
-        print "mkdir  $file\n";
+#        print "mkdir  $file\n";
         mkdir $file, 0775;
     } else { # cp script.min.js* SAGE2
         my $min = $file =~ s/^\Q$apps/$sage/r;
         open my $in , '<', $file or die "err_in: $file\n";
         open my $out, '>', $min  or die "err_out: $min\n";
         if($file !~ /^.+\/shared\/dat\/.+$/ && $file =~ /^.+\.js.*$/) {
-            print "minify $file\n";
+#            print "minify $file\n";
             minify input => $in, outfile => $out;
         } else {
-            print "copy   $file\n";
+#            print "copy   $file\n";
             while(<$in>) {print $out $_;}
         }
         close $in or die;
         close $out or die;
     }
 }
-print '^'x80 . "\n";
+#print '^'x80 . "\n";
 
 ################################################################################
 # Escape sequence.                                                             #
