@@ -11,7 +11,6 @@
         "../shared/lib/MTLLoader.js",
         "../shared/lib/OBJMTLLoader.js",
         "../shared/lib/OrbitControls.js",
-        "../shared/lib/dat.gui.js",
         "../shared/lib/chroma.js",
         "../shared/lib/FlyControls.js",
         "../shared/dat/NFxyz.16.js",
