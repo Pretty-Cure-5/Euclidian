@@ -9,7 +9,6 @@
         "../shared/lib/Three.js",
         "../shared/lib/OBJLoader.js",
         "../shared/lib/MTLLoader.js",
-        "../shared/lib/OBJMTLLoader.js",
         "../shared/lib/OrbitControls.js",
         "../shared/lib/chroma.js",
         "../shared/lib/FlyControls.js",
