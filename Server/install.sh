@@ -69,6 +69,25 @@ yes | sudo apt-get -y install --force-yes\
 # I may have to move iptables-persistent to the very front of the line...
 
 ################################################################################
+# Install Perl Modules                                                         #
+################################################################################
+# http://search.cpan.org/search?query=JavaScript+Minifier&mode=all
+# http://search.cpan.org/~zoffix/JavaScript-Minifier-1.14/lib/JavaScript/Minifier.pm
+cpan=http://search.cpan.org;
+module=JavaScript-Minifier-1.14;
+tarball="$module".tar.gz;
+cd "$home";
+wget "$cpan"/CPAN/authors/id/Z/ZO/ZOFFIX/"$tarball";
+tar -zxvf "$tarball";
+cd "$module";
+perl Makefile.PL;
+#make;
+#make test;
+sudo make install;
+cd "$home";
+sudo rm -rf "$module"*;
+
+################################################################################
 # Scala                                                                        #
 ################################################################################
 cd "$home";
