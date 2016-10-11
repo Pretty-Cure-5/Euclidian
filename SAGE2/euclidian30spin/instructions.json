@@ -9,7 +9,6 @@
         "../shared/lib/Three.js",
         "../shared/lib/OrbitControls.js",
         "../shared/lib/chroma.js",
-        "../shared/lib/FlyControls.js",
         "../shared/dat/dataflawless.js"
     ],
     "title": "Euclidian 30 Spin",
