@@ -7,7 +7,6 @@
     "resize": "free",
     "dependencies": [
         "../shared/lib/three.min.js",
-        "../shared/lib/jquery-3.1.0.min.js",
         "../shared/dat/data.js"
     ],
     "title": "Euclidian",
