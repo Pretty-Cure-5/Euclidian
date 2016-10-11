@@ -24,10 +24,8 @@ sudo iptables -A INPUT  -m state --state RELATED,ESTABLISHED     -j ACCEPT;
 ################################################################################
 # Update Apps                                                                  #
 ################################################################################
-cd "$repo";
-git pull --all;
-cp -r "$repo"/SAGE2/* "$apps";
-# TODO: minimise JS/JSON files here; and the sync.sh file.
+cd "$sync";
+perl sync.pl;
 
 ################################################################################
 # Update Server                                                                #
@@ -40,8 +38,10 @@ sudo apt-get -y autoclean;
 ################################################################################
 # Update Node                                                                  #
 ################################################################################
-cd "$sage";
-npm run in;
+#cd "$sage";
+#npm run in;
+#npm install;
+#npm update;
 
 ################################################################################
 # The website is up.com                                                        #

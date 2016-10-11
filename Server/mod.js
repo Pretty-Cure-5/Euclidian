@@ -132,7 +132,7 @@ const invalid = (response, v, r) => {// var, regexp
 // GitHub-NeCTAR Synchronisation
 const sync = (response) => {
     let child = exec(
-        'bash ' + home + '/Euclidian/Server/sync.sh'
+        'bash ' + home + '/Euclidian/Server/sync.pl'
         , (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
