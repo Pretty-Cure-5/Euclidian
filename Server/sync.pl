@@ -49,7 +49,7 @@ foreach my $file(split /\n/, `/usr/bin/find \Q$apps\E;`) {
         my $min = $file =~ s/^\Q$apps/$sage/r;
         open my $in , '<', $file or die "err_in: $file\n";
         open my $out, '>', $min  or die "err_out: $min\n";
-        if($file !~ /^.+\/shared\/dat\/.+$/ && $file =~ /^.+\.js.*$/) {
+        if($file !~ /^.+\/shared\/dat\/.+$/ && $file =~ /^.+\.js(on)?$/) {
 #            print "minify $file\n";
             minify input => $in, outfile => $out;
         } else {
