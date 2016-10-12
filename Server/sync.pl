@@ -28,13 +28,13 @@ my $sage = "$home/Documents/SAGE2_Media/apps";
 # GitHub-NeCTAR synchronisation.                                               #
 ################################################################################
 #print "Synchronising the local repository...\n";
-`command cd \Q$repo\E; /usr/bin/git pull --all;`;
+print `command cd \Q$repo\E; /usr/bin/git pull --all;`;
 
 ################################################################################
 # Remove SAGE2 apps.                                                           #
 ################################################################################
 #print "Removing $sage...\n";
-`/bin/rm -rf \Q$sage\E;`;
+print `/bin/rm -rf \Q$sage\E;`;
 
 ################################################################################
 # Compact and copy GH apps into SAGE2 apps.                                    #
