@@ -8,12 +8,83 @@
  * @class Euclidian_PointCloud_Solid
  */
 var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
-    init: function(data) {
-        this.SAGE2Init("div", data);
+   
+   init: function(data) {
 
+   this.build(data);
+   this.menugui(data);
+   },
+   
+   menugui: function(data)   {
+	   
+	  this.menu = document.createElement('div'); 
+	  this.menu.className = "menuEuclidian";
+      this.menu.style.position = "absolute";
+	this.menu.style.width    = "250px";
+	this.menu.style.height   = "300px";
+	this.menu.style.top      = "10px";
+	this.menu.style.left     = "30px";
+	this.menu.style.backgroundColor = "rgba(200,215,205,0.9)";
+	this.menu.style.border   = "none";
+	this.menu.style.zIndex   = "1000";
+	this.menu.dragging       = true;
+	this.menu.style.display = "none";
+
+	this.title = document.createElement("H1");
+	this.title.style.position = "relative";
+	this.title.style.left ="20px";
+	this.title.style.color = "rgba(2,5,5,3)";
+	this.title.text = document.createTextNode("Euclidian Menu");
+	this.title.appendChild(this.title.text);
+	this.menu.appendChild(this.title);
+	
+	var options =["Load","Save","Reset","Solid", "non-Solid"]
+	
+	for(var m=0;m<6;m++){
+		
+	this.option = document.createElement("H2");
+	this.option.style.position = "relative";
+	this.option.style.left ="20px";
+	this.option.style.border   = "2px solid #0000FF";
+	this.option.style.top      = "3px";
+	this.option.style.left     = "5px";
+	this.option.style.color = "rgba(2,5,5,3)";
+	this.option.text = document.createTextNode(options[m]);
+	this.option.appendChild(this.option.text);
+	this.menu.appendChild(this.option);
+			
+		
+	}
+	
+	/*
+	for(var size = 0; size<3; size++){
+		
+	this.slider = document.createElement("range");
+    this.slider.type="range";	
+	this.slider.id = ("range"+size);
+	this.menu.appendChild(this.range);	
+		
+		
+	}
+	*/
+	
+	
+    //this.SAGE2Init.appendChild(this.menu);   
+	
+	 this.element.appendChild(this.menu);
+	 	console.log("the menu has loaded");
+   },
+   
+	build: function(data){
+
+    	this.SAGE2Init("div", data);
+		
         this.resizeEvents = "continuous";
-
+	    this.moving=0;
         this.element.id = "div" + data.id;
+		console.log(data.id);
+		
+		
         this.frame  = 0;
         this.width  = this.element.clientWidth;
         this.height = this.element.clientHeight;
@@ -39,8 +110,8 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
         this.dataxyz = datamenuXYZ[0];
         this.particleCount=Object.keys(this.dataxyz).length;
 
-        //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
-        //camera postitions
+                 //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
+                 //camera postitions
                 this.posX = this.camera.position.x + 0;
                 this.posY = this.camera.position.y + 0;
                 this.posZ = this.camera.position.z + 0;
@@ -76,8 +147,9 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 		        floor.position.z = 0;
 		        this.scene.add(floor);
 
-        for (var i=0;i<this.particleCount;i++) {
-            //console.log(i);
+            for (var i=0;i<this.particleCount;i++) {
+           
+     		//console.log(i);
             var coOrd=this.dataxyz[i];
             var vertex = new THREE.Vector3();
 			this.vertexTop = new THREE.Vector3();
@@ -101,74 +173,76 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 			
 			
            
-		var Y=vertex.y;
-		var X=vertex.x;
-        var Z=vertex.z;		
-		if (i>2){
-		var OLDY= (this.dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
-		var OLDX= (this.dataxyz[i-1][0]*coOef);
-		var OLDZ= (this.dataxyz[i-1][1]*coOef);
-		}
-		if (i<this.particleCount-1){
-		var NEWY= (this.dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
-		var NEWX= (this.dataxyz[i+1][0]*coOef);
-		var NEWZ= (this.dataxyz[i+1][1]*coOef);
-		}
+			var Y=vertex.y;
+			var X=vertex.x;
+			var Z=vertex.z;		
+			if (i>2){
+			var OLDY= (this.dataxyz[i-1][2]*coOef-(coOef*2.5))*-1;
+			var OLDX= (this.dataxyz[i-1][0]*coOef);
+			var OLDZ= (this.dataxyz[i-1][1]*coOef);
+		    }
 		
-		var hexString=0x00308F;
+		   if (i<this.particleCount-1){
+		   var NEWY= (this.dataxyz[i+1][2]*coOef-(coOef*2.5))*-1;
+		   var NEWX= (this.dataxyz[i+1][0]*coOef);
+		    var NEWZ= (this.dataxyz[i+1][1]*coOef);
+		    }
 		
+		    var hexString=0x00308F;
 		
-		if (Y<coOef*.37){
-		hexString=0x00308F;
-	    }
-		else if (Y<coOef*.50){
-		hexString=0x008000;
-		}
-		else if (Y<coOef*.70){
-		hexString=0xFAEA00;
-		}
-		else if (Y<coOef*5){
-		hexString=0x008000;
-		}
-		
-		if ((Y+2<OLDY||Y-2>NEWY)&&(X+1<OLDX||X-1>NEWX&&Z+1<OLDZ||Z-1>NEWZ)){
 			
-			hexString=0xAA007F;
-		}
+			if (Y<coOef*.37){
+			hexString=0x00308F;
+			}
+			else if (Y<coOef*.50){
+			hexString=0x008000;
+			}
+			else if (Y<coOef*.70){
+			hexString=0xFAEA00;
+			}
+			else if (Y<coOef*5){
+			hexString=0x008000;
+			}
 			
-			if(X+1<OLDX&&X-1>NEWX||Z+1<OLDZ&&Z-1>NEWZ){
+				if ((Y+2<OLDY||Y-2>NEWY)&&(X+1<OLDX||X-1>NEWX&&Z+1<OLDZ||Z-1>NEWZ)){
+					
+					hexString=0xAA007F;
+				}
+				
+				if(X+1<OLDX&&X-1>NEWX||Z+1<OLDZ&&Z-1>NEWZ){
 				
 				hexString=0xE7FEFF;
-			}
+				}
 			
 			
 		
 		   
-		   var vertexColor = new THREE.Color(hexString);
+				var vertexColor = new THREE.Color(hexString);
 		   
 		   
 
-            var limit1=100;
-            var limit2=5;
-			
-			
-            if((vertex.y>limit2)&&(vertex.y<limit1)) {
+				var limit1=100;
+				var limit2=5;
 				
-				if (coOrd[2]<big){
+			
+				if((vertex.y>limit2)&&(vertex.y<limit1)) {
+				
+					if (coOrd[2]<big){
 					
 					big = coOrd[2];
 					
-				}
-				 this.geometry.vertices.push(this.vertexTop);
-				 this.geometry.colors.push(vertexColor);
-				  this.geometry.vertices.push(this.vertexBottom);
-				  this.geometry.colors.push(vertexColor);
-                this.geometry.vertices.push(vertex);
-				this.geometry.colors.push(vertexColor);
+					}
+					
+				    this.geometry.vertices.push(this.vertexTop);
+				    this.geometry.colors.push(vertexColor);
+				    this.geometry.vertices.push(this.vertexBottom);
+				    this.geometry.colors.push(vertexColor);
+					this.geometry.vertices.push(vertex);
+					this.geometry.colors.push(vertexColor);
 				
-				if(Y<coOef*1.1){
+					if(Y<coOef*1.1){
 					var TG=0;
-				while (Y>0){
+					while (Y>0){
 					var vertexToground = "vtx"+TG;
 					TG++;
 					Y=Y-(coOef*.02);
@@ -180,17 +254,17 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 				    this.geometry.colors.push(vertexColor);
 					
 					
-				}
+									}
 				
-				}
+								}
 				
 			
-            }
+									}
 			
 		
 			
-        }
-
+		}
+	
 
         console.log("the highest point is" + big );
         var Size = coOef*0.01;//this.parameters[i][1];
@@ -210,23 +284,42 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 		
 		this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
+		this.controls.addButton({type: "new", position: 4, identifier: "MenuGui"});
         this.controls.finishedAddingControls();
+		
+		
+		
+		//this.menugui(data);
+		
     },
 
     load: function(date) {
     },
 
+	//draw is continuous
     draw: function(date) {
-		this.orbitControls.update();
 		
-        this.renderer.render(this.scene, this.camera);
-    },
+		if(this.speed!=0){
+		
+	    this.orbitControls.update();//this is for the <<spin>>
+		this.renderer.render(this.scene, this.camera);
+		}
+		
+		},
+		
+		   manualdraw: function(date) {
+		
+		this.renderer.render(this.scene, this.camera);
+		
+		
+		},
+			
+			
 
     resize: function(date) {
         this.width  = this.element.clientWidth;
         this.height = this.element.clientHeight;
         this.renderer.setSize(this.width, this.height);
-
         this.refresh(date);
     },
 
@@ -239,6 +332,8 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 		
 		else if (eventType==="pointerMove" && this.dragging)
 		{
+			this.orbitControls.update();
+		    this.renderer.render(this.scene, this.camera);
 			this.orbitControls.mouseMove(position.x,position.y);
 			this.refresh(date);
 		}
@@ -252,14 +347,8 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 		{
 			switch (data.identifier) {
 			
-			case "ZoomIn":
-						
-						this.orbitControls.scale(20);
-						break;
-			case "ZoomOut":
-						this.orbitControls.scale(-20);
-						break;
 			case "Spin+":
+			//this.menugui(data);
 		             	this.speed++;
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;
@@ -267,6 +356,17 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 						this.speed--;
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;	
+			case "MenuGui":
+			console.log("new menu load");
+			
+			if(this.menu.style.display=="none"){
+			this.menu.style.display = "block";
+			}
+			else{this.menu.style.display = "none";}
+						//this.menugui(data);
+						
+						this.manualdraw(data);						
+						break;				
 			default:
 						console.log("No handler for:", data.identifier);
 						return;
