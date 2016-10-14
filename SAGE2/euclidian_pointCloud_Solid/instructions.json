@@ -8,15 +8,12 @@
     "dependencies": [
         "../shared/lib/Three.js",
         "../shared/lib/OrbitControls.js",
-        "../shared/lib/stats.js",
-        "../shared/lib/dat.gui.js",
-        "../shared/lib/chroma.js",
-   		"../shared/dat/NFxyz.16.js",
-		"../shared/dat/NFxyz.18.js",
-		"../shared/dat/NFxyz.20.js",
-		"../shared/dat/NFxyz.30.js",
-		"../shared/dat/xyz.festo.01.js",
-		"../shared/dat/datamenu.js"
+        "../shared/dat/NFxyz.16.js",
+        "../shared/dat/NFxyz.18.js",
+        "../shared/dat/NFxyz.20.js",
+        "../shared/dat/NFxyz.30.js",
+        "../shared/dat/xyz.festo.01.js",
+        "../shared/dat/datamenu.js"
      
     ],
     "title": "Euclidian_PointCloud_Solid",
