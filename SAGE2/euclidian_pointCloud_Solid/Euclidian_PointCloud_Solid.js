@@ -12,74 +12,18 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
    init: function(data) {
 
    this.build(data);
-   this.menugui(data);
+  
    },
    
-   menugui: function(data)   {
-	   
-	  this.menu = document.createElement('div'); 
-	  this.menu.className = "menuEuclidian";
-      this.menu.style.position = "absolute";
-	this.menu.style.width    = "250px";
-	this.menu.style.height   = "300px";
-	this.menu.style.top      = "10px";
-	this.menu.style.left     = "30px";
-	this.menu.style.backgroundColor = "rgba(200,215,205,0.9)";
-	this.menu.style.border   = "none";
-	this.menu.style.zIndex   = "1000";
-	this.menu.dragging       = true;
-	this.menu.style.display = "none";
-
-	this.title = document.createElement("H1");
-	this.title.style.position = "relative";
-	this.title.style.left ="20px";
-	this.title.style.color = "rgba(2,5,5,3)";
-	this.title.text = document.createTextNode("Euclidian Menu");
-	this.title.appendChild(this.title.text);
-	this.menu.appendChild(this.title);
-	
-	var options =["Load","Save","Reset","Solid", "non-Solid"]
-	
-	for(var m=0;m<6;m++){
-		
-	this.option = document.createElement("H2");
-	this.option.style.position = "relative";
-	this.option.style.left ="20px";
-	this.option.style.border   = "2px solid #0000FF";
-	this.option.style.top      = "3px";
-	this.option.style.left     = "5px";
-	this.option.style.color = "rgba(2,5,5,3)";
-	this.option.text = document.createTextNode(options[m]);
-	this.option.appendChild(this.option.text);
-	this.menu.appendChild(this.option);
-			
-		
-	}
-	
-	/*
-	for(var size = 0; size<3; size++){
-		
-	this.slider = document.createElement("range");
-    this.slider.type="range";	
-	this.slider.id = ("range"+size);
-	this.menu.appendChild(this.range);	
-		
-		
-	}
-	*/
-	
-	
-    //this.SAGE2Init.appendChild(this.menu);   
-	
-	 this.element.appendChild(this.menu);
-	 	console.log("the menu has loaded");
-   },
+   
    
 	build: function(data){
 
     	this.SAGE2Init("div", data);
 		
         this.resizeEvents = "continuous";
+		
+		
 	    this.moving=0;
         this.element.id = "div" + data.id;
 		console.log(data.id);
@@ -101,13 +45,13 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
         this.particles=null;
         this.mouseX=0;
         this.mouseY=0;
-        this.dragging=false;
+        this.dragging = false;
         this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
         this.scene    = new THREE.Scene();
         this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
         this.geometry=new THREE.Geometry();
 
-        this.dataxyz = datamenuXYZ[0];
+        this.dataxyz = datamenuXYZ[4];
         this.particleCount=Object.keys(this.dataxyz).length;
 
                  //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
@@ -145,7 +89,7 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 	            floor.position.x = 0; 
 		        floor.position.y = 0;
 		        floor.position.z = 0;
-		        this.scene.add(floor);
+		  //     this.scene.add(floor);
 
             for (var i=0;i<this.particleCount;i++) {
            
@@ -242,7 +186,7 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 				
 					if(Y<coOef*1.1){
 					var TG=0;
-					while (Y>0){
+					/*while (Y>0){
 					var vertexToground = "vtx"+TG;
 					TG++;
 					Y=Y-(coOef*.02);
@@ -254,7 +198,7 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 				    this.geometry.colors.push(vertexColor);
 					
 					
-									}
+									}*/
 				
 								}
 				
@@ -286,12 +230,53 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
 		this.controls.addButton({type: "new", position: 4, identifier: "MenuGui"});
         this.controls.finishedAddingControls();
-		
-		
-		
-		//this.menugui(data);
-		
+						
+		this.menugui=this.menugui(data);
     },
+	
+	menugui: function(data)   {
+	   
+	this.menu = document.createElement('div'); 
+	this.menu.className = "menuEuclidian";
+    this.menu.style.position = "absolute";
+	this.menu.style.width    = "250px";
+	this.menu.style.height   = "300px";
+	this.menu.style.top      = "10px";
+	this.menu.style.left     = "30px";
+	this.menu.style.backgroundColor = "rgba(200,215,205,0.9)";
+	this.menu.style.border   = "none";
+	this.menu.style.zIndex   = "1000";
+	this.menu.dragging       = true;
+	this.menu.style.display = "none";
+
+	this.title = document.createElement("H1");
+	this.title.style.position = "relative";
+	this.title.style.left ="20px";
+	this.title.style.color = "rgba(2,5,5,3)";
+	this.title.text = document.createTextNode("Euclidian Menu");
+	this.title.appendChild(this.title.text);
+	this.menu.appendChild(this.title);
+	
+	var options =["Load","Save","Reset","Solid", "non-Solid"]
+	
+	for(var m=0;m<6;m++){
+		
+	this.option = document.createElement("H2");
+	this.option.style.position = "relative";
+	this.option.style.left     = "20px";
+	this.option.style.border   = "2px solid #0000FF";
+	this.option.style.top      = "3px";
+	this.option.style.left     = "5px";
+	this.option.style.color    = "rgba(2,5,5,3)";
+	this.option.text = document.createTextNode(options[m]);
+	this.option.appendChild(this.option.text);
+	this.menu.appendChild(this.option);
+			
+		
+	}
+	 this.element.appendChild(this.menu);
+	 	console.log("the menu has loaded");
+   },
 
     load: function(date) {
     },
@@ -299,12 +284,18 @@ var Euclidian_PointCloud_Solid = SAGE2_WebGLApp.extend({
 	//draw is continuous
     draw: function(date) {
 		
+		this.firstTime=Date.now();
+		
 		if(this.speed!=0){
-		
-	    this.orbitControls.update();//this is for the <<spin>>
+		setTimeout( function(){
+	   
+		},1000/30);
+		 this.orbitControls.update();//this is for the <<spin>>
 		this.renderer.render(this.scene, this.camera);
+		 //this.refresh(date);
 		}
-		
+		this.lastTime=Date.now();
+		console.log(this.lastTime-this.firstTime);
 		},
 		
 		   manualdraw: function(date) {
