@@ -13,6 +13,8 @@
         "../shared/dat/NFxyz.20.js",
         "../shared/dat/NFxyz.30.js",
         "../shared/dat/xyz.festo.01.js",
+		"../shared/dat/xyz.festo.02.js",
+		"../shared/dat/xyz.festo.03.js",
         "../shared/dat/datamenu.js"
      
     ],
