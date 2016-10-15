@@ -1,1 +1,1 @@
-datamenuXYZ=[xyz30,xyz20,xyz18,xyz16,xyzfesto01]
+datamenuXYZ=[xyz30,xyz20,xyz18,xyz16,xyzfesto01,xyzfesto02,xyzfesto03]
