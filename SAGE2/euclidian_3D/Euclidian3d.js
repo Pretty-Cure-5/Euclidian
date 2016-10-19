@@ -361,7 +361,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	//draw is continuous
     draw: function(date) {
 		
-		this.firstTime=Date.now();
+		//this.firstTime=Date.now();
 		
 		if(this.speed!=0){
 		setTimeout( function(){
@@ -371,8 +371,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.renderer.render(this.scene, this.camera);
 		 //this.refresh(date);
 		}
-		this.lastTime=Date.now();
-		console.log(this.lastTime-this.firstTime);
+		//this.lastTime=Date.now();
+		//console.log(this.lastTime-this.firstTime);
 		},
 		
 		   manualdraw: function(date) {
