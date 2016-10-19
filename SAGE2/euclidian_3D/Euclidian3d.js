@@ -52,7 +52,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
        // this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
         this.geometry=new THREE.Geometry();
 
-        this.dataxyz = datamenuXYZ[4];
+        this.dataxyz = datamenuXYZ[5];
         this.particleCount=Object.keys(this.dataxyz).length;
 
                  //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
