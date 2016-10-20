@@ -9,26 +9,26 @@
  */
 var Euclidian3d = SAGE2_WebGLApp.extend({
    
-   init: function(data) {
-
-   this.build(data);
+        init: function(data) {
+	   
+	    this.build(data);
   
-   },
+        },
    
    
    
-	build: function(data){
+	 build: function(data){
 
     	this.SAGE2Init("div", data);
-		
-        this.resizeEvents = "continuous";
-		
-		
-	    this.moving=0;
-        this.element.id = "div" + data.id;
+		this.resizeEvents = "continuous";
+		this.element.id = "div" + data.id;
 		console.log(data.id);
 		
-		this.coOef =55;
+	
+		this.modelNumber =3;
+		
+		this.coOef =1;
+		this.Size = this.coOef*0.01;//vertex particle size
         this.frame  = 0;
         this.width  = this.element.clientWidth;
         this.height = this.element.clientHeight;
@@ -42,49 +42,56 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         var fogHex=0x000000;
         var fogDensity=0.5007;
         this.materials=[];
-        this.particles=null;
+        
         this.mouseX=0;
         this.mouseY=0;
 		this.maxFPS=24;
         this.dragging = false;
-        this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
        
-       // this.scene.fog=new THREE.FogExp2(fogHex, fogDensity);
-        this.geometry=new THREE.Geometry();
-
-        this.dataxyz = datamenuXYZ[5];
-        this.particleCount=Object.keys(this.dataxyz).length;
-
-                 //this.camera = new THREE.PerspectiveCamera(45, this.width/this.height, 1, 5000);
-                 //camera postitions
-                this.posX = this.camera.position.x + 0;
-                this.posY = this.camera.position.y + 0;
-                this.posZ = this.camera.position.z + 0;
-	
-	            this.camera.position.set(this.posX, this.posY, this.posZ);
-				
-				this.camera.position.set(this.coOef-this.coOef,this.coOef*3.2,(-2));
-				//this.camera.lookAt(20, 20, 20);
-				//this.camera.lookAt(this.scene.position);
-
+	    this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+        
+		this.camera.position.set(this.coOef*0.02,this.coOef*0.09,(-this.coOef));
 		
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
-		//this.orbitControls.maxPolarAngle = Math.PI / 2;
-		this.orbitControls.minDistance = 0;
-		this.orbitControls.maxDistance = 5000;
 		this.scrollAmount=0;
 		this.orbitControls.autoRotate  = true;
 		this.orbitControls.zoomSpeed   = 1.0;
 		this.speed = 0;
 		this.orbitControls.autoRotateSpeed = this.speed; 
-       
-	   
-	   //scene
-	    this.scene    = new THREE.Scene();
 		
-		var big=0;
-		 //adding floor
+		this.renderer = new THREE.WebGLRenderer();
+		this.renderer.setClearColor(new THREE.Color(0xc0c0c0,1.0));//0xC0C0C0
+        this.renderer.setSize(this.width, this.height);
+        this.element.appendChild(this.renderer.domElement);
+		
+		
+		
+		
+		
+		this.scene    = new THREE.Scene();
+        this.sceneFunction(data);
+		
+		
+		
+		
+	},
+	
+	sceneFunction: function (data){	
+	
+	this.particles=null;
+	this.geometry=null;
+	this.geometry=new THREE.Geometry();
+	
+	 this.dataxyz = datamenuXYZ[this.modelNumber];
+	 this.ModCount = Object.keys(datamenuXYZ).length;
+	 this.particleCount=Object.keys(this.dataxyz).length;
+	 console.log("model number: "+ this.modelNumber);
+	
+	
+	
+
+	/*//adding floor
 		        var floorspace = new THREE.BoxGeometry(this.coOef*3.5, 0, this.coOef*2.5);
 		        var floorcolor = new THREE.Color("#E7FEFF");
 	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
@@ -95,37 +102,61 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		        floor.position.y = 0;
 		        floor.position.z = 0;
 		  //     this.scene.add(floor);
+		  */
 
-            for (var i=0;i<this.particleCount;i++) {
+	    //this is the loop that reads the data from the .js file this.dataxyz
+	    this.dataLoop(data);
+	    
+		//place the loop data into the pointcloud	  
+	    this.particles = new THREE.PointCloud(this.geometry, new THREE.PointCloudMaterial({
+		size: this.Size, vertexColors:true, opacity:0.7}));
+       
+	   //add the point cloud to the scene
+	    this.scene.add(this.particles);
+		
+		//establish the rendererrererere
+        
+        this.renderer.render(this.scene, this.camera);
+		
+		console.log(this.renderer.getContext());  
+		console.log(this.renderer.info);
+		
+        //adding the custom widgetbuttons		
+		this.widgetButtons(data);  
+		
+        //adding the info section		
+		this.infoFunction(data);  
+		
+		
+	},
+	
+    dataLoop: function (data){
+
+	for (var i=0;i<this.particleCount;i++) {
            
-     		//console.log(i);
+     		
             var coOrd=this.dataxyz[i];
             var vertex = new THREE.Vector3();
 			this.vertexTop = new THREE.Vector3();
 			this.vertexBottom = new THREE.Vector3();
-			
-			
+						
 			vertex.x = coOrd[0] * this.coOef;
-            vertex.y = (coOrd[2] * this.coOef-this.coOef*2.5)*-1;
-            vertex.z = coOrd[1] * this.coOef;
+            vertex.y = (coOrd[1] * this.coOef);//-this.coOef*2.5)*-1;
+            vertex.z = coOrd[2] * this.coOef;
 			
-			//vertex.x = coOrd[0] * this.coOef;
-            //vertex.y = (coOrd[2] * this.coOef);
-            //vertex.z = coOrd[1] * this.coOef;
-			
+			if(coOrd[2]){
 			
             this.vertexTop.x = vertex.x;
             this.vertexTop.y = vertex.y*.999;
             this.vertexTop.z = vertex.z;
 			
-			
-			
 			this.vertexBottom.x = vertex.x;
             this.vertexBottom.y = vertex.y*1.01;
             this.vertexBottom.z = vertex.z;
 			
-			
            
+			/* old check to find floating xyz tags
+			
 			var Y=vertex.y;
 			var X=vertex.x;
 			var Z=vertex.z;		
@@ -141,60 +172,24 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		    var NEWZ= (this.dataxyz[i+1][1]*this.coOef);
 		    }
 			
-			//console.log(0x00308F/this.dataxyz[i][2]);
+			console.log(0x00308F/this.dataxyz[i][2]);
+		*/
+		
 		
 		    var hexString=0x00308F/this.dataxyz[i][2]*5;
-		
-			/*
-			if (Y<this.coOef*.37){
-			hexString=0x00308F;
-			}
-			else if (Y<this.coOef*.50){
-			hexString=0x008000;
-			}
-			else if (Y<this.coOef*.70){
-			hexString=0xFAEA00;
-			}
-			else if (Y<this.coOef*5){
-			hexString=0x008000;
-			}
-			
-				if ((Y+2<OLDY||Y-2>NEWY)&&(X+1<OLDX||X-1>NEWX&&Z+1<OLDZ||Z-1>NEWZ)){
-					
-					hexString=0xAA007F;
-				}
-				
-				if(X+1<OLDX&&X-1>NEWX||Z+1<OLDZ&&Z-1>NEWZ){
-				
-				hexString=0xE7FEFF;
-				}
-			
-			
-		*/
+			var vertexColor = new THREE.Color(hexString);
 		   
-				var vertexColor = new THREE.Color(hexString);
-		   
-		   
-
-				var limit1=100;
-				var limit2=5;
+		   					
+				this.geometry.vertices.push(this.vertexTop);
+				this.geometry.colors.push(vertexColor);
+				this.geometry.vertices.push(this.vertexBottom);
+				this.geometry.colors.push(vertexColor);
+				this.geometry.vertices.push(vertex);
+				this.geometry.colors.push(vertexColor);
 				
-			
-				//if((vertex.y>limit2)&&(vertex.y<limit1)) {
 				
-					if (coOrd[2]<big){
-					
-					big = coOrd[2];
-					
-					}
-					
-				    this.geometry.vertices.push(this.vertexTop);
-				    this.geometry.colors.push(vertexColor);
-				    this.geometry.vertices.push(this.vertexBottom);
-				    this.geometry.colors.push(vertexColor);
-					this.geometry.vertices.push(vertex);
-					this.geometry.colors.push(vertexColor);
 				
+				/* this is the solid to ground loop
 					if(Y<this.coOef*1.1){
 					var TG=0;
 					/*while (Y>0){
@@ -207,68 +202,54 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 					this.vertexToground.z=vertex.z;
 					this.geometry.vertices.push(this.vertexToground);
 				    this.geometry.colors.push(vertexColor);
-					
-					
-									}*/
-				
-								}
-				
+					}}*/
 			
-								//	}
-			
-		
-			
-		}
+			      }
 	
-
-        console.log("the highest point is" + big );
-        var Size = this.coOef*0.01;//this.parameters[i][1];
+	           }//end of the check coord[1] size if
         
-        this.particles = new THREE.PointCloud(this.geometry, new THREE.PointCloudMaterial({size: Size, vertexColors:true, opacity:0.7}));
-       
-		this.particles.rotation.x = 0;//Math.random() * 6;
-        this.particles.rotation.y = 0;//Math.random() * 6;
-        this.particles.rotation.z = 0;//Math.random() * 6;
-        this.scene.add(this.particles);
-		
-        this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setClearColor(new THREE.Color(0xc0c0c0,1.0));//0xC0C0C0
-        this.renderer.setSize(this.width, this.height);
-        this.element.appendChild(this.renderer.domElement);
-        this.renderer.render(this.scene, this.camera);
-		
+	},
+
+	
+	
+	widgetButtons: function(data){	
 		this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
 		this.controls.addButton({type: "rewind", position: 8, identifier: "Spin-"});
-		this.controls.addButton({type: "new", position: 4, identifier: "MenuGui"});
+		this.controls.addButton({type: "new", position: 4, identifier: "ModelDetails"});
+		this.controls.addButton({type: "next", position: 1, identifier: "NextModel"});
+		this.controls.addButton({type: "prev", position: 2, identifier: "PrevModel"});
         this.controls.finishedAddingControls();
 						
-		this.menugui=this.menugui(data);
+		
     },
 	
-	menugui: function(data)   {
+	
+	infoFunction: function(data)   {
 	   
-	this.menu = document.createElement('div'); 
-	this.menu.id = "menuEuclidian"
-	this.menu.className = "menu";
-    this.menu.style.position = "absolute";
-	this.menu.style.width    = "25%";
-	this.menu.style.height   = "45%";
-	this.menu.style.top      = "10px";
-	this.menu.style.left     = "30px";
-	this.menu.style.backgroundColor = "rgba(200,215,205,0.9)";
-	this.menu.style.border   = "none";
-	this.menu.style.zIndex   = "9901";
-	this.menu.dragging       = true;
-	this.menu.style.display = "none";
+	this.info = document.createElement('div'); 
+	this.info.id = "infoEuclidian";
+	this.info.className = "info";
+    this.info.style.position = "absolute";
+	this.info.style.width    = "25%";
+	this.info.style.height   = "45%";
+	this.info.style.top      = "10px";
+	this.info.style.left     = "30px";
+	this.info.style.backgroundColor = "rgba(200,215,205,0.9)";
+	this.info.style.border   = "none";
+	this.info.style.zIndex   = "9901";
+	this.info.dragging       = true;
+	this.info.style.display = "none";
 
 	this.title = document.createElement("H1");
 	this.title.style.position = "relative";
 	this.title.style.left ="15%";
 	this.title.style.color = "rgba(0,0,255,0.5)";
-	this.title.text = document.createTextNode("Menu Options");
+	this.title.text = document.createTextNode("Model Details");
 	this.title.appendChild(this.title.text);
-	//this.menu.appendChild(this.title);
+	this.info.appendChild(this.title);
 	
+	
+	// this meta data needs to be implemented into the datamenu.js 
 	var modeldetail =["Name: Festo3",
 	"ID: BeSpacedFesto03",
 	"Location: Factory",
@@ -288,13 +269,29 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.details.style.color    = "rgba(2,5,5,3)";
 	this.details.text = document.createTextNode(modeldetail[m]);
 	this.details.appendChild(this.details.text);
-	this.details.onclick='menuguiHideShow(date)';
-	this.menu.appendChild(this.details);
+	this.details.onclick='infoguiHideShow(date)';
+	this.info.appendChild(this.details);
 			
 		
 	}
 	
-	this.menu.appendChild(this.title);
+	this.details = document.createElement("H1");
+	this.details.style.position = "relative";
+	this.details.style.left     = "12px";
+	this.details.style.border   = "1px solid #CCCCFF";
+	this.details.style.top      = "3px";
+	this.details.style.left     = "5px";
+	this.details.style.color    = "rgba(2,5,5,3)";
+     this.details.text = document.createTextNode((this.modelNumber+1) + " out of " + this.ModCount);
+	this.details.appendChild(this.details.text);
+	this.details.onclick='infoguiHideShow(date)';
+	this.info.appendChild(this.details);
+	
+	
+	
+	
+	/*
+	this.info.appendChild(this.title);
 	
 	
 	   this.control = new function () {
@@ -305,8 +302,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             };
 
             this.clearScene = function (data) {
-               this.manualdraw(data);	
-			   console.log("clearScene");
+				
+			   this.clearTheScene(data);
 			   //this.init(data);
 			   // this.build(data);
             };
@@ -332,21 +329,34 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
        this.gui.gu.add(this.control,"clearScene");
        this.gui.gu.add(this.control,"importScene");
 	
-	this.menu.appendChild(this.gui.gu.domElement);
-	
-	 this.element.appendChild(this.menu);
-	 	console.log("the menu has loaded");
+	this.info.appendChild(this.gui.gu.domElement);
+	*/
+	 
+	    this.element.appendChild(this.info);
+	 	console.log("the info has loaded");
    },
    
    
-    menuguiHideShow: function(data) {
+    clearTheScene: function(data){
 		
-		if(this.menu.style.display=="none"){
-			this.menu.style.display = "block";
+		this.scene.remove(this.particles);
+		// this.renderer.clear();
+	  // this.scene    = new THREE.Scene();
+			  this.manualdraw(date);	
+			  this.refresh(data);
+			   console.log("clearScene");
+	   
+	   
+   },
+   
+    infoguiHideShow: function(data) {
+		
+		if(this.info.style.display=="none"){
+			this.info.style.display = "block";
 			}
-			else{this.menu.style.display = "none";}
-						//this.menugui(data);
-						
+			else{this.info.style.display = "none";}
+				
+				
 						this.manualdraw(data);						
 						break;
 		
@@ -361,7 +371,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	//draw is continuous
     draw: function(date) {
 		
-		//this.firstTime=Date.now();
+		this.firstTime=Date.now();
 		
 		if(this.speed!=0){
 		setTimeout( function(){
@@ -371,11 +381,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.renderer.render(this.scene, this.camera);
 		 //this.refresh(date);
 		}
-		//this.lastTime=Date.now();
+		this.lastTime=Date.now();
 		//console.log(this.lastTime-this.firstTime);
 		},
 		
-		   manualdraw: function(date) {
+	manualdraw: function(date) {
 		
 		this.renderer.render(this.scene, this.camera);
 		
@@ -394,10 +404,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     event: function(eventType, position, user_id, data, date) {
         if(eventType==="pointerPress" && (data.button==="left")) {
 			
-			if (this.menu){
-				console.log("clickj");
-			}
-			if(this.menu.style.display=="none"){
+		//you can not move the model when the info is open
+			if(this.info.style.display=="none"){
 				
             this.orbitControls.mouseDown(position.x,position.y,0);
 			console.log(this.camera.position);
@@ -448,7 +456,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			switch (data.identifier) {
 			
 			case "Spin+":
-			//this.menugui(data);
+			//this.infogui(data);
 		             	this.speed++;
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;
@@ -456,17 +464,47 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 						this.speed--;
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;	
-			case "MenuGui":
-			console.log("new menu load");
-			
-			if(this.menu.style.display=="none"){
-			this.menu.style.display = "block";
+			case "ModelDetails":
+			console.log("new info load");
+			if(this.info.style.display=="none"){
+			this.info.style.display = "block";
 			}
-			else{this.menu.style.display = "none";}
-						//this.menugui(data);
-						
+			else{this.info.style.display = "none";}
+						//this.infogui(data);
 						this.manualdraw(data);						
-						break;				
+						break;	
+            case "Clear":
+						break;	
+            case "NextModel":
+			
+			if (this.modelNumber<this.ModCount-1){
+			
+			console.log("next model");
+			this.element.removeChild(this.info);
+			this.scene.remove(this.particles);
+			this.manualdraw(date);
+			this.modelNumber++;
+			this.sceneFunction(data);
+			this.manualdraw(date);
+			}
+						
+						break;	
+            case "PrevModel":
+			
+			if(this.modelNumber > 0){
+			
+			console.log("prev model");
+			this.element.removeChild(this.info);
+			this.scene.remove(this.particles);
+			this.manualdraw(date);
+			this.modelNumber--;
+			this.sceneFunction(data);
+			this.manualdraw(date);
+			}
+						break;	
+            case "reset":
+						
+						break;							
 			default:
 						console.log("No handler for:", data.identifier);
 						return;
