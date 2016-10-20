@@ -91,7 +91,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 	
 
-	/*//adding floor
+	/* adding floor
 		        var floorspace = new THREE.BoxGeometry(this.coOef*3.5, 0, this.coOef*2.5);
 		        var floorcolor = new THREE.Color("#E7FEFF");
 	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
