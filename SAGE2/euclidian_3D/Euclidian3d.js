@@ -27,7 +27,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 		this.modelNumber =3;
 		
-		this.coOef =1;
+		this.coOef =100;
 		this.Size = this.coOef*0.01;//vertex particle size
         this.frame  = 0;
         this.width  = this.element.clientWidth;
@@ -50,7 +50,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
        
 	    this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
         
-		this.camera.position.set(this.coOef*0.02,this.coOef*0.09,(-this.coOef));
+		this.camera.position.set(0,5.2*this.coOef,0);
 		
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
@@ -223,27 +223,46 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
     },
 	
+	infoTitleFunction: function (data){
+	
+	//TODO- this is to supply some minor info on the  header, work in progress 
+	
+	this.AppTitle = document.getElementById(data.id+"_title");
+	this.titleStatus = this.AppTitle.childNodes[4];
+	this.titleStatus.className = "apptitleupdate";
+	console.log(this.titleStatus.className);
+	//style="line-height: 27px; font-size: 16px; color: rgb(255, 255, 255); margin-left: 7px;"
+	this.titleStatus.text = document.createTextNode("___Model: "+(this.modelNumber+1) + " / " + this.ModCount);
+	this.titleStatus.appendChild(this.titleStatus.text);
+	this.AppTitle.appendChild(this.titleStatus);
+	
+		
+	},
+	
 	
 	infoFunction: function(data)   {
-	   
+	
+	//TODO create custom css for all the style elements
+	
 	this.info = document.createElement('div'); 
 	this.info.id = "infoEuclidian";
 	this.info.className = "info";
     this.info.style.position = "absolute";
 	this.info.style.width    = "25%";
-	this.info.style.height   = "45%";
+	//this.info.style.height   = "45%";
 	this.info.style.top      = "10px";
 	this.info.style.left     = "30px";
 	this.info.style.backgroundColor = "rgba(200,215,205,0.9)";
-	this.info.style.border   = "none";
-	this.info.style.zIndex   = "9901";
-	this.info.dragging       = true;
-	this.info.style.display = "none";
+	//this.info.style.border   = "none";
+
+
 
 	this.title = document.createElement("H1");
 	this.title.style.position = "relative";
 	this.title.style.left ="15%";
+	this.title.style.fontSize = "200%";
 	this.title.style.color = "rgba(0,0,255,0.5)";
+	
 	this.title.text = document.createTextNode("Model Details");
 	this.title.appendChild(this.title.text);
 	this.info.appendChild(this.title);
@@ -251,82 +270,31 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 	// this meta data needs to be implemented into the datamenu.js 
 	var metadata=this.dataxyz[0];
-	
-	
 	for(var m=0;m<7;m++){
 		
 	this.details = document.createElement("H2");
 	this.details.style.position = "relative";
-	this.details.style.left     = "12px";
-	this.details.style.border   = "1px solid #CCCCFF";
-	this.details.style.top      = "3px";
-	this.details.style.left     = "5px";
-	this.details.style.color    = "rgba(2,5,5,3)";
+	this.details.style.left     = "2%";
+	this.details.style.top      = "1%";
+	this.details.style.color    = "rgba(2,5,5)";
+	this.details.style.fontSize = "150%";
+	
 	this.details.text = document.createTextNode(metadata[m]);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
-			
-		
 	}
 	
 	this.details = document.createElement("H1");
 	this.details.style.position = "relative";
-	this.details.style.left     = "12px";
-	this.details.style.border   = "1px solid #CCCCFF";
-	this.details.style.top      = "3px";
-	this.details.style.left     = "5px";
+	this.details.style.left     = "3%";
+	this.details.style.top      = "5%";
 	this.details.style.color    = "rgba(2,5,5,3)";
-     this.details.text = document.createTextNode((this.modelNumber+1) + " out of " + this.ModCount);
+	
+    this.details.text = document.createTextNode("Model: "+(this.modelNumber+1) + " / " + this.ModCount);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
+	this.element.appendChild(this.info);
 	
-	
-	
-	
-	/*
-	this.info.appendChild(this.title);
-	
-	
-	   this.control = new function () {
-            this.exportScene = function (data) {
-                var exporter = new THREE.OBJExporter();
-                var sceneJson = JSON.stringify(exporter.parse(this.scene));
-                localStorage.setItem('this.scene', sceneJson);
-            };
-
-            this.clearScene = function (data) {
-				
-			   this.clearTheScene(data);
-			   //this.init(data);
-			   // this.build(data);
-            };
-
-            this.importScene = function (data) {
-                var json = (localStorage.getItem('scene'));
-                var sceneLoader = new THREE.OBJLoader();
-
-                sceneLoader.parse(JSON.parse(json), function (e) {
-                    this.scene = e.this.scene;
-                }, '.');
-            }
-        };
-	
-	
-	
-	this.gui = document.createElement("div");
-	this.gui.gu = new dat.GUI( { autoPlace: false });
-	
-	//this.gui.domElement.id = 'gui';
-
-       this.gui.gu.add(this.control,"exportScene");
-       this.gui.gu.add(this.control,"clearScene");
-       this.gui.gu.add(this.control,"importScene");
-	
-	this.info.appendChild(this.gui.gu.domElement);
-	*/
-	 
-	    this.element.appendChild(this.info);
-	 	console.log("the info has loaded");
    },
    
    
@@ -389,10 +357,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		    this.element.removeChild(this.info);
 			this.scene.remove(this.particles);
-			//this.manualdraw(date);
+			//this.titleStatus.remove(this.titleStatus.text);
 			this.sceneFunction(data);
-			//this.manualdraw(date);
-			this.infoguiHideShow(data);
+			
+			
 		
 		
 	},	
@@ -436,17 +404,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.orbitControls.scale((this.scrollAmount/10)*-1);
 			this.manualdraw(data);
 			
-			//this.refresh(date);
-			
-			
-   // var wDelta = this.wheelDelta < 0 ? 'down' : 'up';
-    
-			/*
-			this.orbitControls.update();
-		    this.renderer.render(this.scene, this.camera);
-			this.orbitControls.addEventListener('change', this.renderer.render);
-            this.refresh(date);
-			*/
 		}	
 		
 		
