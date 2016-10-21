@@ -132,7 +132,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
     dataLoop: function (data){
 
-	for (var i=0;i<this.particleCount;i++) {
+	for (var i=1;i<this.particleCount;i++) {
            
      		
             var coOrd=this.dataxyz[i];
@@ -141,8 +141,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.vertexBottom = new THREE.Vector3();
 						
 			vertex.x = coOrd[0] * this.coOef;
-            vertex.y = (coOrd[1] * this.coOef);//-this.coOef*2.5)*-1;
-            vertex.z = coOrd[2] * this.coOef;
+            vertex.y = (coOrd[2] * this.coOef-this.coOef*2.5)*-1;
+            vertex.z = coOrd[1] * this.coOef;
 			
 			if(coOrd[2]){
 			
@@ -250,15 +250,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 	
 	// this meta data needs to be implemented into the datamenu.js 
-	var modeldetail =["Name: Festo3",
-	"ID: BeSpacedFesto03",
-	"Location: Factory",
-	"Date: 01 October 2016",
-	"Max-Distance: 10 M",
-	"Description: Side view of the bottle section"]
+	var metadata=this.dataxyz[0];
 	
 	
-	for(var m=0;m<6;m++){
+	for(var m=0;m<7;m++){
 		
 	this.details = document.createElement("H2");
 	this.details.style.position = "relative";
@@ -267,9 +262,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.details.style.top      = "3px";
 	this.details.style.left     = "5px";
 	this.details.style.color    = "rgba(2,5,5,3)";
-	this.details.text = document.createTextNode(modeldetail[m]);
+	this.details.text = document.createTextNode(metadata[m]);
 	this.details.appendChild(this.details.text);
-	this.details.onclick='infoguiHideShow(date)';
 	this.info.appendChild(this.details);
 			
 		
@@ -284,7 +278,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.details.style.color    = "rgba(2,5,5,3)";
      this.details.text = document.createTextNode((this.modelNumber+1) + " out of " + this.ModCount);
 	this.details.appendChild(this.details.text);
-	this.details.onclick='infoguiHideShow(date)';
 	this.info.appendChild(this.details);
 	
 	
@@ -358,7 +351,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 				
 				
 						this.manualdraw(data);						
-						break;
+						
 		
 		
     },
@@ -391,9 +384,20 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		
 		},
+		
+	updateModel: function(data){
+		
+		    this.element.removeChild(this.info);
+			this.scene.remove(this.particles);
+			//this.manualdraw(date);
+			this.sceneFunction(data);
+			//this.manualdraw(date);
+			this.infoguiHideShow(data);
+		
+		
+	},	
 			
-			
-
+		
     resize: function(date) {
         this.width  = this.element.clientWidth;
         this.height = this.element.clientHeight;
@@ -403,16 +407,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     event: function(eventType, position, user_id, data, date) {
         if(eventType==="pointerPress" && (data.button==="left")) {
-			
-		//you can not move the model when the info is open
-			if(this.info.style.display=="none"){
-				
+						
             this.orbitControls.mouseDown(position.x,position.y,0);
 			console.log(this.camera.position);
 			this.dragging=true;
             this.refresh(date);
-			
-			}
 			
         }
 		
@@ -465,41 +464,23 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 						this.orbitControls.autoRotateSpeed = this.speed;
 						break;	
 			case "ModelDetails":
-			console.log("new info load");
-			if(this.info.style.display=="none"){
-			this.info.style.display = "block";
-			}
-			else{this.info.style.display = "none";}
-						//this.infogui(data);
-						this.manualdraw(data);						
+						this.infoguiHideShow(data);
 						break;	
             case "Clear":
 						break;	
             case "NextModel":
 			
 			if (this.modelNumber<this.ModCount-1){
-			
-			console.log("next model");
-			this.element.removeChild(this.info);
-			this.scene.remove(this.particles);
-			this.manualdraw(date);
 			this.modelNumber++;
-			this.sceneFunction(data);
-			this.manualdraw(date);
+			this.updateModel(data);
 			}
 						
 						break;	
             case "PrevModel":
 			
 			if(this.modelNumber > 0){
-			
-			console.log("prev model");
-			this.element.removeChild(this.info);
-			this.scene.remove(this.particles);
-			this.manualdraw(date);
 			this.modelNumber--;
-			this.sceneFunction(data);
-			this.manualdraw(date);
+			this.updateModel(data);
 			}
 						break;	
             case "reset":
