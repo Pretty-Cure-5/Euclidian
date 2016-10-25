@@ -25,6 +25,19 @@ Software:
 * Git 2.7.4
 * Vim 7.4
 
+## Apps
+Euclidian3d Keyboard shortcuts:
+* a, show/hide xyz arrows in in (rgb) location at (0,0,0)
+* i, show/hide the Model Details (info)
+* f, show/hide a floor cube, size (3.5,0,3.5) it is set to (0,0,0)
+* up, next model
+* down, prev model
+* y, setvalue change to y axis
+* x, setvalue change to x axis
+* z, setvalue change to z axis
+* left, value = setvalue-10%
+* right value = setvalue+10%
+
 ## Coding Convention
 ```javascript
 while(standard) {
