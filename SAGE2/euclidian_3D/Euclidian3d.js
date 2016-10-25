@@ -26,6 +26,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 		this.modelNumber =7;
+		this.arrows = 0;
+		this.floors = 0;
 
 		this.coOef =100;
 		this.Size = this.coOef*0.01;//vertex particle size
@@ -42,32 +44,39 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         var fogHex=0x000000;
         var fogDensity=0.5007;
         this.materials=[];
-    		this.distance=0;
-        this.lookx=50;
-        this.looky=50;
+    	this.distance=0;
+        this.lookx=0;
+        this.looky=0;
         this.lookz=0;
-        this.mouseX=0;
+		this.change;
+		this.changeValue= 0;
+		this.mouseX=0;
         this.mouseY=0;
 		this.maxFPS=24;
         this.dragging = false;
 
 	    this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
-  this.camera.lookAt(new THREE.Vector3(this.lookx,this.looky,this.lookz));
+//  this.camera.lookAt(new THREE.Vector3(this.lookx,this.looky,this.lookz));
 		this.camera.position.set(0,1.4*this.coOef,0);
-
-
+	
+       this.camera.lookAt (new THREE.Vector3 (30.0, 0.0, 0.0));
+	   
+	   
+	
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
 		this.scrollAmount=0;
 		this.orbitControls.autoRotate  = true;
 		this.orbitControls.zoomSpeed   = 1.0;
-    this.userPan = true;
-    this.userPanSpeed = 2.0;
+		//this.orbitControls.minPolarAngle = 0; // radians
+       // this.orbitControls.maxPolarAngle = Math.PI; // radians
+        this.userPan = true;
+        this.userPanSpeed = 2.0;
 		this.speed = 0;
-    this.clock = new THREE.Clock();
-    this.delta = this.clock.getDelta();
-    console.log(this.delta);
-    this.orbitControls.update(this.delta);
+        this.clock = new THREE.Clock();
+        this.delta = this.clock.getDelta();
+        console.log(this.delta);
+        this.orbitControls.update(this.delta);
 		this.orbitControls.autoRotateSpeed = this.speed;
 
 
@@ -75,9 +84,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.renderer.setClearColor(new THREE.Color(0xc0c0c0,1.0));//0xC0C0C0
         this.renderer.setSize(this.width, this.height);
         this.element.appendChild(this.renderer.domElement);
-
-
-
 
 
 		this.scene    = new THREE.Scene();
@@ -131,22 +137,27 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	 this.particleCount=Object.keys(this.dataxyz).length;
 	 console.log("model number: "+ this.modelNumber);
 
-	this.crossHairFunction(data);
+//	this.crossHairFunction(data);
 
 
-	/*
-		        var floorspace = new THREE.BoxGeometry(this.coOef*3.5, 0, 1);
-		        var floorcolor = new THREE.Color("#E7FEFF");
-	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
-		        var floor = new THREE.Mesh(floorspace, floorMaterial);
+	
 
-		        floor.castShadow = false;
-	            floor.position.x = 0;
-		        floor.position.y = 0;
-		        floor.position.z = 0;
-		       this.scene.add(floor);
-		*/
-
+		
+		console.log(this.change);
+			if(this.change == "x"){
+				this.lookx=this.changeValue;
+				console.log(this.lookx);
+			}
+			if(this.change == "y"){
+				
+				this.looky=this.changeValue;
+			}
+			if(this.change =="z"){
+				
+				this.lookz=this.changeValue;
+			}
+		
+		
 	    //this is the loop that reads the data from the .js file this.dataxyz
 	    this.dataLoop(data);
 
@@ -184,9 +195,15 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.vertexTop = new THREE.Vector3();
 			this.vertexBottom = new THREE.Vector3();
 
-			vertex.x = coOrd[0] * this.coOef*-1;
-            vertex.y = coOrd[2] * this.coOef*-1;//-this.coOef*2.5)*-1;
-            vertex.z = coOrd[1] * this.coOef*-1;
+			
+			
+			vertex.x = (coOrd[0] * this.coOef*-1) + this.lookx;
+            vertex.y = (coOrd[2] * this.coOef*-1) + this.looky;//-this.coOef*2.5)*-1;
+            vertex.z = (coOrd[1] * this.coOef*-1) + this.lookz; 
+			
+			
+			
+			
 
 			//get the largest and smallest coord
 			var range = 6.5;  //the kinnect should not be able to collect more than this.
@@ -202,7 +219,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.vertexTop.x    = vertex.x;
             this.vertexTop.y    = vertex.y*.999;
             this.vertexTop.z    = vertex.z;
-      			this.vertexBottom.x = vertex.x;
+      		this.vertexBottom.x = vertex.x;
             this.vertexBottom.y = vertex.y*1.01;
             this.vertexBottom.z = vertex.z;
 
@@ -259,10 +276,79 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			      }
 
 	           }//end of the check coord[1] size if
-
+			   
+			   
+			
 	},
 
+	coOrdArrows: function(data){
+		
+		console.log("arrows");
+			if (this.arrows==0){
+		       this.from = new THREE.Vector3( 0, 0, 0 );
+			   this.tox = new THREE.Vector3( this.coOef*1, 0, 0 );
+               this.directionx = this.tox.clone().sub(this.from); 
+               this.length = this.directionx.length();
+			   
+			   this.toy = new THREE.Vector3(  0,this.coOef*1, 0 );
+               this.directiony = this.toy.clone().sub(this.from);
+			   //this.length = this.direction.length();
+			   
+			   this.toz = new THREE.Vector3( 0, 0,this.coOef*1);
+               this.directionz = this.toz.clone().sub(this.from);
+			   //this.length = this.direction.length();
+			   
+               this.arrowHelperx = new THREE.ArrowHelper(this.directionx.normalize(), this.from, this.length, 0xff0000 );
+               this.arrowHelpery = new THREE.ArrowHelper(this.directiony.normalize(), this.from, this.length, 0x00ff00 );
+               this.arrowHelperz = new THREE.ArrowHelper(this.directionz.normalize(), this.from, this.length, 0x0000ff ); 
+			   this.scene.add( this.arrowHelperx );
+			   this.scene.add( this.arrowHelpery );
+			   this.scene.add( this.arrowHelperz );
+			   this.renderer.render(this.scene, this.camera);
+			   this.arrows=1;
+			   console.log("arrows2");
+			}
+			else{
+				
+				this.scene.remove(this.arrowHelperx);
+				this.scene.remove(this.arrowHelpery);
+				this.scene.remove(this.arrowHelperz );
+				this.renderer.render(this.scene, this.camera);
+				this.arrows=0;
+				console.log("arrows3");
+				
+			}
+		
+		
+		
+	},
+	
+	floorFunction: function(data){
+		
+				if (this.floors == 0){
+		
+		        var floorspace = new THREE.BoxGeometry(this.coOef*3.5, 0, this.coOef*3.5);
+		        var floorcolor = new THREE.Color("#E7FEFF");
+	            var floorMaterial = new THREE.MeshBasicMaterial({color: floorcolor});
+		        this.floor = new THREE.Mesh(floorspace, floorMaterial);
 
+		        this.floor.castShadow = false;
+	            this.floor.position.x = 0;
+		        this.floor.position.y = 0;
+		        this.floor.position.z = 0;
+		        this.scene.add(this.floor);
+				this.floors=1;
+		this.renderer.render(this.scene, this.camera);
+				}
+				else{
+					
+					this.scene.remove(this.floor);
+					this.renderer.render(this.scene, this.camera);
+					this.floors=0;
+				}
+		
+		
+	},
 
 	widgetButtons: function(data){
 		this.controls.addButton({type: "fastforward", position: 7, identifier: "Spin+"});
@@ -271,8 +357,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.controls.addButton({type: "next", position: 1, identifier: "NextModel"});
 		this.controls.addButton({type: "prev", position: 2, identifier: "PrevModel"});
 
-		this.controls.addSlider({begin:-5  ,end:5  ,increments:0.5  ,appObj: this.distance ,
-      property: "Distance",id:"sliderStart",caption:"Min"});
+		this.controls.addSlider({
+			begin:0,
+			end:this.ModCount,
+			increments:1,
+			appObj: this.modelNumber,
+			property: "model",
+			id:"slidermodel",
+			identifier:"slidermodel",
+			caption:"Mod",
+	  	labelFormatFunction: function(value, end) {
+				return (value * end / 100).toFixed(1);
+			}});
 
 
         this.controls.finishedAddingControls();
@@ -304,7 +400,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.info = document.createElement('div');
 	this.info.id = "infoEuclidian";
 	this.info.className = "info";
-  this.info.style.position = "absolute";
+    this.info.style.position = "absolute";
 	this.info.style.width    = "25%";
 	//this.info.style.height   = "45%";
 	this.info.style.top      = "10px";
@@ -471,38 +567,98 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 		}
 
-    else if (eventType === "specialKey" && data.code === 37 && data.state === "down") {
+      
+	  
+	  else if (eventType === "specialKey"){
+
+
+	 if(data.code === 65 && data.state === "down") {
+			// a   for hide show coOrd arrows
+    
+	  this.coOrdArrows(data);
+		this.refresh(date);
+		
+	 }     
+	
+    else if ( data.code === 70 && data.state === "down") {
+			// f   for hide show the floor
+    
+	  this.floorFunction(data);
+		this.refresh(date);
+		
+	} 
+	else if ( data.code === 73 && data.state === "down") {
+			// i   for hide show info
+    
+	  this.infoguiHideShow(data);
+		this.refresh(date);
+		
+	} 
+	
+	else if (data.code === 88 && data.state === "down") {
 			// left
-
-    //  this.lookx=this.lookx-(0.1*this.coOef);
-      //  this.camera.lookAt(this.lookx,this.looky,this.lookz);
-      //  this.orbitControls.scope.target.add(pan);
-          	this.orbitControls.panBy(0, 0.01);
-        this.orbitControls.update();
-        this.renderer.render(this.scene, this.camera);
-        console.log(this.lookx);
-    //  this.orbitControls.handleKeyDown(position.x,position.y);
+      this.change="x";
+	  this.changeValue=this.lookx;
+	  console.log("x pressed");
       this.refresh(date);
-		} else if (eventType === "specialKey" && data.code === 38 && data.state === "down") {
-			// up
-      this.orbitControls.update();
-
-      this.renderer.render(this.scene, this.camera);
-    //  this.orbitControls.keyDown(position.x,position.y);
+		
+		
+		} 
+		else if (data.code === 89 && data.state === "down") {
+			// left
+      this.change="y";
+	  this.changeValue=this.looky;
+	  console.log("y pressed");
       this.refresh(date);
-		} else if (eventType === "specialKey" && data.code === 39 && data.state === "down") {
-			// right
-      this.orbitControls.update();
-      this.renderer.render(this.scene, this.camera);
-    //  this.orbitControls.keydown(position.x,position.y);
-      this.refresh(date);
-
-      console.log("arrow key pressed");
-		} else if (eventType === "specialKey" && data.code === 40 && data.state === "down") {
-			// down
-    console.log("arrow key pressed");
+		
+		
 		}
-
+		else if (data.code === 90 && data.state === "down") {
+			// left
+      this.change="z";
+	  this.changeValue=this.lookz;
+	  console.log(" z pressed");
+      this.refresh(date);
+		
+		
+		}else if (data.code === 37 && data.state === "down") {
+			// left
+			  this.changeValue=this.changeValue-this.coOef*.10;
+			 console.log("value has change");
+			 console.log(this.changeValue);
+			 this.updateModel(data);
+			
+	  
+		}  else if (data.code === 39 && data.state === "down") {
+			// right
+			 this.changeValue=this.changeValue+this.coOef*.10;
+			 console.log("value has change");
+			 console.log(this.changeValue);
+			 this.updateModel(data);
+	 
+     
+		} else if (data.code === 38 && data.state === "down") {
+			// down
+			if (this.modelNumber<this.ModCount-1){
+			this.modelNumber++;
+			this.updateModel(data);
+			}
+			
+			 this.updateModel(data);
+	 
+     
+		}else if (data.code === 40 && data.state === "down") {
+			// up
+			 if(this.modelNumber > 0){
+			this.modelNumber--;
+			this.updateModel(data);
+			}
+			 this.updateModel(data);
+	 
+     
+		}  
+		
+	  }//end specialKey
 
 		else if (eventType==="widgetEvent")
 		{
@@ -538,8 +694,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			}
 						break;
             case "reset":
+			
+			
 
 						break;
+			
+			   case "slidermodel":
+             
+					console.log(this.modelNumber);
+					
+                        // Code to be executed when slider is pressed upon by the user
+                        break;
+                			
 			default:
 						console.log("No handler for:", data.identifier);
 						return;
