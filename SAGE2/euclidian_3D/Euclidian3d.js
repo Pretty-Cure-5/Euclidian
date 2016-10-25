@@ -10,6 +10,8 @@
 var Euclidian3d = SAGE2_WebGLApp.extend({
 
         init: function(data) {
+			
+		
 
 	    this.build(data);
 
@@ -28,6 +30,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.modelNumber =7;
 		this.arrows = 0;
 		this.floors = 0;
+		this.keysHelp = 0;
+		this.modelDetailsInfo=0;
 
 		this.coOef =100;
 		this.Size = this.coOef*0.01;//vertex particle size
@@ -89,7 +93,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.scene    = new THREE.Scene();
         this.sceneFunction(data);
 
-
+        this.shortcutKeysList(data);
 
 
 	},
@@ -178,9 +182,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         //adding the custom widgetbuttons
 		this.widgetButtons(data);
 
+		
         //adding the info section
 		this.infoFunction(data);
-
+		this.infoguiHideShow(data);
+		/*if (this.modelDetailsInfo==1){
+			
+		}
+		else if (this.modelDetailsInfo==0){
+		this.modelDetailsInfo=1;
+		}*/
+		
+		
 
 	},
 
@@ -449,6 +462,59 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.element.appendChild(this.info);
 
    },
+   
+   shortcutKeysList: function(data){
+	   
+	this.kinfo = document.createElement('div');
+	this.kinfo.id = "keysEuclidian";
+	this.kinfo.className = "info";
+    this.kinfo.style.position = "absolute";
+	//this.kinfo.style.width    = "25%";
+	//this.info.style.height   = "45%";
+	this.kinfo.style.top      = "15%";
+	this.kinfo.style.left     = "35%";
+	this.kinfo.style.backgroundColor = "rgba(20,215,205,0.9)";
+	   
+	   
+	   
+	this.keysList=[
+	"HELP:",
+	"h: Help (hide/show)",
+	"i: Info (hide/show)",
+	"a: Compass (hide/show) static",
+	"f: Floor (hide/show) static",
+	"----------------------- ",
+	"To Move the Model",
+	"x:,y:,z: selects the direction to move",
+	"LeftArrow: moves the model left or down",
+	"RightArrow: moves the model right or up",
+	"For example press (x) once",
+	"leftArrow 5 times",
+	"--------------------------------------------",
+	"Change the model number",
+	"UpArrow: Next Model",
+	"DownArrow: Prev Model",
+	];
+	   
+	for(var m=0;m<16;m++){
+
+	this.detailsk = document.createElement("H2");
+	this.detailsk.style.position = "relative";
+	this.detailsk.style.left     = "2%";
+	this.detailsk.style.top      = "1%";
+	this.detailsk.style.color    = "rgba(2,5,5)";
+	this.detailsk.style.fontSize = "140%";
+
+	this.detailsk.text = document.createTextNode(this.keysList[m]);
+	this.detailsk.appendChild(this.detailsk.text);
+	this.kinfo.appendChild(this.detailsk);
+	}
+	   
+	   
+	this.element.appendChild(this.kinfo);   
+	   
+	   
+   },
 
 
     clearTheScene: function(data){
@@ -469,11 +535,16 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.info.style.display = "block";
 			}
 			else{this.info.style.display = "none";}
+			this.manualdraw(data);
 
+    },
+	keymapHideShow: function(data) {
 
-						this.manualdraw(data);
-
-
+		if(this.kinfo.style.display=="none"){
+			this.kinfo.style.display = "block";
+			}
+			else{this.kinfo.style.display = "none";}
+			this.manualdraw(data);
 
     },
 
@@ -529,11 +600,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     event: function(eventType, position, user_id, data, date) {
 
 
-
-
-
-
-
         if(eventType==="pointerPress" && (data.button==="left")) {
 
           this.orbitControls.mouseDown(position.x,position.y,0);
@@ -569,7 +635,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
       
 	  
-	  else if (eventType === "specialKey"){
+	    else if (eventType === "specialKey"){
 
 
 	 if(data.code === 65 && data.state === "down") {
@@ -596,7 +662,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	} 
 	
 	else if (data.code === 88 && data.state === "down") {
-			// left
+			// x
       this.change="x";
 	  this.changeValue=this.lookx;
 	  console.log("x pressed");
@@ -605,7 +671,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		} 
 		else if (data.code === 89 && data.state === "down") {
-			// left
+			// y
       this.change="y";
 	  this.changeValue=this.looky;
 	  console.log("y pressed");
@@ -614,7 +680,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		}
 		else if (data.code === 90 && data.state === "down") {
-			// left
+			// z
       this.change="z";
 	  this.changeValue=this.lookz;
 	  console.log(" z pressed");
@@ -627,7 +693,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			 console.log("value has change");
 			 console.log(this.changeValue);
 			 this.updateModel(data);
-			
+			 
 	  
 		}  else if (data.code === 39 && data.state === "down") {
 			// right
@@ -635,6 +701,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			 console.log("value has change");
 			 console.log(this.changeValue);
 			 this.updateModel(data);
+		
 	 
      
 		} else if (data.code === 38 && data.state === "down") {
@@ -644,8 +711,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.updateModel(data);
 			}
 			
-			 this.updateModel(data);
-	 
      
 		}else if (data.code === 40 && data.state === "down") {
 			// up
@@ -653,10 +718,17 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.modelNumber--;
 			this.updateModel(data);
 			}
-			 this.updateModel(data);
+		
 	 
      
-		}  
+		} else if (data.code === 72 && data.state === "down") {
+			// h
+			this.keymapHideShow(data);
+		    this.refresh(date);
+		
+	 
+     
+		}   
 		
 	  }//end specialKey
 
