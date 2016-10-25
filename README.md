@@ -27,6 +27,7 @@ Software:
 
 ## Apps
 Euclidian3d keyboard shortcuts:
+*h, show/hide the help information
 * a, show/hide xyz arrows in in (rgb) location at (0,0,0)
 * i, show/hide the Model Details (info)
 * f, show/hide a floor cube, size (3.5,0,3.5) it is set to (0,0,0)
