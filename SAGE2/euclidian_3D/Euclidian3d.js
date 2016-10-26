@@ -42,7 +42,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 
 
-		this.modelNumber =7;
+		this.modelNumber =0;
 		this.arrows = 0;
 		this.floors = 0;
 		this.keysHelp = 0;
