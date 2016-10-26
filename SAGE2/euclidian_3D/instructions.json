@@ -11,15 +11,12 @@
 		"../shared/lib/SceneExporter.js",
 		"../shared/lib/SceneLoader.js",
 		"../shared/lib/dat.gui.js",
-		"../shared/dat/NFxyz.16.js",
-                "../shared/dat/NFxyz.18.js",
-                "../shared/dat/NFxyz.20.js",
-                "../shared/dat/NFxyz.30.js",
-	        "../shared/dat/xyz.30.js",
-                "../shared/dat/xyz.festo.01.js",
+	    "../shared/dat/NFxyz.30.js",
+	    "../shared/dat/xyz.30.js",
+        "../shared/dat/xyz.festo.01.js",
 		"../shared/dat/xyz.festo.02.js",
 		"../shared/dat/xyz.festo.03.js",
-                "../shared/dat/datamenu.js"
+        "../shared/dat/datamenu.js"
      
     ],
     "title": "Euclidian3d",
