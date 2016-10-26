@@ -7,13 +7,19 @@
  *
  * @class Euclidian3d
  */
+ 
+ 
+
+ 
+ 
 var Euclidian3d = SAGE2_WebGLApp.extend({
 
         init: function(data) {
 			
 		
-
-	    this.build(data);
+       
+	    
+		this.build(data);
 
         },
 
@@ -25,6 +31,15 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.resizeEvents = "continuous";
 		this.element.id = "div" + data.id;
 		console.log(data.id);
+		
+		
+		//cssStyles:
+		
+		this.white ="rgba(255,255,255,0.9)" ;
+		this.orange ="rgba(255,162,0,0.9)"; 
+		this.darkblue = "rgba(60,0,255,0.9)";
+		this.font = "sans-serif";
+		
 
 
 		this.modelNumber =7;
@@ -408,55 +423,58 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 	infoFunction: function(data)   {
 
-	//TODO create custom css for all the style elements
-
-	this.info = document.createElement('div');
+	//Box for Details styles
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+	this.info = document.createElement('div'); 
 	this.info.id = "infoEuclidian";
 	this.info.className = "info";
     this.info.style.position = "absolute";
-	this.info.style.width    = "25%";
-	//this.info.style.height   = "45%";
+	this.info.style.width    = "27%";
 	this.info.style.top      = "10px";
-	this.info.style.left     = "30px";
-	this.info.style.backgroundColor = "rgba(200,215,205,0.9)";
-	//this.info.style.border   = "none";
-
-
-
-	this.title = document.createElement("H1");
+	this.info.style.left     = "10px";
+	//this.info.style.padding    = "10px";
+	this.info.style.backgroundColor = this.white; 
+	
+	// Heading Styles
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------	
+	this.title = document.createElement("H2");
 	this.title.style.position = "relative";
-	this.title.style.left ="15%";
+	this.title.style.left ="2%";
+	this.title.style.fontFamily = this.font;
 	this.title.style.fontSize = "200%";
-	this.title.style.color = "rgba(0,0,255,0.5)";
-
+	this.title.style.color = this.darkblue; // DARK BLUE
+	
 	this.title.text = document.createTextNode("Model Details");
 	this.title.appendChild(this.title.text);
 	this.info.appendChild(this.title);
-
-
-	// this meta data needs to be implemented into the datamenu.js
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------	
+	
 	var metadata=this.dataxyz[0];
 	for(var m=0;m<7;m++){
-
-	this.details = document.createElement("H2");
+	
+	// Body Font Styles
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------	
+	this.details = document.createElement("H3");
 	this.details.style.position = "relative";
 	this.details.style.left     = "2%";
 	this.details.style.top      = "1%";
-	this.details.style.color    = "rgba(2,5,5)";
-	this.details.style.fontSize = "150%";
-
+	this.details.style.fontSize = "120%";
+		
 	this.details.text = document.createTextNode(metadata[m]);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
+	this.info.style.fontFamily = this.font;   
 	}
-
-	this.details = document.createElement("H1");
+	
+	// Bottom Model Font Styles
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+	this.details = document.createElement("H2");
 	this.details.style.position = "relative";
-	this.details.style.left     = "3%";
-	this.details.style.top      = "5%";
-	this.details.style.color    = "rgba(2,5,5,3)";
-
-    this.details.text = document.createTextNode("Model: "+(this.modelNumber+1) + " / " + this.ModCount);
+	this.details.style.left = "2%";
+	this.details.style.top = "5%";
+	this.details.style.color = this.orange;   
+	this.details.style.fontFamily = this.font;
+	this.details.text = document.createTextNode("Model: "+(this.modelNumber+1) + " / " + this.ModCount);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
 	this.element.appendChild(this.info);
@@ -473,7 +491,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	//this.info.style.height   = "45%";
 	this.kinfo.style.top      = "15%";
 	this.kinfo.style.left     = "35%";
-	this.kinfo.style.backgroundColor = "rgba(20,215,205,0.9)";
+	this.kinfo.style.backgroundColor = this.white;
 	   
 	   
 	   
@@ -483,28 +501,47 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	"i: Info (hide/show)",
 	"a: Compass (hide/show) static",
 	"f: Floor (hide/show) static",
-	"----------------------- ",
+	"-------------------------------------------- ",
 	"To Move the Model",
-	"x:,y:,z: selects the direction to move",
-	"LeftArrow: moves the model left or down",
-	"RightArrow: moves the model right or up",
+	"x,y and z: selects the direction to move",
+	"LeftArrow: moves the model",
+	"RightArrow: moves the model",
 	"For example press (x) once",
 	"leftArrow 5 times",
 	"--------------------------------------------",
-	"Change the model number",
+	"Change the model ",
 	"UpArrow: Next Model",
 	"DownArrow: Prev Model",
 	];
 	   
-	for(var m=0;m<16;m++){
+	   
+	this.detailsk = document.createElement("H1");
+	this.detailsk.style.position = "relative";
+	this.detailsk.style.left     = "2%";
+	this.detailsk.style.top      = "1%";
+	this.detailsk.style.color    = this.darkblue;
+	this.detailsk.style.fontSize = "140%";
+
+	this.detailsk.text = document.createTextNode(this.keysList[0]);
+	this.detailsk.appendChild(this.detailsk.text);
+	this.kinfo.appendChild(this.detailsk);  
+	   
+	   
+	   
+	   
+	for(var m=1;m<16;m++){
 
 	this.detailsk = document.createElement("H2");
 	this.detailsk.style.position = "relative";
 	this.detailsk.style.left     = "2%";
 	this.detailsk.style.top      = "1%";
-	this.detailsk.style.color    = "rgba(2,5,5)";
+	//this.detailsk.style.color    = "rgba(2,5,5)";
 	this.detailsk.style.fontSize = "140%";
-
+    if(m==5||m==12){
+		
+		this.detailsk.style.color    = this.orange;
+	}
+	
 	this.detailsk.text = document.createTextNode(this.keysList[m]);
 	this.detailsk.appendChild(this.detailsk.text);
 	this.kinfo.appendChild(this.detailsk);
