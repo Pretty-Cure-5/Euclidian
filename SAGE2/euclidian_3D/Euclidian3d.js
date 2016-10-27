@@ -22,6 +22,15 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.build(data);
 
         },
+		
+		addCSS : function(url, callback) {
+	    var fileref = document.createElement("link")
+		if( callback ) fileref.onload = callback;
+	    fileref.setAttribute("rel", "stylesheet")
+	    fileref.setAttribute("type", "text/css")
+	    fileref.setAttribute("href", url)
+		document.head.appendChild( fileref );
+	},
 
 
 
@@ -34,11 +43,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		
 		//cssStyles:
+		this.addCSS(this.resrcPath + "EuclidianCss.css", null);
 		
-		this.white ="rgba(255,255,255,0.9)" ;
-		this.orange ="rgba(255,162,0,0.9)"; 
-		this.darkblue = "rgba(60,0,255,0.9)";
-		this.font = "sans-serif";
+		
 		
 
 
@@ -428,21 +435,21 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.info = document.createElement('div'); 
 	this.info.id = "infoEuclidian";
 	this.info.className = "info";
-    this.info.style.position = "absolute";
+    /*this.info.style.position = "absolute";
 	this.info.style.width    = "27%";
 	this.info.style.top      = "10px";
 	this.info.style.left     = "10px";
 	//this.info.style.padding    = "10px";
-	this.info.style.backgroundColor = this.white; 
+	this.info.style.backgroundColor = this.white; */
 	
 	// Heading Styles
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------	
 	this.title = document.createElement("H2");
-	this.title.style.position = "relative";
-	this.title.style.left ="2%";
-	this.title.style.fontFamily = this.font;
-	this.title.style.fontSize = "200%";
-	this.title.style.color = this.darkblue; // DARK BLUE
+	//this.title.style.position = "relative";
+	//this.title.style.left ="2%";
+	//this.title.style.fontFamily = this.font;
+	//this.title.style.fontSize = "200%";
+	//this.title.style.color = this.darkblue; // DARK BLUE
 	
 	this.title.text = document.createTextNode("Model Details");
 	this.title.appendChild(this.title.text);
@@ -469,11 +476,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	// Bottom Model Font Styles
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------
 	this.details = document.createElement("H2");
-	this.details.style.position = "relative";
-	this.details.style.left = "2%";
-	this.details.style.top = "5%";
-	this.details.style.color = this.orange;   
-	this.details.style.fontFamily = this.font;
+	this.details.className = "modelNumberDisplay";
+	//this.details.style.position = "relative";
+	//this.details.style.left = "2%";
+	//this.details.style.top = "5%";
+	//this.details.style.color = this.orange;   
+	//this.details.style.fontFamily = this.font;
 	this.details.text = document.createTextNode("Model: "+(this.modelNumber+1) + " / " + this.ModCount);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
@@ -486,12 +494,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.kinfo = document.createElement('div');
 	this.kinfo.id = "keysEuclidian";
 	this.kinfo.className = "info";
-    this.kinfo.style.position = "absolute";
+   // this.kinfo.style.position = "absolute";
 	//this.kinfo.style.width    = "25%";
 	//this.info.style.height   = "45%";
-	this.kinfo.style.top      = "15%";
-	this.kinfo.style.left     = "35%";
-	this.kinfo.style.backgroundColor = this.white;
+	//this.kinfo.style.top      = "15%";
+	//this.kinfo.style.left     = "35%";
+	//this.kinfo.style.backgroundColor = this.white;
 	   
 	   
 	   
@@ -515,7 +523,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	];
 	   
 	   
-	this.detailsk = document.createElement("H1");
+	this.detailsk = document.createElement("H2");
 	this.detailsk.style.position = "relative";
 	this.detailsk.style.left     = "2%";
 	this.detailsk.style.top      = "1%";
@@ -531,12 +539,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	   
 	for(var m=1;m<16;m++){
 
-	this.detailsk = document.createElement("H2");
-	this.detailsk.style.position = "relative";
-	this.detailsk.style.left     = "2%";
-	this.detailsk.style.top      = "1%";
+	this.detailsk = document.createElement("H3");
+	//this.detailsk.style.position = "relative";
+	//this.detailsk.style.left     = "2%";
+	//this.detailsk.style.top      = "1%";
 	//this.detailsk.style.color    = "rgba(2,5,5)";
-	this.detailsk.style.fontSize = "140%";
+	//this.detailsk.style.fontSize = "140%";
     if(m==5||m==12){
 		
 		this.detailsk.style.color    = this.orange;

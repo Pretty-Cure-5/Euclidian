@@ -1,0 +1,68 @@
+
+
+
+
+.info{
+	
+	
+	
+	/*this.white ="rgba(255,255,255,0.9)" ;
+		this.orange ="rgba(255,162,0,0.9)"; 
+		this.darkblue = "rgba(60,0,255,0.9)";
+		this.font = "sans-serif";
+	*/
+	position : absolute;	
+	background-color : rgba(255,255,255,0.9);/*white*/
+	font-family : sans-serif;
+	color: rgba(255,162,0,0.9);
+	
+	
+}
+
+.info H2{
+	
+	color: rgba(60,0,255,0.9); /*dark blue*/
+	position:relative;
+	left: 2%;
+	font-size:200%
+}
+
+.info H3{
+	
+	color: black;
+	position:relative;
+	left:2%;
+	top:1%;
+	font-size:120%;
+	
+	
+}
+
+
+
+
+#infoEuclidian{
+	
+	width    : 20%;
+	top      : 10%;
+	left     : 5%;
+	padding  : 2%;
+	
+	
+}
+
+#keysEuclidian{
+	
+	width    : 35%;
+	top      : 15%;
+	left     : 35%;
+	padding  : 2%;
+	
+	
+	
+}
+
+ .modelNumberDisplay{
+	top:5%;
+	color: rgba(255,162,0,0.9) !important;
+}
