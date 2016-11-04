@@ -66,12 +66,24 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.mouseY=0;
 		this.maxFPS=24;
         this.dragging = false;
+		
+		//adding the box overlay information and settings
+		this.boxId=0;
+		this.boxAlive=false;
+		this.boxSize;
+		this.boxX=0;
+		this.boxY=0;
+		this.boxZ=0;
+		this.boxRotate=0;
+		this.boxXR=0; //rotation
+		this.boxYR=0;
+		this.boxZR=0;
 
 	    this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
 		//  this.camera.lookAt(new THREE.Vector3(this.lookx,this.looky,this.lookz));
 		this.camera.position.set(0,1.4*this.coOef,0);
 	
-       this.camera.lookAt (new THREE.Vector3 (30.0, 0.0, 0.0));
+       this.camera.lookAt (new THREE.Vector3 (0.0, 0.0, 0.0));
 
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
@@ -98,7 +110,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 		this.scene    = new THREE.Scene();
         this.sceneFunction(data);
-
+		
         this.shortcutKeysList(data);
 
 	},
@@ -106,22 +118,48 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 	crossHairFunction: function(data){
 
-		        this.crosshair = new THREE.BoxGeometry(this.coOef*2, 0, this.coOef*2);
-		        this.crosshair2 = new THREE.BoxGeometry(this.coOef*4.5, this.coOef*4.5, this.coOef*4.5);
+				
+				
+				console.log(this.change);
+				
+				
+				switch (this.change){
+					
+					case "bx":  this.boxX=this.changeValue; break;
+					case "by":  this.boxY=this.changeValue; break;	
+					case "bz":  this.boxZ=this.changeValue; break;
+					case "bxR": this.boxXR=this.boxRotate;  break;
+					case "byR": this.boxYR=this.boxRotate;  break;
+					case "bzR": this.boxZR=this.boxRotate;  break;
+				}
+				console.log("working out where the box is: ");
+				console.log("model center" , this.lookx,this.looky,this.lookz);
+				console.log("box center" , this.boxX/this.coOef, this.boxY/this.coOef, this.boxZ/this.coOef);
+				console.log("so actual box location is:");
+				console.log((this.boxX-this.lookx)/this.coOef, (this.boxY-this.looky)/this.coOef, (this.boxZ-this.lookz)/this.coOef);
+		        this.crosshair = new THREE.BoxGeometry(this.coOef*this.boxSize,this.coOef*this.boxSize, this.coOef*this.boxSize);
+		        //this.crosshair2 = new THREE.BoxGeometry(this.coOef*4.5, this.coOef*4.5, this.coOef*4.5);
 				this.crosshairColor = new THREE.Color("#E7FEFF");
 	            this.crosshairMaterial = new THREE.MeshBasicMaterial({
 					color: this.crosshairColor,
 					wireframe: true
 					});
-		        this.hair = new THREE.Mesh(this.crosshair, this.crosshairMaterial);
+		        this.hair= "hair"+this.boxId++; 
+				
+				this.hair= new THREE.Mesh(this.crosshair, this.crosshairMaterial);
 		        this.hair.castShadow = false;
-	            this.hair.position.x = 0;
-		        this.hair.position.y = 0;
-		        this.hair.position.z = 0;
-
+				this.hair.position.x = this.boxX;
+		        this.hair.position.y = this.boxY;
+		        this.hair.position.z = this.boxZ;
+				this.hair.rotation.x = this.boxXR;
+				this.hair.rotation.y = this.boxYR;
+				this.hair.rotation.z = this.boxZR;
+				
+				console.log(this.hair.id);
          		this.scene.add(this.hair);
+				
 
-
+			/*
 				this.hair2 = new THREE.Mesh(this.crosshair, this.crosshairMaterial);
 		        this.hair2.castShadow = false;
 	            this.hair2.position.x = 0;
@@ -129,7 +167,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		        this.hair2.position.z = 0;
 
          		this.scene.add(this.hair2);
-
+			*/
 	},
 
 	sceneFunction: function (data){
@@ -172,6 +210,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 		//establish the rendererrererere
 
+		
         this.renderer.render(this.scene, this.camera);
 
 		console.log(this.renderer.getContext());
@@ -248,14 +287,14 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		*/
 
 
-		    var hexString=0x00308F/this.dataxyz[i][2]*5;
+		    var hexString=0xAAAAAA/this.dataxyz[i][2];
 			var vertexColor = new THREE.Color(hexString);
 
 
-				this.geometry.vertices.push(this.vertexTop);
+				/*this.geometry.vertices.push(this.vertexTop);
 				this.geometry.colors.push(vertexColor);
 				this.geometry.vertices.push(this.vertexBottom);
-				this.geometry.colors.push(vertexColor);
+				this.geometry.colors.push(vertexColor);*/
 				this.geometry.vertices.push(vertex);
 				this.geometry.colors.push(vertexColor);
 
@@ -443,7 +482,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	"a: Compass (hide/show) static",
 	"f: Floor (hide/show) static",
 	"-------------------------------------------- ",
-	"To Move the Model",
+	"b: box mode function ON/OFF",
+	"0-9 change the size of the box",
+	"-------------------------------------------- ",
+	"To Move the Model or the Box",
 	"x,y and z: selects the direction to move",
 	"LeftArrow: moves the model",
 	"RightArrow: moves the model",
@@ -467,7 +509,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.detailsk.appendChild(this.detailsk.text);
 	this.kinfo.appendChild(this.detailsk);  
 
-	for(var m=1;m<16;m++){
+	for(var m=1;m<19;m++){
 
 	this.detailsk = document.createElement("H3");
     if(m==5||m==12){
@@ -547,7 +589,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.scene.remove(this.particles);
 			//this.titleStatus.remove(this.titleStatus.text);
 			this.sceneFunction(data);
+			
+			
 
+	},
+	
+	updateBox: function(data){
+		
+		//hair is short for crosshair as in linebox has a crosshair. 
+		this.scene.remove(this.hair); 
+		this.crossHairFunction(data);
+		this.manualdraw(data);
+		
 	},
 
 
@@ -624,48 +677,111 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 	else if (data.code === 88 && data.state === "down") {
 			// x
-      this.change="x";
-	  this.changeValue=this.lookx;
-	  console.log("x pressed");
-      this.refresh(date);
-		
+			
+			if(this.boxAlive){
+				this.change="bx";
+				this.changeValue=this.boxX;
+				this.boxRotate=this.boxXR;
+				console.log("x box pressed");
+				this.refresh(date);
+				
+			}
+			else{
+				this.change="x";
+				this.changeValue=this.lookx;
+				console.log("x pressed");
+				this.refresh(date);
+			}
 		
 		} 
 		else if (data.code === 89 && data.state === "down") {
 			// y
-      this.change="y";
-	  this.changeValue=this.looky;
-	  console.log("y pressed");
-      this.refresh(date);
-		
+			
+			if(this.boxAlive){
+				this.change="by";
+				this.changeValue=this.boxY;
+				this.boxRotate=this.boxYR;
+				console.log("Y box pressed");
+				this.refresh(date);
+				
+			}
+			else{
+				this.change="y";
+				this.changeValue=this.looky;
+				console.log("y pressed");
+				this.refresh(date);
+			}
 		
 		}
 		else if (data.code === 90 && data.state === "down") {
 			// z
-      this.change="z";
-	  this.changeValue=this.lookz;
-	  console.log(" z pressed");
-      this.refresh(date);
-		
+			
+			if(this.boxAlive){
+				this.change="bz";
+				this.changeValue=this.boxZ;
+				this.boxRotate=this.boxZR;
+				console.log("Z box pressed");
+				this.refresh(date);
+				
+			}
+			else{
+				this.change="z";
+				this.changeValue=this.lookz;
+				console.log(" z pressed");
+				this.refresh(date);
+			}
 		
 		}else if (data.code === 37 && data.state === "down") {
 			// left
-			  this.changeValue=this.changeValue-this.coOef*.10;
+			  this.changeValue=this.changeValue-this.coOef*.05;
 			 console.log("value has change");
 			 console.log(this.changeValue);
-			 this.updateModel(data);
+			 if(this.boxAlive){this.updateBox(data);}
+			 else{this.updateModel(data);}
 			 
 	  
 		}  else if (data.code === 39 && data.state === "down") {
 			// right
-			 this.changeValue=this.changeValue+this.coOef*.10;
+			 this.changeValue=this.changeValue+this.coOef*.05;
 			 console.log("value has change");
 			 console.log(this.changeValue);
-			 this.updateModel(data);
+			  if(this.boxAlive){this.updateBox(data);}
+			 else{this.updateModel(data);}
 		
 	 
      
-		} else if (data.code === 38 && data.state === "down") {
+		}  else if (data.code === 188 && data.state === "down") {
+			// [,<]
+			if(this.change.length==2){
+			this.change = this.change + "R";
+			}
+			 console.log(this.change+ "rotation has change");
+			  if(this.boxAlive){
+				  this.boxRotate= this.boxRotate-.03;
+				  //this.hair.rotation.x-=2;
+				  this.updateBox(data);
+				  }
+			 else{this.updateModel(data);}
+		
+	 
+     
+		} else if (data.code === 190 && data.state === "down") {
+			// [.>]
+			console.log(this.change.length);
+			if(this.change.length==2){
+			this.change = this.change + "R";
+			}
+			 console.log(this.change+ "rotation has change");
+			  if(this.boxAlive){
+				  this.boxRotate= this.boxRotate+.03;
+				  //this.hair.rotation.x-=2;
+				  this.updateBox(data);
+				  }
+			 else{this.updateModel(data);}
+		
+	 
+     
+		}else if (data.code === 38 && data.state === "down") {
 			// down
 			if (this.modelNumber<this.ModCount-1){
 			this.modelNumber++;
@@ -689,7 +805,27 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 	 
      
-		}   
+		} else if (data.code === 66  && data.state === "down") {
+			// b for new box
+			console.log("b has been pressed");
+			if(this.boxAlive){this.boxAlive=false;}
+			else{this.boxAlive=true;}
+			
+		} else if ((data.code >47 &&  data.code <58) && data.state === "down") {
+				console.log("testing times");
+				if(this.boxAlive){
+				console.log(data.code-48);
+				this.boxSize=(data.code-48+1)*.1; //the extra one means 0 = 1 and 9 = 10 * coOef
+				this.updateBox(data);
+				}
+			else{
+				
+			}
+			
+		this.refresh(date);
+	 
+     
+		} 
 		
 	  }//end specialKey
 
