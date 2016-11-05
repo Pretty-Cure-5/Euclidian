@@ -39,6 +39,16 @@
 	padding  : 1%;
 }
 
+#boxControlEuclidian{
+	width    : 25%;
+	top      : 2%;
+	left     : 70%;
+	padding  : 1%;
+	border   : red;
+}
+
+
+
 /* Orange copy */
  .modelNumberDisplay{
 	top: 5%;

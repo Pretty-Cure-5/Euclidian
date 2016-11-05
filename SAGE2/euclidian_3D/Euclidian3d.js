@@ -71,6 +71,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.boxId=0;
 		this.boxAlive=false;
 		this.boxSize;
+		this.boxSizeX=0.5;
+		this.boxSizeY=0.5;;
+		this.boxSizeZ=0.5;;
 		this.boxX=0;
 		this.boxY=0;
 		this.boxZ=0;
@@ -78,12 +81,31 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.boxXR=0; //rotation
 		this.boxYR=0;
 		this.boxZR=0;
-
+		
+		
+		
+		
 	    this.camera   = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
 		//  this.camera.lookAt(new THREE.Vector3(this.lookx,this.looky,this.lookz));
-		this.camera.position.set(0,1.4*this.coOef,0);
-	
-       this.camera.lookAt (new THREE.Vector3 (0.0, 0.0, 0.0));
+		
+		this.camera.X=0;
+		this.camera.Y=1.4*this.coOef;
+		this.camera.Z=0;
+		
+		this.camera.PressX;
+		this.camera.PressY;
+		this.camera.PressZ;
+		
+		this.camera.HoldX;
+		this.camera.HoldY;
+		this.camera.HoldZ;
+		
+		this.camera.lookAtX=0;
+		this.camera.lookAtY=0;
+		this.camera.lookAtZ=0;
+		
+		this.camera.position.set(this.camera.X,this.camera.Y,this.camera.Z);
+	    this.camera.lookAt (new THREE.Vector3 (this.camera.lookAtX,this.camera.lookAtY,this.camera.lookAtZ));
 
         //controls
         this.orbitControls = new THREE.OrbitControls(this.camera, this.element);
@@ -92,7 +114,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		this.orbitControls.zoomSpeed   = 1.0;
 		//this.orbitControls.minPolarAngle = 0; // radians
        // this.orbitControls.maxPolarAngle = Math.PI; // radians
-        this.userPan = true;
+        this.userPan = false;
         this.userPanSpeed = 2.0;
 		this.speed = 0;
         this.clock = new THREE.Clock();
@@ -112,6 +134,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.sceneFunction(data);
 		
         this.shortcutKeysList(data);
+		
 
 	},
 
@@ -131,13 +154,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 					case "bxR": this.boxXR=this.boxRotate;  break;
 					case "byR": this.boxYR=this.boxRotate;  break;
 					case "bzR": this.boxZR=this.boxRotate;  break;
+					
 				}
-				console.log("working out where the box is: ");
+				/*console.log("working out where the box is: ");
 				console.log("model center" , this.lookx,this.looky,this.lookz);
-				console.log("box center" , this.boxX/this.coOef, this.boxY/this.coOef, this.boxZ/this.coOef);
-				console.log("so actual box location is:");
-				console.log((this.boxX-this.lookx)/this.coOef, (this.boxY-this.looky)/this.coOef, (this.boxZ-this.lookz)/this.coOef);
-		        this.crosshair = new THREE.BoxGeometry(this.coOef*this.boxSize,this.coOef*this.boxSize, this.coOef*this.boxSize);
+				console.log("box center" , this.boxX/this.coOef, this.boxY/this.coOef, this.boxZ/this.coOef);*/
+				
+				
+				console.log("Location: ",(this.boxX-this.lookx)/this.coOef, (this.boxY-this.looky)/this.coOef, (this.boxZ-this.lookz)/this.coOef);
+		        console.log("Size: ",this.boxSizeX,this.boxSizeY,this.boxSizeZ);
+				console.log("Rotation: ", this.boxXR,this.boxYR,this.boxZR);
+				
+			   this.crosshair = new THREE.BoxGeometry(this.coOef*this.boxSizeX,this.coOef*this.boxSizeY, this.coOef*this.boxSizeZ);
 		        //this.crosshair2 = new THREE.BoxGeometry(this.coOef*4.5, this.coOef*4.5, this.coOef*4.5);
 				this.crosshairColor = new THREE.Color("#E7FEFF");
 	            this.crosshairMaterial = new THREE.MeshBasicMaterial({
@@ -158,6 +186,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 				console.log(this.hair.id);
          		this.scene.add(this.hair);
 				
+				this.boxControlHideShow(data);
+				//this.boxDetails(data);
+				this.boxControlHideShow(data);
 
 			/*
 				this.hair2 = new THREE.Mesh(this.crosshair, this.crosshairMaterial);
@@ -229,7 +260,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		else if (this.modelDetailsInfo==0){
 		this.modelDetailsInfo=1;
 		}*/
-
+		
+		//adding the box controler info section
+		this.boxControl(data);
+		this.boxControlHideShow(data);
+		this.boxControlHideShow(data);
+	
 	},
 
     dataLoop: function (data){
@@ -411,7 +447,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     },
 
-	infoTitleFunction: function (data){
+	infoTitleFunction: function (data){//TODO
 
 	//TODO- this is to supply some minor info on the  header, work in progress
 
@@ -427,14 +463,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 	infoFunction: function(data)   {
 
-	//Box for Details styles
-	// -----------------------------------------------------
+	
 	this.info = document.createElement('div'); 
 	this.info.id = "infoEuclidian";
 	this.info.className = "info";
 
-	// Heading Styles
-	// -----------------------------------------------------
 	this.title = document.createElement("H2");
 	this.title.text = document.createTextNode("Model Details");
 	this.title.appendChild(this.title.text);
@@ -442,23 +475,15 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	
 	var metadata=this.dataxyz[0];
 	for(var m=0;m<7;m++){
-	
-	// Body Font Styles
-	// -----------------------------------------------------
-	this.details = document.createElement("H3");
-	this.details.style.position = "relative";
-	this.details.style.left     = "2%";
-	this.details.style.top      = "1%";
-	this.details.style.fontSize = "120%";
 		
+	this.details = document.createElement("H3");
 	this.details.text = document.createTextNode(metadata[m]);
 	this.details.appendChild(this.details.text);
 	this.info.appendChild(this.details);
 	this.info.style.fontFamily = this.font;   
 	}
 	
-	// Bottom Model Font Styles
-	// -----------------------------------------------------
+	
 	this.details = document.createElement("H2");
 	this.details.className = "modelNumberDisplay";
 	this.details.text = document.createTextNode("Model: "+(this.modelNumber+1) + " / " + this.ModCount);
@@ -477,46 +502,38 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 	this.title.text = document.createTextNode("Help"); */
 	this.keysList=[
 	"Help",
-	"h: Help (hide/show)",
-	"i: Info (hide/show)",
-	"a: Compass (hide/show) static",
-	"f: Floor (hide/show) static",
+	"[h]: Help (hide/show)",
+	"[i]: Info (hide/show)",
+	"[a]: Compass (hide/show) static",
+	"[f]: Floor (hide/show) static",
 	"-------------------------------------------- ",
-	"b: box mode function ON/OFF",
-	"0-9 change the size of the box",
+	"[b]: box mode function ON/OFF",
 	"-------------------------------------------- ",
 	"To Move the Model or the Box",
-	"x,y and z: selects the direction to move",
-	"LeftArrow: moves the model",
-	"RightArrow: moves the model",
-	"For example press (x) once",
-	"leftArrow 5 times",
+	"[x],[y] and [z]: direction/axis/size ",
+	"[0-9] change the size of the box",
+	" [UP] [DOWN] spin the box",
+	"[LeftArrow]: moves the model/Box",
+	"[RightArrow]: moves the model/Box",
+	"For example press [x] once",
+	"[leftArrow] 5 times",
 	"--------------------------------------------",
 	"Change the model ",
-	"UpArrow: Next Model",
-	"DownArrow: Prev Model",
+	"[,<] left ",
+	"[.>] right",
+	"--------------------------------------------"
 	];
 	   
 	   
 	this.detailsk = document.createElement("H2");
-	this.detailsk.style.position = "relative";
-	this.detailsk.style.left     = "2%";
-	this.detailsk.style.top      = "1%";
-	this.detailsk.style.color    = this.darkblue;
-	this.detailsk.style.fontSize = "140%";
-
 	this.detailsk.text = document.createTextNode(this.keysList[0]);
 	this.detailsk.appendChild(this.detailsk.text);
 	this.kinfo.appendChild(this.detailsk);  
 
-	for(var m=1;m<19;m++){
+	for(var m=1;m<21;m++){
 
 	this.detailsk = document.createElement("H3");
-    if(m==5||m==12){
-		
-		this.detailsk.style.color    = this.orange;
-	}
-	
+  	
 	this.detailsk.text = document.createTextNode(this.keysList[m]);
 	this.detailsk.appendChild(this.detailsk.text);
 	this.kinfo.appendChild(this.detailsk);
@@ -526,7 +543,68 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
    },
 
-    clearTheScene: function(data){
+    
+	boxControl: function(data){
+		
+	this.binfo = document.createElement('div');
+	this.binfo.id = "boxControlEuclidian";
+	this.binfo.className = "info";
+	/* this.title = document.createElement("H2");
+	this.title.text = document.createTextNode("Help"); */
+	   
+	this.detailsB = document.createElement("H2");
+	
+	this.detailsB.header = document.createTextNode("Box Controller ON");
+	this.detailsB.appendChild(this.detailsB.header);
+	this.binfo.appendChild(this.detailsB); 
+
+/*
+	this.boxList=[["X","Y","Z"],[this.boxX,this.boxY,this.boxZ]]
+	console.log(this.boxX);
+	for(var b=0;b<this.boxList.length+1;b++){
+
+	this.detailsB = document.createElement("H3");
+	this.detailsB.className = "boxCoords";
+	var id = "B"+b;
+  	this.detailsB.ID= id;
+	this.detailsB.text = document.createTextNode(this.boxList[0][b],this.boxList[1][b]);
+	this.detailsB.appendChild(this.detailsB.text);
+	this.binfo.appendChild(this.detailsB);
+	}
+	
+	*/
+
+	this.element.appendChild(this.binfo);
+
+
+
+	
+	},
+	
+	boxDetails:function(data){
+	
+	
+	
+		
+	this.boxList=[["X","Y","Z"],[this.boxX,this.boxY,this.boxZ]]
+	console.log(this.boxX);
+	for(var b=0;b<this.boxList.length+1;b++){
+	var id = "B"+b;
+	console.log(id);
+	this.detailsB = document.getElementById(id);
+	
+  	this.detailsB.text = document.createTextNode(this.boxList[0][b],this.boxList[1][b]);
+	//this.detailsB.appendChild(this.detailsB.text);
+	//this.binfo.appendChild(this.detailsB);
+	}
+	
+	this.element.appendChild(this.binfo);   
+		
+		
+	},
+	
+	
+	clearTheScene: function(data){
 
 		this.scene.remove(this.particles);
 		this.manualdraw(date);
@@ -554,7 +632,23 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.manualdraw(data);
 
     },
+    boxControlHideShow: function(data) {
 
+		
+		console.log(this.boxAlive);
+		if(this.boxAlive){
+			this.boxAlive=false;
+			this.binfo.style.display = "none";
+			}
+		else{
+			this.boxAlive=true;
+			this.binfo.style.display = "block";
+			}
+					
+			this.manualdraw(data);
+
+    },
+	
     load: function(date) {
 
 
@@ -616,8 +710,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
         if(eventType==="pointerPress" && (data.button==="left")) {
 
-          this.orbitControls.mouseDown(position.x,position.y,0);
-			console.log(this.camera.position);
+            this.orbitControls.mouseDown(position.x,position.y,0);
+		
+     		this.camera.PressX = position.x;
+			this.camera.PressY = position.y;
+			this.camera.PressZ = position.x;
+			
+			console.log("press", this.camera.position.x);
 			this.dragging=true;
             this.refresh(date);
 
@@ -627,10 +726,27 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		else if (eventType==="pointerMove" && this.dragging)
 		{
 			this.orbitControls.update();
-		  this.renderer.render(this.scene, this.camera);
-			this.orbitControls.mouseMove(position.x,position.y,position.z);
-      console.log("moving");
-			this.refresh(date);
+		    this.renderer.render(this.scene, this.camera);
+			//console.log(position.x,position.y);
+			console.log("hold", this.camera.position.x);
+			
+			if(this.userPan){	
+			
+            //console.log(this.camera.position.y);			
+			//this.camera.X = this.camera.X + (this.camera.PressX - position.x);
+			this.camera.position.y = this.camera.position.y + (this.camera.PressY/20 - position.y/20);
+			//this.camera.Z = this.camera.Z + ((this.camera.PressZ/10 - position.x/10));
+			this.camera.lookAtY=this.camera.lookAtY+(this.camera.PressY/20 - position.y/20);
+			//console.log(this.camera.position.y);
+		//	console.log(this.camera.lookAt);
+	        this.camera.lookAt(this.camera.lookAtX,this.camera.lookAtY,this.camera.lookAtZ);
+			//this.camera.position.set(this.camera.X,this.camera.Y,this.camera.Z);	
+		//	console.log(this.camera.lookAt);
+			}
+			else{
+			this.orbitControls.mouseMove(position.x,position.y);
+			}
+      		this.refresh(date);
 		}
 
 		else if (eventType === "pointerRelease" && (data.button === "left")) {
@@ -640,25 +756,30 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		else if(eventType==="pointerScroll"){
 
 			this.scrollAmount = data.wheelDelta;
-			console.log("scrolling");
-			console.log(this.scrollAmount/10);
 			this.orbitControls.scale((this.scrollAmount/10)*-1);
 			this.manualdraw(data);
 
 		}
 
-      
-	  
 	    else if (eventType === "specialKey"){
 
 
-	 if(data.code === 65 && data.state === "down") {
+	
+
+	if(data.code === 65 && data.state === "down") {
 			// a   for hide show coOrd arrows
     
 	  this.coOrdArrows(data);
 		this.refresh(date);
 		
-	 }     
+	 }  
+	 else if ( data.code === 80 && data.state === "down") {
+			// p for mouse pan
+    
+		if(this.userPan){this.userPan=false;}
+		else{this.userPan=true;}
+	 
+	}   
 	
     else if ( data.code === 70 && data.state === "down") {
 			// f   for hide show the floor
@@ -733,25 +854,30 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 		}else if (data.code === 37 && data.state === "down") {
 			// left
-			  this.changeValue=this.changeValue-this.coOef*.05;
-			 console.log("value has change");
-			 console.log(this.changeValue);
-			 if(this.boxAlive){this.updateBox(data);}
-			 else{this.updateModel(data);}
 			 
-	  
-		}  else if (data.code === 39 && data.state === "down") {
+			if(this.boxAlive){
+				this.changeValue=this.changeValue-this.coOef*.005;
+				this.updateBox(data);
+			}else{
+				this.changeValue=this.changeValue-this.coOef*.1;
+				this.updateModel(data);
+			}
+				
+			
+		}  else if (data.code === 39 && data.state === "down") { 
 			// right
-			 this.changeValue=this.changeValue+this.coOef*.05;
-			 console.log("value has change");
-			 console.log(this.changeValue);
-			  if(this.boxAlive){this.updateBox(data);}
-			 else{this.updateModel(data);}
+			 if(this.boxAlive){
+				this.changeValue=this.changeValue+this.coOef*.005;
+				this.updateBox(data);
+			}else{
+				this.changeValue=this.changeValue+this.coOef*.1;
+				this.updateModel(data);
+			}
 		
 	 
      
-		}  else if (data.code === 188 && data.state === "down") {
-			// [,<]
+		}  else if (data.code === 40 && data.state === "down") {
+			// up
 			if(this.change.length==2){
 			this.change = this.change + "R";
 			}
@@ -765,9 +891,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 	 
      
-		} else if (data.code === 190 && data.state === "down") {
-			// [.>]
-			console.log(this.change.length);
+		} else if (data.code === 38 && data.state === "down") {
+			// down
+			
 			if(this.change.length==2){
 			this.change = this.change + "R";
 			}
@@ -781,16 +907,16 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		
 	 
      
-		}else if (data.code === 38 && data.state === "down") {
-			// down
+		}else if (data.code === 190 && data.state === "down") {
+			// [.>]
 			if (this.modelNumber<this.ModCount-1){
 			this.modelNumber++;
 			this.updateModel(data);
 			}
 			
      
-		}else if (data.code === 40 && data.state === "down") {
-			// up
+		}else if (data.code === 188 && data.state === "down") {
+			// [,<]
 			 if(this.modelNumber > 0){
 			this.modelNumber--;
 			this.updateModel(data);
@@ -807,15 +933,51 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
      
 		} else if (data.code === 66  && data.state === "down") {
 			// b for new box
-			console.log("b has been pressed");
-			if(this.boxAlive){this.boxAlive=false;}
-			else{this.boxAlive=true;}
+			this.boxControlHideShow(data);
+			this.updateBox(data);
+			
+			
 			
 		} else if ((data.code >47 &&  data.code <58) && data.state === "down") {
-				console.log("testing times");
+				
+				
 				if(this.boxAlive){
 				console.log(data.code-48);
 				this.boxSize=(data.code-48+1)*.1; //the extra one means 0 = 1 and 9 = 10 * coOef
+				
+				switch (this.change){
+				
+				    case "bx": this.boxSizeX=this.boxSize; break;
+					case "by": this.boxSizeY=this.boxSize; break;
+					case "bz": this.boxSizeZ=this.boxSize; break;
+				}
+				
+				this.updateBox(data);
+				}
+			else{
+				
+			}
+			
+		this.refresh(date);
+	 
+     
+		} else if ((data.code ===189 ||  data.code ===187) && data.state === "down") {
+				
+				if(this.boxAlive){
+					
+					switch (data.code){
+							
+							case 189: var boxSizer= -0.01; break;	
+							case 187: var boxSizer= 0.01; break;
+						}
+								
+				switch (this.change){
+				
+				    case "bx": this.boxSizeX=this.boxSizeX+boxSizer; break;
+					case "by": this.boxSizeY=this.boxSizeY+boxSizer; break;
+					case "bz": this.boxSizeZ=this.boxSizeZ+boxSizer; break;
+				}
+				
 				this.updateBox(data);
 				}
 			else{
