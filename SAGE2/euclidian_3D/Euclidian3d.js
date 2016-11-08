@@ -17,11 +17,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     },
 
     addCSS: function(url, callback) {
-        var fileref = document.createElement("link")
+        var fileref = document.createElement("link");
         if(callback) fileref.onload = callback;
-        fileref.setAttribute("rel", "stylesheet")
-        fileref.setAttribute("type", "text/css")
-        fileref.setAttribute("href", url)
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("href", url);
         document.head.appendChild(fileref);
     },
 
@@ -72,8 +72,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.boxAlive = false;
         this.boxSize;
         this.boxSizeX = 0.5;
-        this.boxSizeY = 0.5;;
-        this.boxSizeZ = 0.5;;
+        this.boxSizeY = 0.5;
+        this.boxSizeZ = 0.5;
         this.boxX = 0;
         this.boxY = 0;
         this.boxZ = 0;
@@ -314,7 +314,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             if(large < range && coOrd[2] > 0) {
 
                 this.vertexTop.x = vertex.x;
-                this.vertexTop.y = vertex.y * .999;
+                this.vertexTop.y = vertex.y * 0.999;
                 this.vertexTop.z = vertex.z;
                 this.vertexBottom.x = vertex.x;
                 this.vertexBottom.y = vertex.y * 1.01;
@@ -609,7 +609,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.boxList = [
             ["X", "Y", "Z"],
             [this.boxX, this.boxY, this.boxZ]
-        ]
+        ];
         console.log(this.boxX);
         for(var b = 0; b < this.boxList.length + 1; b++) {
             var id = "B" + b;
@@ -861,10 +861,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 // left
 
                 if(this.boxAlive) {
-                    this.changeValue = this.changeValue - this.coOef * .005;
+                    this.changeValue = this.changeValue - this.coOef * 0.005;
                     this.updateBox(data);
                 } else {
-                    this.changeValue = this.changeValue - this.coOef * .1;
+                    this.changeValue = this.changeValue - this.coOef * 0.1;
                     this.updateModel(data);
                 }
 
@@ -872,10 +872,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             } else if(data.code === 39) {
                 // right
                 if(this.boxAlive) {
-                    this.changeValue = this.changeValue + this.coOef * .005;
+                    this.changeValue = this.changeValue + this.coOef * 0.005;
                     this.updateBox(data);
                 } else {
-                    this.changeValue = this.changeValue + this.coOef * .1;
+                    this.changeValue = this.changeValue + this.coOef * 0.1;
                     this.updateModel(data);
                 }
 
@@ -888,7 +888,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 }
                 console.log(this.change + "rotation has change");
                 if(this.boxAlive) {
-                    this.boxRotate = this.boxRotate - .03;
+                    this.boxRotate = this.boxRotate - 0.03;
                     //this.hair.rotation.x-=2;
                     this.updateBox(data);
                 } else {
@@ -905,7 +905,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 }
                 console.log(this.change + "rotation has change");
                 if(this.boxAlive) {
-                    this.boxRotate = this.boxRotate + .03;
+                    this.boxRotate = this.boxRotate + 0.03;
                     //this.hair.rotation.x-=2;
                     this.updateBox(data);
                 } else {
@@ -950,7 +950,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
                 if(this.boxAlive) {
                     console.log(data.code - 48);
-                    this.boxSize = (data.code - 48 + 1) * .1; //the extra one means 0 = 1 and 9 = 10 * coOef
+                    this.boxSize = (data.code - 48 + 1) * 0.1; //the extra one means 0 = 1 and 9 = 10 * coOef
 
                     switch(this.change) {
 
