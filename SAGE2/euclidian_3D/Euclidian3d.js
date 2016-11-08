@@ -774,18 +774,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.orbitControls.scale((this.scrollAmount / 10) * -1);
             this.manualdraw(data);
 
-        } else if(eventType === "specialKey") {
+        } else if(eventType === "specialKey" && data.state === "down") {
 
 
 
 
-            if(data.code === 65 && data.state === "down") {
+            if(data.code === 65) {
                 // a   for hide show coOrd arrows
 
                 this.coOrdArrows(data);
                 this.refresh(date);
 
-            } else if(data.code === 80 && data.state === "down") {
+            } else if(data.code === 80) {
                 // p for mouse pan
 
                 if(this.userPan) {
@@ -794,19 +794,19 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.userPan = true;
                 }
 
-            } else if(data.code === 70 && data.state === "down") {
+            } else if(data.code === 70) {
                 // f   for hide show the floor
 
                 this.floorFunction(data);
                 this.refresh(date);
 
-            } else if(data.code === 73 && data.state === "down") {
+            } else if(data.code === 73) {
                 // i   for hide show info
 
                 this.infoguiHideShow(data);
                 this.refresh(date);
 
-            } else if(data.code === 88 && data.state === "down") {
+            } else if(data.code === 88) {
                 // x
 
                 if(this.boxAlive) {
@@ -823,7 +823,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.refresh(date);
                 }
 
-            } else if(data.code === 89 && data.state === "down") {
+            } else if(data.code === 89) {
                 // y
 
                 if(this.boxAlive) {
@@ -840,7 +840,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.refresh(date);
                 }
 
-            } else if(data.code === 90 && data.state === "down") {
+            } else if(data.code === 90) {
                 // z
 
                 if(this.boxAlive) {
@@ -857,7 +857,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.refresh(date);
                 }
 
-            } else if(data.code === 37 && data.state === "down") {
+            } else if(data.code === 37) {
                 // left
 
                 if(this.boxAlive) {
@@ -869,7 +869,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 }
 
 
-            } else if(data.code === 39 && data.state === "down") {
+            } else if(data.code === 39) {
                 // right
                 if(this.boxAlive) {
                     this.changeValue = this.changeValue + this.coOef * .005;
@@ -881,7 +881,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 40 && data.state === "down") {
+            } else if(data.code === 40) {
                 // up
                 if(this.change.length == 2) {
                     this.change = this.change + "R";
@@ -897,7 +897,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 38 && data.state === "down") {
+            } else if(data.code === 38) {
                 // down
 
                 if(this.change.length == 2) {
@@ -914,7 +914,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 190 && data.state === "down") {
+            } else if(data.code === 190) {
                 // [.>]
                 if(this.modelNumber < this.ModCount - 1) {
                     this.modelNumber++;
@@ -922,7 +922,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 }
 
 
-            } else if(data.code === 188 && data.state === "down") {
+            } else if(data.code === 188) {
                 // [,<]
                 if(this.modelNumber > 0) {
                     this.modelNumber--;
@@ -931,21 +931,21 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 72 && data.state === "down") {
+            } else if(data.code === 72) {
                 // h
                 this.keymapHideShow(data);
                 this.refresh(date);
 
 
 
-            } else if(data.code === 66 && data.state === "down") {
+            } else if(data.code === 66) {
                 // b for new box
                 this.boxControlHideShow(data);
                 this.updateBox(data);
 
 
 
-            } else if((data.code > 47 && data.code < 58) && data.state === "down") {
+            } else if((data.code > 47 && data.code < 58)) {
 
 
                 if(this.boxAlive) {
@@ -973,7 +973,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.refresh(date);
 
 
-            } else if((data.code === 189 || data.code === 187) && data.state === "down") {
+            } else if((data.code === 189 || data.code === 187)) {
 
                 if(this.boxAlive) {
 
