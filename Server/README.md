@@ -23,6 +23,7 @@ wget -O- 'https://raw.githubusercontent.com/Pretty-Cure-5/Euclidian/master/Serve
 # cd to the git repo
 nohup node sys.js &
 
+# server address
 http://___.___.___.___:1337/
 # reconfigure from the 1337 server
 # synchronise from the 1337 server
