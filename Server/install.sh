@@ -18,8 +18,8 @@ project=https://github.com/Pretty-Cure-5/Euclidian.git
 # https://bitbucket.org/sage2/sage2/wiki/
 sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
 # http://openjdk.java.net/install/
-jre=openjdk-8-jre;
-jdk=openjdk-8-jdk;
+jre=openjdk-6-jre;
+jdk=openjdk-6-jdk;
 # http://www.scala-lang.org/download/
 scala=scala-2.11.8.deb;
 
@@ -58,6 +58,8 @@ yes | sudo apt-get -y dist-upgrade --force-yes;
 ################################################################################
 # Install Packages                                                             #
 ################################################################################
+sudo add-apt-repository -y ppa:openjdk-r/ppa
+sudo apt-get -y update;
 # SAGE2ubuntu.sh installs git
 yes | sudo apt-get -y install --force-yes\
     `#iptables-persistent`\
@@ -133,15 +135,16 @@ sudo apt-get -y autoclean;
 ################################################################################
 # Java 2>&1 | Head
 printf '\ecShyam Has Your Anomaly Mitigated! :D\n\nINSTALLED:\n';
-vim   --version | head -n 1;
-git   --version;
+vim   --version |  head -n 1;
+git   --version ;
 printf 'NodeJS ';
-node  --version;
-printf 'NPM ';
-npm   --version;
-scala  -version;
-java   -version  |& head -n 1;
-javac  -version;
+node  --version ;
+printf 'NPM '   ;
+npm   --version ;
+scala  -version ;
+scalac -version ;
+java   -version |& head -n 1;
+javac  -version ;
 
 ################################################################################
 # You know nothing Jon Snow...until; it is known! :D                           #
