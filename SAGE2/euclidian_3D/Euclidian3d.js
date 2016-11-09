@@ -119,7 +119,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.speed = 0;
         this.clock = new THREE.Clock();
         this.delta = this.clock.getDelta();
-        console.log(this.delta);
+       // console.log(this.delta);
         this.orbitControls.update(this.delta);
         this.orbitControls.autoRotateSpeed = this.speed;
 
@@ -143,7 +143,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-        console.log(this.change);
+        //console.log(this.change);
 
 
         switch(this.change) {
@@ -195,7 +195,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.hair.rotation.y = this.boxYR;
         this.hair.rotation.z = this.boxZR;
 
-        console.log(this.hair.id);
+        //console.log(this.hair.id);
         this.scene.add(this.hair);
 
         this.boxControlHideShow(data);
@@ -226,10 +226,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
         //	this.crossHairFunction(data);
 
-        console.log(this.change);
+      //  console.log(this.change);
         if(this.change == "x") {
             this.lookx = this.changeValue;
-            console.log(this.lookx);
+           // console.log(this.lookx);
         }
         if(this.change == "y") {
 
@@ -259,8 +259,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
         this.renderer.render(this.scene, this.camera);
 
-        console.log(this.renderer.getContext());
-        console.log(this.renderer.info);
+       // console.log(this.renderer.getContext());
+       // console.log(this.renderer.info);
 
         //adding the custom widgetbuttons
         this.widgetButtons(data);
@@ -660,7 +660,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     boxControlHideShow: function(data) {
 
 
-        console.log(this.boxAlive);
+       // console.log(this.boxAlive);
         if(this.boxAlive) {
             this.boxAlive = false;
             this.binfo.style.display = "none";
@@ -740,7 +740,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.camera.PressY = position.y;
             this.camera.PressZ = position.x;
 
-            console.log("press", this.camera.position.x);
+         //   console.log("press", this.camera.position.x);
             this.dragging = true;
             this.refresh(date);
 
@@ -748,7 +748,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.orbitControls.update();
             this.renderer.render(this.scene, this.camera);
             //console.log(position.x,position.y);
-            console.log("hold", this.camera.position.x);
+          //  console.log("hold", this.camera.position.x);
 
             if(this.userPan) {
 
@@ -813,13 +813,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.change = "bx";
                     this.changeValue = this.boxX;
                     this.boxRotate = this.boxXR;
-                    console.log("x box pressed");
+                  //  console.log("x box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "x";
                     this.changeValue = this.lookx;
-                    console.log("x pressed");
+                  //  console.log("x pressed");
                     this.refresh(date);
                 }
 
@@ -830,13 +830,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.change = "by";
                     this.changeValue = this.boxY;
                     this.boxRotate = this.boxYR;
-                    console.log("Y box pressed");
+                 //   console.log("Y box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "y";
                     this.changeValue = this.looky;
-                    console.log("y pressed");
+                  //  console.log("y pressed");
                     this.refresh(date);
                 }
 
@@ -847,13 +847,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     this.change = "bz";
                     this.changeValue = this.boxZ;
                     this.boxRotate = this.boxZR;
-                    console.log("Z box pressed");
+                  //  console.log("Z box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "z";
                     this.changeValue = this.lookz;
-                    console.log(" z pressed");
+                  //  console.log(" z pressed");
                     this.refresh(date);
                 }
 
@@ -886,7 +886,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 if(this.change.length == 2) {
                     this.change = this.change + "R";
                 }
-                console.log(this.change + "rotation has change");
+               // console.log(this.change + "rotation has change");
                 if(this.boxAlive) {
                     this.boxRotate = this.boxRotate - 0.03;
                     //this.hair.rotation.x-=2;
@@ -903,7 +903,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 if(this.change.length == 2) {
                     this.change = this.change + "R";
                 }
-                console.log(this.change + "rotation has change");
+               // console.log(this.change + "rotation has change");
                 if(this.boxAlive) {
                     this.boxRotate = this.boxRotate + 0.03;
                     //this.hair.rotation.x-=2;
@@ -949,7 +949,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
                 if(this.boxAlive) {
-                    console.log(data.code - 48);
+                   // console.log(data.code - 48);
                     this.boxSize = (data.code - 48 + 1) * 0.1; //the extra one means 0 = 1 and 9 = 10 * coOef
 
                     switch(this.change) {
