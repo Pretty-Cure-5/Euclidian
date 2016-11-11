@@ -684,9 +684,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.firstTime = Date.now();
 
         if(this.speed != 0) {
-            setTimeout(function() {
-
-            }, 1000 / 30);
             this.orbitControls.update(); //this is for the <<spin>>
             this.renderer.render(this.scene, this.camera);
             //this.refresh(date);
@@ -732,7 +729,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     event: function(eventType, position, user_id, data, date) {
 
 
-        if(eventType === "pointerPress" && (data.button === "left")) {
+        if(eventType === "pointerPress" && data.button === "left") {
 
             this.orbitControls.mouseDown(position.x, position.y, 0);
 
@@ -787,13 +784,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
             } else if(data.code === 80) {
                 // p for mouse pan
-
-                if(this.userPan) {
-                    this.userPan = false;
-                } else {
-                    this.userPan = true;
-                }
-
+                this.userPan = !this.userPan;
             } else if(data.code === 70) {
                 // f   for hide show the floor
 
@@ -945,7 +936,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if((data.code > 47 && data.code < 58)) {
+            } else if(data.code > 47 && data.code < 58) {
 
 
                 if(this.boxAlive) {
@@ -966,14 +957,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     }
 
                     this.updateBox(data);
-                } else {
-
                 }
 
                 this.refresh(date);
 
 
-            } else if((data.code === 189 || data.code === 187)) {
+            } else if(data.code === 189 || data.code === 187) {
 
                 if(this.boxAlive) {
 
@@ -1001,8 +990,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     }
 
                     this.updateBox(data);
-                } else {
-
                 }
 
                 this.refresh(date);
@@ -1029,37 +1016,26 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 case "Clear":
                     break;
                 case "NextModel":
-
                     if(this.modelNumber < this.ModCount - 1) {
                         this.modelNumber++;
                         this.updateModel(data);
                     }
-
                     break;
                 case "PrevModel":
-
                     if(this.modelNumber > 0) {
                         this.modelNumber--;
                         this.updateModel(data);
                     }
                     break;
                 case "reset":
-
-
-
                     break;
-
                 case "slidermodel":
-
                     console.log(this.modelNumber);
-
                     // Code to be executed when slider is pressed upon by the user
                     break;
-
                 default:
                     console.log("No handler for:", data.identifier);
                     return;
-
             }
 
             this.refresh(date);
