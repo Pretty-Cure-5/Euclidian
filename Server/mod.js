@@ -13,8 +13,9 @@ const
 
 // Invariable Variables
 const
-    home     = fs.readFileSync('./etc/home')
-    , server = fs.readFileSync(home + '/server')
+    home     = fs.readFileSync('./etc/home').toString().replace('\n', '')
+    , server = fs.readFileSync(home + '/server').toString().replace('\n', '')
+    , port   = fs.readFileSync('./etc/port').toString().replace('\n', '')
 ;
 
 // handleExternal || handleInternal
@@ -285,16 +286,16 @@ const hello_world = (response) => {
         )
         + '<br/>'
         + link(
-            'http://' + server + ':1337/sync', 'GitHub-NeCTAR synchronisation'
+            'http://' + server + ':' + port + '/sync', 'GitHub-NeCTAR synchronisation'
         )
         + '<br/>'
         + link(
-            'http://' + server + ':1337/firewall?ip='
+            'http://' + server + ':' + port + '/firewall?ip='
             , 'Firewall Invitations'
         )
         + '<br/>'
         + link(
-            'http://' + server + ':1337/config?'
+            'http://' + server + ':' + port + '/config?'
             + 'cols=2&rows=1&width=1920&height=1080&hex=003366&rgba=255,0,0,1.0'
             , 'SAGE2 Reconfigurations'
         )

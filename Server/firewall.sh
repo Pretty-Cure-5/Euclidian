@@ -6,6 +6,7 @@
 # Configuration                                                                #
 ################################################################################
 read -r home  < <(head -n 1 ./etc/home);
+read -r port  < <(head -n 1 ./etc/port);
 read -r ports < <(head -n 1 ./etc/loopholes);
 phonebook="$home"/phonebook;
 
@@ -82,8 +83,8 @@ sudo iptables -A OUTPUT -o lo -j ACCEPT;
 # Personal invitations                                                         #
 ################################################################################
 while read address; do
-    sudo iptables -A INPUT  -p tcp -s $address/32 --match multiport --dports $ports -j ACCEPT;
-    sudo iptables -A OUTPUT -p tcp -d $address/32 --match multiport --sports $ports -j ACCEPT;
+    sudo iptables -A INPUT  -p tcp -s $address/32 --match multiport --dports $ports,$port -j ACCEPT;
+    sudo iptables -A OUTPUT -p tcp -d $address/32 --match multiport --sports $ports,$port -j ACCEPT;
 done <"$phonebook";
 
 ################################################################################

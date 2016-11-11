@@ -2,7 +2,7 @@
 nohup node sys.js -li &
 vim sys.js; node sys.js -li
 */
-console.log('Booting the 1337 server...');
+console.log('Booting the Euclidian server...');
 
 ////////////////////////////////////////////////////////////////////////////////
 console.log('Importing modules...');
@@ -20,7 +20,7 @@ console.log('Declaring constants...');
 const
     home     = fs.readFileSync('./etc/home').toString().replace('\n', '')
     , server = fs.readFileSync(home + '/server').toString().replace('\n', '')
-    , port   = 1337
+    , port   = fs.readFileSync('./etc/port').toString().replace('\n', '')
 ;
 
 console.log('home: ' + home);
