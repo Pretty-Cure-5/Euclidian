@@ -27,6 +27,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     build: function(data) {
 
+	    this.firstTime = Date.now();
+		this.to60 = 0;
+		
         this.SAGE2Init("div", data);
         this.resizeEvents = "continuous";
         this.element.id = "div" + data.id;
@@ -64,7 +67,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.changeValue = 0;
         this.mouseX = 0;
         this.mouseY = 0;
-        this.maxFPS = 24;
+        this.maxFPS = 24; // not in place, 
         this.dragging = false;
 
         //adding the box overlay information and settings
@@ -654,15 +657,23 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     //draw is continuous
     draw: function(date) {
 
-        this.firstTime = Date.now();
+        
+		
 
         if(this.speed != 0) {
+			
             this.orbitControls.update(); //this is for the <<spin>>
             this.renderer.render(this.scene, this.camera);
-            //this.refresh(date);
-        }
-        this.lastTime = Date.now();
-        //console.log(this.lastTime-this.firstTime);
+            this.to60= this.to60+1;
+			
+			this.lastTime = Date.now();
+			if (this.lastTime-this.firstTime>999){
+			
+        console.log("FPS: " + this.to60);
+		this.firstTime = Date.now();
+		this.to60=0;
+        }}
+        
     },
 
     manualdraw: function(date) {
