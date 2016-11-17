@@ -11,7 +11,7 @@
 var Euclidian3d = SAGE2_WebGLApp.extend({
 
     init: function(data) {
-
+    //add timer
         this.build(data);
 
     },
@@ -131,7 +131,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
         this.scene = new THREE.Scene();
-        this.sceneFunction(data);
+       
+
+	   this.sceneFunction(data);
 
         this.shortcutKeysList(data);
 
@@ -141,11 +143,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     crossHairFunction: function(data) {
 
-
-
-        //console.log(this.change);
-
-
+        /*key stroke switch select for box manipulation*/ 
         switch(this.change) {
 
             case "bx":
@@ -168,21 +166,19 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 break;
 
         }
-        /*console.log("working out where the box is: ");
-        console.log("model center" , this.lookx,this.looky,this.lookz);
-        console.log("box center" , this.boxX/this.coOef, this.boxY/this.coOef, this.boxZ/this.coOef);*/
-
-
+       
+        /*Display the cube in console realated to the location from the kinect scanner*/
         console.log("Location: ", (this.boxX - this.lookx) / this.coOef, (this.boxY - this.looky) / this.coOef, (this.boxZ - this.lookz) / this.coOef);
         console.log("Size: ", this.boxSizeX, this.boxSizeY, this.boxSizeZ);
         console.log("Rotation: ", this.boxXR, this.boxYR, this.boxZR);
 
         this.crosshair = new THREE.BoxGeometry(this.coOef * this.boxSizeX, this.coOef * this.boxSizeY, this.coOef * this.boxSizeZ);
         //this.crosshair2 = new THREE.BoxGeometry(this.coOef*4.5, this.coOef*4.5, this.coOef*4.5);
-        this.crosshairColor = new THREE.Color("#E7FEFF");
+        this.crosshairColor = new THREE.Color("#ed1c40");
         this.crosshairMaterial = new THREE.MeshBasicMaterial({
             color: this.crosshairColor,
-            wireframe: true
+            wireframe: true,
+			wireframe_linewidth: 30 
         });
         this.hair = "hair" + this.boxId++;
 
@@ -202,19 +198,14 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         //this.boxDetails(data);
         this.boxControlHideShow(data);
 
-        /*
-				this.hair2 = new THREE.Mesh(this.crosshair, this.crosshairMaterial);
-		        this.hair2.castShadow = false;
-	            this.hair2.position.x = 0;
-		        this.hair2.position.y = this.distance;
-		        this.hair2.position.z = 0;
-
-         		this.scene.add(this.hair2);
-			*/
+  
     },
 
     sceneFunction: function(data) {
-
+		
+		//timer start --------------------------------------------------->
+		this.timer= new Date();
+		
         this.particles = null;
         this.geometry = null;
         this.geometry = new THREE.Geometry();
@@ -222,11 +213,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.dataxyz = datamenuXYZ[this.modelNumber];
         this.ModCount = Object.keys(datamenuXYZ).length;
         this.particleCount = Object.keys(this.dataxyz).length;
-        console.log("model number: " + this.modelNumber);
+        
 
-        //	this.crossHairFunction(data);
-
-      //  console.log(this.change);
+     
         if(this.change == "x") {
             this.lookx = this.changeValue;
            // console.log(this.lookx);
@@ -241,26 +230,19 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         }
 
 
-        //this is the loop that reads the data from the .js file this.dataxyz
+        /*this is the loop that reads the data from the .js file this.dataxyz*/
         this.dataLoop(data);
 
-        //place the loop data into the pointcloud
+        /*place the loop data into the pointcloud*/
         this.particles = new THREE.PointCloud(this.geometry, new THREE.PointCloudMaterial({
             size: this.Size,
             vertexColors: true,
             opacity: 0.7
         }));
 
-        //add the point cloud to the scene
+        //add the point cloud to the scene and render
         this.scene.add(this.particles);
-
-        //establish the rendererrererere
-
-
         this.renderer.render(this.scene, this.camera);
-
-       // console.log(this.renderer.getContext());
-       // console.log(this.renderer.info);
 
         //adding the custom widgetbuttons
         this.widgetButtons(data);
@@ -269,17 +251,21 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         //adding the info section
         this.infoFunction(data);
         this.infoguiHideShow(data);
-        /*if (this.modelDetailsInfo==1){
-        	
-        }
-        else if (this.modelDetailsInfo==0){
-        this.modelDetailsInfo=1;
-        }*/
-
+        
         //adding the box controler info section
         this.boxControl(data);
         this.boxControlHideShow(data);
         this.boxControlHideShow(data);
+
+		//timer End console.log (model number,this.particleCount, timerr End() ) --------------------------------------------------->
+      
+	  
+      console.log("Test Data:");
+	  console.log("model number: " + this.modelNumber);
+	  console.log("Data points: " + this.particleCount);
+	  this.endtimer= new Date();
+	  console.log("Time to load: " + (this.endtimer - this.timer));
+	  console.log("\n");
 
     },
 
@@ -289,7 +275,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
             var coOrd = this.dataxyz[i];
-
             var vertex = new THREE.Vector3();
             this.vertexTop = new THREE.Vector3();
             this.vertexBottom = new THREE.Vector3();
@@ -297,11 +282,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
             vertex.x = (coOrd[0] * this.coOef * -1) + this.lookx;
-            vertex.y = (coOrd[2] * this.coOef * -1) + this.looky; //-this.coOef*2.5)*-1;
+			// kinect is inverted so we swap y and z heree
+			vertex.y = (coOrd[2] * this.coOef * -1) + this.looky; 
             vertex.z = (coOrd[1] * this.coOef * -1) + this.lookz;
 
             //get the largest and smallest coord
-            var range = 6.5; //the kinnect should not be able to collect more than this.
+            var range = 3.5; //the kinnect should not be able to collect more than this.
 
             var large = coOrd[0];
             if(coOrd[1] > large) {
@@ -467,20 +453,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             identifier: "PrevModel"
         });
 
-        this.controls.addSlider({
-            begin: 0,
-            end: this.ModCount,
-            increments: 1,
-            appObj: this.modelNumber,
-            property: "model",
-            id: "slidermodel",
-            identifier: "slidermodel",
-            caption: "Mod",
-            labelFormatFunction: function(value, end) {
-                return(value * end / 100).toFixed(1);
-            }
-        });
-
+       
 
         this.controls.finishedAddingControls();
 
@@ -1029,10 +1002,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                     break;
                 case "reset":
                     break;
-                case "slidermodel":
-                    console.log(this.modelNumber);
-                    // Code to be executed when slider is pressed upon by the user
-                    break;
+             
                 default:
                     console.log("No handler for:", data.identifier);
                     return;
