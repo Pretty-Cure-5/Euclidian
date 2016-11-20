@@ -18,8 +18,8 @@ project=https://github.com/Pretty-Cure-5/Euclidian.git
 # https://bitbucket.org/sage2/sage2/wiki/
 sage2=https://bitbucket.org/sage2/sage2/downloads/SAGE2ubuntu.sh;
 # http://openjdk.java.net/install/
-jre=openjdk-6-jre;
-jdk=openjdk-6-jdk;
+jre=openjdk-8-jre;
+jdk=openjdk-8-jdk;
 # http://www.scala-lang.org/download/
 scala=scala-2.11.8.deb;
 
@@ -53,7 +53,7 @@ printf '\n';
 ################################################################################
 sudo apt-get -y update;
 # OMG WTF FFS!!!
-yes | sudo apt-get -y dist-upgrade --force-yes;
+sudo apt-get -y dist-upgrade --force-yes;
 
 ################################################################################
 # Install Packages                                                             #
@@ -66,6 +66,7 @@ yes | sudo apt-get -y install --force-yes\
     "$jre"\
     "$jdk"\
     `#git`\
+    make\
     vim;
 # Fucking iptables-persistent!!!
 # I may have to move iptables-persistent to the very front of the line...
@@ -83,7 +84,7 @@ wget "$cpan"/CPAN/authors/id/Z/ZO/ZOFFIX/"$tarball";
 tar -zxvf "$tarball";
 cd "$module";
 perl Makefile.PL;
-#make;
+make;
 #make test;
 sudo make install;
 cd "$home";
