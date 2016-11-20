@@ -102,12 +102,15 @@ sudo apt-get -y install scala;
 ################################################################################
 # SAGE2                                                                        #
 ################################################################################
-cd "$home";
-wget -O- "$sage2" | sh;
 # `npm test` failed; requires node-demux
 # libswscale-dev required for node-demux
 # imagemagick    required for SAGE2
 sudo apt-get -y install libswscale-dev imagemagick;
+mkdir sage2;
+cd sage2;
+npm install node-demux;
+cd "$home";
+wget -O- "$sage2" | sh;
 cd sage2;
 npm install node-demux;
 
