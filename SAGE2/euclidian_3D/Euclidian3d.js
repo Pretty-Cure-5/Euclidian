@@ -85,7 +85,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.boxYR = 0;
         this.boxZR = 0;
 
-
+		//testing
+		this.testing = false;
 
 
         this.camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
@@ -215,7 +216,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
         this.dataxyz = datamenuXYZ[this.modelNumber];
         this.ModCount = Object.keys(datamenuXYZ).length;
-        this.particleCount = Object.keys(this.dataxyz).length;
+		
+		if(this.testing){
+			this.particleCount= this.testingCount;
+			if(this.particleCount > Object.keys(this.dataxyz).length)
+			this.particleCount = Object.keys(this.dataxyz).length;
+			}
+        else this.particleCount = Object.keys(this.dataxyz).length;
         
 
      
@@ -263,13 +270,15 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 		//timer End console.log (model number,this.particleCount, timerr End() ) --------------------------------------------------->
       
 	  
-      console.log("Test Data:");
+   /*   console.log("Test Data:");
 	  console.log("model number: " + this.modelNumber);
 	  console.log("Data points: " + this.particleCount);
-	  this.endtimer= new Date();
-	  console.log("Time to load: " + (this.endtimer - this.timer));
+    */	 
+	 this.endtimer= new Date();
+	/*
+      console.log("Time to load: " + (this.endtimer - this.timer));
 	  console.log("\n");
-
+    */
     },
 
     dataLoop: function(data) {
@@ -310,27 +319,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.vertexBottom.z = vertex.z;
 
 
-                /* old check to find floating xyz tags
-
-			var Y=vertex.y;
-			var X=vertex.x;
-			var Z=vertex.z;
-			if (i>2){
-			var OLDY= (this.dataxyz[i-1][2]*this.coOef-(this.coOef*2.5))*-1;
-			var OLDX= (this.dataxyz[i-1][0]*this.coOef);
-			var OLDZ= (this.dataxyz[i-1][1]*this.coOef);
-		    }
-
-		   if (i<this.particleCount-1){
-		   var NEWY= (this.dataxyz[i+1][2]*this.coOef-(this.coOef*2.5))*-1;
-		   var NEWX= (this.dataxyz[i+1][0]*this.coOef);
-		    var NEWZ= (this.dataxyz[i+1][1]*this.coOef);
-		    }
-
-			console.log(0x00308F/this.dataxyz[i][2]);
-		*/
-
-
+      
                 var hexString = 0xAAAAAA / this.dataxyz[i][2];
                 var vertexColor = new THREE.Color(hexString);
 
@@ -342,20 +331,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.geometry.vertices.push(vertex);
                 this.geometry.colors.push(vertexColor);
 
-                /* this is the solid to ground loop
-                	if(Y<this.coOef*1.1){
-                	var TG=0;
-                	/*while (Y>0){
-                	var vertexToground = "vtx"+TG;
-                	TG++;
-                	Y=Y-(this.coOef*.02);
-                	this.vertexToground= new THREE.Vector3();
-                	this.vertexToground.x=vertex.x;
-                	this.vertexToground.y= Y;
-                	this.vertexToground.z=vertex.z;
-                	this.geometry.vertices.push(this.vertexToground);
-                    this.geometry.colors.push(vertexColor);
-                	}}*/
+          
 
             }
 
@@ -658,8 +634,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     draw: function(date) {
 
         
-		
-
         if(this.speed != 0) {
 			
             this.orbitControls.update(); //this is for the <<spin>>
@@ -669,16 +643,29 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 			this.lastTime = Date.now();
 			if (this.lastTime-this.firstTime>999){
 			
-        console.log("FPS: " + this.to60);
+			
+       
 		this.firstTime = Date.now();
 		this.to60=0;
+		//console.log(this.testFPSresults);
         }}
+		
+		
         
     },
 
     manualdraw: function(date) {
 
         this.renderer.render(this.scene, this.camera);
+
+    },
+	
+	wait: function(data) {
+
+          setTimeout(function () {
+               
+    }, 1000);
+
 
     },
 
@@ -688,6 +675,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.scene.remove(this.particles);
         //this.titleStatus.remove(this.titleStatus.text);
         this.sceneFunction(data);
+		
 
 
 
@@ -758,7 +746,114 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         } else if(eventType === "specialKey" && data.state === "down") {
 
 
-
+			if(data.code === 84) {
+				
+				this.testResults = [Date().toLocaleString(), "Test_1"];
+				this.t1;
+				this.t2;
+				this.t3;
+				this.testFPSResults = ["Test_1-FPS:"];
+                // t  for running testing script
+                
+				for (this.round = 0; this.round< 10; this.round++){
+				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
+					
+				
+                this.testTimerStart= new Date();
+                
+				console.log(".");
+				
+				this.pause = new Date();
+				
+				//stress test reload the model 10 times + timer loop
+				this.number=0;
+				while (this.pause-this.testTimerStart<1000){
+					
+					this.pause = new Date();
+					this.updateModel(data);
+					this.manualdraw(date);
+					this.refresh(date);
+					this.number++;
+									
+				}
+				
+					
+				
+				this.testTimerEnd= new Date();
+				this.testResults.push(this.testTimerEnd-this.testTimerStart)
+				this.testFPSResults.push(this.number);
+				
+				}
+					this.testResults.push(" ");
+					this.testFPSResults.push(" ");
+				}
+				
+				console.log(this.testResults);
+				console.log(this.testFPSResults);
+				
+				this.t1=this.testResults;
+				this.testResults = ["Test_2"];
+				
+				
+				for (this.round = 0; this.round< 10; this.round++){
+				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
+				
+                this.testTimerStart= new Date();
+                this.refresh(date);
+				this.modelNumber= this.testi;
+                this.updateModel(data);
+				this.testTimerEnd= new Date();
+				this.testResults.push(this.testTimerEnd-this.testTimerStart)
+				
+				console.log(".");			
+				
+				}
+				this.testResults.push(" ");
+				}
+				
+				
+				console.log(this.testResults);
+				
+				
+				
+				console.log(this.testResults);
+				console.log(this.testFPSresults);
+				this.t2=this.testResults;
+				this.testResults = ["Test_3"];
+				
+				this.testing = true;
+				this.testingCount = 250;
+				for (this.round = 0; this.round< 10; this.round++){
+					
+				this.testResults.push(this.testingCount + "=");	
+				
+				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
+				
+                this.testTimerStart= new Date();
+                this.refresh(date);
+				this.modelNumber= this.testi;
+                this.updateModel(data);
+				this.testTimerEnd= new Date();
+				this.testResults.push(this.testTimerEnd-this.testTimerStart)
+				
+				console.log(".");
+				
+				 
+				
+				}
+				this.testResults.push(" ");
+				this.testingCount = this.testingCount *2
+				}
+				
+				
+				console.log(this.t1+this.testFPSResults+this.t2+this.testResults);
+				
+				
+				
+				
+				
+				
+            }
 
             if(data.code === 65) {
                 // a   for hide show coOrd arrows
