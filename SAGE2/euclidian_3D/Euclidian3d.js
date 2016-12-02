@@ -1,4 +1,21 @@
 "use strict";
+// Euclidian is available for use under the ASL.
+// Copyright © 2016
+//
+//
+// See full text, terms and conditions in the LICENSE file.
+// https://github.com/Pretty-Cure-5/Euclidian/blob/master/LICENSE
+//
+//
+// Designed for the RMIT VXLab.
+// http://www.rmit.edu.au/about/our-locations-and-facilities/facilities/research-facilities/virtual-experiences-laboratory
+//
+//
+// Original implementation: Pretty Cure 5
+//
+// See full list in the README.md file.
+// https://github.com/Pretty-Cure-5/Euclidian/blob/master/README.md
+
 
 /* global THREE */
 
@@ -11,14 +28,14 @@
 var Euclidian3d = SAGE2_WebGLApp.extend({
 
     init: function(data) {
-    //add timer
+        //add timer
         this.build(data);
 
     },
 
     addCSS: function(url, callback) {
         var fileref = document.createElement("link");
-        if(callback) fileref.onload = callback;
+        if (callback) fileref.onload = callback;
         fileref.setAttribute("rel", "stylesheet");
         fileref.setAttribute("type", "text/css");
         fileref.setAttribute("href", url);
@@ -27,9 +44,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     build: function(data) {
 
-	    this.firstTime = Date.now();
-		this.to60 = 0;
-		
+        this.firstTime = Date.now();
+        this.to60 = 0;
+
         this.SAGE2Init("div", data);
         this.resizeEvents = "continuous";
         this.element.id = "div" + data.id;
@@ -85,12 +102,10 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.boxYR = 0;
         this.boxZR = 0;
 
-		//testing
-		this.testing = false;
+        this.testing = false; /*only used in the test cases*/
 
 
         this.camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
-        //  this.camera.lookAt(new THREE.Vector3(this.lookx,this.looky,this.lookz));
 
         this.camera.X = 0;
         this.camera.Y = 1.4 * this.coOef;
@@ -116,14 +131,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.scrollAmount = 0;
         this.orbitControls.autoRotate = true;
         this.orbitControls.zoomSpeed = 1.0;
-        //this.orbitControls.minPolarAngle = 0; // radians
-        // this.orbitControls.maxPolarAngle = Math.PI; // radians
         this.userPan = false;
         this.userPanSpeed = 2.0;
         this.speed = 0;
         this.clock = new THREE.Clock();
         this.delta = this.clock.getDelta();
-       // console.log(this.delta);
         this.orbitControls.update(this.delta);
         this.orbitControls.autoRotateSpeed = this.speed;
 
@@ -133,12 +145,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.renderer.setSize(this.width, this.height);
         this.element.appendChild(this.renderer.domElement);
 
-
         this.scene = new THREE.Scene();
-       
 
-	   this.sceneFunction(data);
-
+        this.sceneFunction(data);
         this.shortcutKeysList(data);
 
 
@@ -147,8 +156,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     crossHairFunction: function(data) {
 
-        /*key stroke switch select for box manipulation*/ 
-        switch(this.change) {
+        /*key stroke switch select for box manipulation*/
+        switch (this.change) {
 
             case "bx":
                 this.boxX = this.changeValue;
@@ -170,19 +179,18 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 break;
 
         }
-       
+
         /*Display the cube in console realated to the location from the kinect scanner*/
         console.log("Location: ", (this.boxX - this.lookx) / this.coOef, (this.boxY - this.looky) / this.coOef, (this.boxZ - this.lookz) / this.coOef);
         console.log("Size: ", this.boxSizeX, this.boxSizeY, this.boxSizeZ);
         console.log("Rotation: ", this.boxXR, this.boxYR, this.boxZR);
 
         this.crosshair = new THREE.BoxGeometry(this.coOef * this.boxSizeX, this.coOef * this.boxSizeY, this.coOef * this.boxSizeZ);
-        //this.crosshair2 = new THREE.BoxGeometry(this.coOef*4.5, this.coOef*4.5, this.coOef*4.5);
         this.crosshairColor = new THREE.Color("#ed1c40");
         this.crosshairMaterial = new THREE.MeshBasicMaterial({
             color: this.crosshairColor,
             wireframe: true,
-			wireframe_linewidth: 30 
+            wireframe_linewidth: 30
         });
         this.hair = "hair" + this.boxId++;
 
@@ -195,46 +203,42 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.hair.rotation.y = this.boxYR;
         this.hair.rotation.z = this.boxZR;
 
-        //console.log(this.hair.id);
         this.scene.add(this.hair);
 
         this.boxControlHideShow(data);
-        //this.boxDetails(data);
         this.boxControlHideShow(data);
 
-  
+
     },
 
     sceneFunction: function(data) {
-		
-		//timer start --------------------------------------------------->
-		this.timer= new Date();
-		
+
+
         this.particles = null;
         this.geometry = null;
         this.geometry = new THREE.Geometry();
 
         this.dataxyz = datamenuXYZ[this.modelNumber];
         this.ModCount = Object.keys(datamenuXYZ).length;
-		
-		if(this.testing){
-			this.particleCount= this.testingCount;
-			if(this.particleCount > Object.keys(this.dataxyz).length)
-			this.particleCount = Object.keys(this.dataxyz).length;
-			}
-        else this.particleCount = Object.keys(this.dataxyz).length;
-        
 
-     
-        if(this.change == "x") {
+        //part of the testing program
+       /* if (this.testing) {
+            this.particleCount = this.testingCount;
+            if (this.particleCount > Object.keys(this.dataxyz).length)
+                this.particleCount = Object.keys(this.dataxyz).length;
+        } else this.particleCount = Object.keys(this.dataxyz).length;*/
+		
+		this.particleCount = Object.keys(this.dataxyz).length;
+
+        if (this.change == "x") {
             this.lookx = this.changeValue;
-           // console.log(this.lookx);
+            // console.log(this.lookx);
         }
-        if(this.change == "y") {
+        if (this.change == "y") {
 
             this.looky = this.changeValue;
         }
-        if(this.change == "z") {
+        if (this.change == "z") {
 
             this.lookz = this.changeValue;
         }
@@ -257,33 +261,20 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         //adding the custom widgetbuttons
         this.widgetButtons(data);
 
-
         //adding the info section
         this.infoFunction(data);
         this.infoguiHideShow(data);
-        
+
         //adding the box controler info section
         this.boxControl(data);
         this.boxControlHideShow(data);
         this.boxControlHideShow(data);
 
-		//timer End console.log (model number,this.particleCount, timerr End() ) --------------------------------------------------->
-      
-	  
-   /*   console.log("Test Data:");
-	  console.log("model number: " + this.modelNumber);
-	  console.log("Data points: " + this.particleCount);
-    */	 
-	 this.endtimer= new Date();
-	/*
-      console.log("Time to load: " + (this.endtimer - this.timer));
-	  console.log("\n");
-    */
     },
 
     dataLoop: function(data) {
 
-        for(var i = 1; i < this.particleCount; i++) {
+        for (var i = 1; i < this.particleCount; i++) {
 
 
             var coOrd = this.dataxyz[i];
@@ -294,22 +285,23 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
             vertex.x = (coOrd[0] * this.coOef * -1) + this.lookx;
-			// kinect is inverted so we swap y and z heree
-			vertex.y = (coOrd[2] * this.coOef * -1) + this.looky; 
+            // kinect is inverted so we swap y and z heree
+            vertex.y = (coOrd[2] * this.coOef * -1) + this.looky;
             vertex.z = (coOrd[1] * this.coOef * -1) + this.lookz;
 
             //get the largest and smallest coord
-            var range = 3.5; //the kinnect should not be able to collect more than this.
+            //the kinnect should not be able to collect more than this 3.5 meters.
 
+            var range = 3.5;
             var large = coOrd[0];
-            if(coOrd[1] > large) {
+            if (coOrd[1] > large) {
                 large = coOrd[1];
             }
-            if(coOrd[2] > large) {
+            if (coOrd[2] > large) {
                 large = coOrd[2];
             }
 
-            if(large < range && coOrd[2] > 0) {
+            if (large < range && coOrd[2] > 0) {
 
                 this.vertexTop.x = vertex.x;
                 this.vertexTop.y = vertex.y * 0.999;
@@ -319,7 +311,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.vertexBottom.z = vertex.z;
 
 
-      
+
                 var hexString = 0xAAAAAA / this.dataxyz[i][2];
                 var vertexColor = new THREE.Color(hexString);
 
@@ -331,7 +323,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.geometry.vertices.push(vertex);
                 this.geometry.colors.push(vertexColor);
 
-          
+
 
             }
 
@@ -341,8 +333,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     coOrdArrows: function(data) {
 
-        console.log("arrows");
-        if(this.arrows == 0) {
+        //this will place the x, y and z arrows into the scene 
+        if (this.arrows == 0) {
             this.from = new THREE.Vector3(0, 0, 0);
             this.tox = new THREE.Vector3(this.coOef * 1, 0, 0);
             this.directionx = this.tox.clone().sub(this.from);
@@ -364,7 +356,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.scene.add(this.arrowHelperz);
             this.renderer.render(this.scene, this.camera);
             this.arrows = 1;
-            console.log("arrows2");
+
         } else {
 
             this.scene.remove(this.arrowHelperx);
@@ -372,7 +364,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.scene.remove(this.arrowHelperz);
             this.renderer.render(this.scene, this.camera);
             this.arrows = 0;
-            console.log("arrows3");
 
         }
 
@@ -380,7 +371,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     floorFunction: function(data) {
 
-        if(this.floors == 0) {
+        if (this.floors == 0) {
 
             var floorspace = new THREE.BoxGeometry(this.coOef * 3.5, 0, this.coOef * 3.5);
             var floorcolor = new THREE.Color("#E7FEFF");
@@ -432,26 +423,14 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             identifier: "PrevModel"
         });
 
-       
+
 
         this.controls.finishedAddingControls();
 
 
     },
 
-    infoTitleFunction: function(data) { //TODO
 
-        //TODO- this is to supply some minor info on the  header, work in progress
-
-        this.AppTitle = document.getElementById(data.id + "_title");
-        this.titleStatus = this.AppTitle.childNodes[4];
-        this.titleStatus.className = "apptitleupdate";
-        console.log(this.titleStatus.className);
-        this.titleStatus.text = document.createTextNode("___Model: " + (this.modelNumber + 1) + " / " + this.ModCount);
-        this.titleStatus.appendChild(this.titleStatus.text);
-        this.AppTitle.appendChild(this.titleStatus);
-
-    },
 
     infoFunction: function(data) {
 
@@ -466,7 +445,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.info.appendChild(this.title);
 
         var metadata = this.dataxyz[0];
-        for(var m = 0; m < 7; m++) {
+        for (var m = 0; m < 7; m++) {
 
             this.details = document.createElement("H3");
             this.details.text = document.createTextNode(metadata[m]);
@@ -490,8 +469,6 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.kinfo = document.createElement('div');
         this.kinfo.id = "keysEuclidian";
         this.kinfo.className = "info";
-        /* this.title = document.createElement("H2");
-        this.title.text = document.createTextNode("Help"); */
         this.keysList = [
             "Help", "[h]: Help (hide/show)", "[i]: Info (hide/show)", "[a]: Compass (hide/show) static", "[f]: Floor (hide/show) static", "-------------------------------------------- ", "[b]: box mode function ON/OFF", "-------------------------------------------- ", "To Move the Model or the Box", "[x],[y] and [z]: direction/axis/size ", "[0-9] change the size of the box", " [UP] [DOWN] spin the box", "[LeftArrow]: moves the model/Box", "[RightArrow]: moves the model/Box", "For example press [x] once", "[leftArrow] 5 times", "--------------------------------------------", "Change the model ", "[,<] left ", "[.>] right", "--------------------------------------------"
         ];
@@ -502,7 +479,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.detailsk.appendChild(this.detailsk.text);
         this.kinfo.appendChild(this.detailsk);
 
-        for(var m = 1; m < 21; m++) {
+        for (var m = 1; m < 21; m++) {
 
             this.detailsk = document.createElement("H3");
 
@@ -521,56 +498,33 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.binfo = document.createElement('div');
         this.binfo.id = "boxControlEuclidian";
         this.binfo.className = "info";
-        /* this.title = document.createElement("H2");
-        this.title.text = document.createTextNode("Help"); */
-
         this.detailsB = document.createElement("H2");
-
         this.detailsB.header = document.createTextNode("Box Controller ON");
         this.detailsB.appendChild(this.detailsB.header);
         this.binfo.appendChild(this.detailsB);
-
-        /*
-        	this.boxList=[["X","Y","Z"],[this.boxX,this.boxY,this.boxZ]]
-        	console.log(this.boxX);
-        	for(var b=0;b<this.boxList.length+1;b++){
-
-        	this.detailsB = document.createElement("H3");
-        	this.detailsB.className = "boxCoords";
-        	var id = "B"+b;
-          	this.detailsB.ID= id;
-        	this.detailsB.text = document.createTextNode(this.boxList[0][b],this.boxList[1][b]);
-        	this.detailsB.appendChild(this.detailsB.text);
-        	this.binfo.appendChild(this.detailsB);
-        	}
-        	
-        	*/
-
         this.element.appendChild(this.binfo);
-
-
-
 
     },
 
     boxDetails: function(data) {
 
-
-
+        /*Future development
+         * this will display on the main appCore
+         * to be fully implemented
+         */
 
         this.boxList = [
             ["X", "Y", "Z"],
             [this.boxX, this.boxY, this.boxZ]
         ];
         console.log(this.boxX);
-        for(var b = 0; b < this.boxList.length + 1; b++) {
+        for (var b = 0; b < this.boxList.length + 1; b++) {
             var id = "B" + b;
             console.log(id);
             this.detailsB = document.getElementById(id);
 
             this.detailsB.text = document.createTextNode(this.boxList[0][b], this.boxList[1][b]);
-            //this.detailsB.appendChild(this.detailsB.text);
-            //this.binfo.appendChild(this.detailsB);
+
         }
 
         this.element.appendChild(this.binfo);
@@ -591,7 +545,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     infoguiHideShow: function(data) {
 
-        if(this.info.style.display == "none") {
+        if (this.info.style.display == "none") {
             this.info.style.display = "block";
         } else {
             this.info.style.display = "none";
@@ -601,7 +555,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     },
     keymapHideShow: function(data) {
 
-        if(this.kinfo.style.display == "none") {
+        if (this.kinfo.style.display == "none") {
             this.kinfo.style.display = "block";
         } else {
             this.kinfo.style.display = "none";
@@ -612,8 +566,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     boxControlHideShow: function(data) {
 
 
-       // console.log(this.boxAlive);
-        if(this.boxAlive) {
+        if (this.boxAlive) {
             this.boxAlive = false;
             this.binfo.style.display = "none";
         } else {
@@ -633,25 +586,24 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     //draw is continuous
     draw: function(date) {
 
-        
-        if(this.speed != 0) {
-			
+
+        if (this.speed != 0) {
+
             this.orbitControls.update(); //this is for the <<spin>>
             this.renderer.render(this.scene, this.camera);
-            this.to60= this.to60+1;
-			
-			this.lastTime = Date.now();
-			if (this.lastTime-this.firstTime>999){
-			
-			
-       
-		this.firstTime = Date.now();
-		this.to60=0;
-		//console.log(this.testFPSresults);
-        }}
-		
-		
-        
+            this.to60 = this.to60 + 1;
+
+            this.lastTime = Date.now();
+            if (this.lastTime - this.firstTime > 999) {
+
+                this.firstTime = Date.now();
+                this.to60 = 0;
+
+            }
+        }
+
+
+
     },
 
     manualdraw: function(date) {
@@ -659,12 +611,12 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.renderer.render(this.scene, this.camera);
 
     },
-	
-	wait: function(data) {
 
-          setTimeout(function () {
-               
-    }, 1000);
+    wait: function(data) {
+
+        setTimeout(function() {
+
+        }, 1000);
 
 
     },
@@ -673,9 +625,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
         this.element.removeChild(this.info);
         this.scene.remove(this.particles);
-        //this.titleStatus.remove(this.titleStatus.text);
         this.sceneFunction(data);
-		
+
 
 
 
@@ -701,7 +652,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
     event: function(eventType, position, user_id, data, date) {
 
 
-        if(eventType === "pointerPress" && data.button === "left") {
+        if (eventType === "pointerPress" && data.button === "left") {
 
             this.orbitControls.mouseDown(position.x, position.y, 0);
 
@@ -709,17 +660,17 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             this.camera.PressY = position.y;
             this.camera.PressZ = position.x;
 
-         //   console.log("press", this.camera.position.x);
+            //   console.log("press", this.camera.position.x);
             this.dragging = true;
             this.refresh(date);
 
-        } else if(eventType === "pointerMove" && this.dragging) {
+        } else if (eventType === "pointerMove" && this.dragging) {
             this.orbitControls.update();
             this.renderer.render(this.scene, this.camera);
             //console.log(position.x,position.y);
-          //  console.log("hold", this.camera.position.x);
+            //  console.log("hold", this.camera.position.x);
 
-            if(this.userPan) {
+            if (this.userPan) {
 
                 //console.log(this.camera.position.y);			
                 //this.camera.X = this.camera.X + (this.camera.PressX - position.x);
@@ -735,202 +686,200 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.orbitControls.mouseMove(position.x, position.y);
             }
             this.refresh(date);
-        } else if(eventType === "pointerRelease" && (data.button === "left")) {
+        } else if (eventType === "pointerRelease" && (data.button === "left")) {
             this.dragging = false;
-        } else if(eventType === "pointerScroll") {
+        } else if (eventType === "pointerScroll") {
 
             this.scrollAmount = data.wheelDelta;
             this.orbitControls.scale((this.scrollAmount / 10) * -1);
             this.manualdraw(data);
 
-        } else if(eventType === "specialKey" && data.state === "down") {
+        } else if (eventType === "specialKey" && data.state === "down") {
 
+            /*
+            if (data.code === 84) {
 
-			if(data.code === 84) {
-				
-				this.testResults = [Date().toLocaleString(), "Test_1"];
-				this.t1;
-				this.t2;
-				this.t3;
-				this.testFPSResults = ["Test_1-FPS:"];
+                this.testResults = [Date().toLocaleString(), "Test_1"];
+                this.t1;
+                this.t2;
+                this.t3;
+                this.testFPSResults = ["Test_1-FPS:"];
                 // t  for running testing script
-                
-				for (this.round = 0; this.round< 10; this.round++){
-				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
-					
-				
-                this.testTimerStart= new Date();
-                
-				console.log(".");
-				
-				this.pause = new Date();
-				
-				//stress test reload the model 10 times + timer loop
-				this.number=0;
-				while (this.pause-this.testTimerStart<1000){
-					
-					this.pause = new Date();
-					this.updateModel(data);
-					this.manualdraw(date);
-					this.refresh(date);
-					this.number++;
-									
-				}
-				
-					
-				
-				this.testTimerEnd= new Date();
-				this.testResults.push(this.testTimerEnd-this.testTimerStart)
-				this.testFPSResults.push(this.number);
-				
-				}
-					this.testResults.push(" ");
-					this.testFPSResults.push(" ");
-				}
-				
-				console.log(this.testResults);
-				console.log(this.testFPSResults);
-				
-				this.t1=this.testResults;
-				this.testResults = ["Test_2"];
-				
-				
-				for (this.round = 0; this.round< 10; this.round++){
-				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
-				
-                this.testTimerStart= new Date();
-                this.refresh(date);
-				this.modelNumber= this.testi;
-                this.updateModel(data);
-				this.testTimerEnd= new Date();
-				this.testResults.push(this.testTimerEnd-this.testTimerStart)
-				
-				console.log(".");			
-				
-				}
-				this.testResults.push(" ");
-				}
-				
-				
-				console.log(this.testResults);
-				
-				
-				
-				console.log(this.testResults);
-				console.log(this.testFPSresults);
-				this.t2=this.testResults;
-				this.testResults = ["Test_3"];
-				
-				this.testing = true;
-				this.testingCount = 250;
-				for (this.round = 0; this.round< 10; this.round++){
-					
-				this.testResults.push(this.testingCount + "=");	
-				
-				for (this.testi = 0; this.testi < this.ModCount; this.testi++){
-				
-                this.testTimerStart= new Date();
-                this.refresh(date);
-				this.modelNumber= this.testi;
-                this.updateModel(data);
-				this.testTimerEnd= new Date();
-				this.testResults.push(this.testTimerEnd-this.testTimerStart)
-				
-				console.log(".");
-				
-				 
-				
-				}
-				this.testResults.push(" ");
-				this.testingCount = this.testingCount *2
-				}
-				
-				
-				console.log(this.t1+this.testFPSResults+this.t2+this.testResults);
-				
-				
-				
-				
-				
-				
-            }
 
-            if(data.code === 65) {
+                for (this.round = 0; this.round < 10; this.round++) {
+                    for (this.testi = 0; this.testi < this.ModCount; this.testi++) {
+
+
+                        this.testTimerStart = new Date();
+
+                        console.log(".");
+
+                        this.pause = new Date();
+
+                        //stress test reload the model 10 times + timer loop
+                        this.number = 0;
+                        while (this.pause - this.testTimerStart < 1000) {
+
+                            this.pause = new Date();
+                            this.updateModel(data);
+                            this.manualdraw(date);
+                            this.refresh(date);
+                            this.number++;
+
+                        }
+
+
+
+                        this.testTimerEnd = new Date();
+                        this.testResults.push(this.testTimerEnd - this.testTimerStart)
+                        this.testFPSResults.push(this.number);
+
+                    }
+                    this.testResults.push(" ");
+                    this.testFPSResults.push(" ");
+                }
+
+                console.log(this.testResults);
+                console.log(this.testFPSResults);
+
+                this.t1 = this.testResults;
+                this.testResults = ["Test_2"];
+
+
+                for (this.round = 0; this.round < 10; this.round++) {
+                    for (this.testi = 0; this.testi < this.ModCount; this.testi++) {
+
+                        this.testTimerStart = new Date();
+                        this.refresh(date);
+                        this.modelNumber = this.testi;
+                        this.updateModel(data);
+                        this.testTimerEnd = new Date();
+                        this.testResults.push(this.testTimerEnd - this.testTimerStart)
+
+                        console.log(".");
+
+                    }
+                    this.testResults.push(" ");
+                }
+
+
+                console.log(this.testResults);
+
+
+
+                console.log(this.testResults);
+                console.log(this.testFPSresults);
+                this.t2 = this.testResults;
+                this.testResults = ["Test_3"];
+
+                this.testing = true;
+                this.testingCount = 250;
+                for (this.round = 0; this.round < 10; this.round++) {
+
+                    this.testResults.push(this.testingCount + "=");
+
+                    for (this.testi = 0; this.testi < this.ModCount; this.testi++) {
+
+                        this.testTimerStart = new Date();
+                        this.refresh(date);
+                        this.modelNumber = this.testi;
+                        this.updateModel(data);
+                        this.testTimerEnd = new Date();
+                        this.testResults.push(this.testTimerEnd - this.testTimerStart)
+
+                        console.log(".");
+
+
+
+                    }
+                    this.testResults.push(" ");
+                    this.testingCount = this.testingCount * 2
+                }
+
+
+                console.log(this.t1 + this.testFPSResults + this.t2 + this.testResults);
+
+
+
+
+            }
+			*/
+            if (data.code === 65) {
                 // a   for hide show coOrd arrows
 
                 this.coOrdArrows(data);
                 this.refresh(date);
 
-            } else if(data.code === 80) {
+            } else if (data.code === 80) {
                 // p for mouse pan
                 this.userPan = !this.userPan;
-            } else if(data.code === 70) {
+            } else if (data.code === 70) {
                 // f   for hide show the floor
 
                 this.floorFunction(data);
                 this.refresh(date);
 
-            } else if(data.code === 73) {
+            } else if (data.code === 73) {
                 // i   for hide show info
 
                 this.infoguiHideShow(data);
                 this.refresh(date);
 
-            } else if(data.code === 88) {
+            } else if (data.code === 88) {
                 // x
 
-                if(this.boxAlive) {
+                if (this.boxAlive) {
                     this.change = "bx";
                     this.changeValue = this.boxX;
                     this.boxRotate = this.boxXR;
-                  //  console.log("x box pressed");
+                    //  console.log("x box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "x";
                     this.changeValue = this.lookx;
-                  //  console.log("x pressed");
+                    //  console.log("x pressed");
                     this.refresh(date);
                 }
 
-            } else if(data.code === 89) {
+            } else if (data.code === 89) {
                 // y
 
-                if(this.boxAlive) {
+                if (this.boxAlive) {
                     this.change = "by";
                     this.changeValue = this.boxY;
                     this.boxRotate = this.boxYR;
-                 //   console.log("Y box pressed");
+                    //   console.log("Y box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "y";
                     this.changeValue = this.looky;
-                  //  console.log("y pressed");
+                    //  console.log("y pressed");
                     this.refresh(date);
                 }
 
-            } else if(data.code === 90) {
+            } else if (data.code === 90) {
                 // z
 
-                if(this.boxAlive) {
+                if (this.boxAlive) {
                     this.change = "bz";
                     this.changeValue = this.boxZ;
                     this.boxRotate = this.boxZR;
-                  //  console.log("Z box pressed");
+                    //  console.log("Z box pressed");
                     this.refresh(date);
 
                 } else {
                     this.change = "z";
                     this.changeValue = this.lookz;
-                  //  console.log(" z pressed");
+                    //  console.log(" z pressed");
                     this.refresh(date);
                 }
 
-            } else if(data.code === 37) {
+            } else if (data.code === 37) {
                 // left
 
-                if(this.boxAlive) {
+                if (this.boxAlive) {
                     this.changeValue = this.changeValue - this.coOef * 0.005;
                     this.updateBox(data);
                 } else {
@@ -939,9 +888,9 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 }
 
 
-            } else if(data.code === 39) {
+            } else if (data.code === 39) {
                 // right
-                if(this.boxAlive) {
+                if (this.boxAlive) {
                     this.changeValue = this.changeValue + this.coOef * 0.005;
                     this.updateBox(data);
                 } else {
@@ -951,13 +900,13 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 40) {
+            } else if (data.code === 40) {
                 // up
-                if(this.change.length == 2) {
+                if (this.change.length == 2) {
                     this.change = this.change + "R";
                 }
-               // console.log(this.change + "rotation has change");
-                if(this.boxAlive) {
+                // console.log(this.change + "rotation has change");
+                if (this.boxAlive) {
                     this.boxRotate = this.boxRotate - 0.03;
                     //this.hair.rotation.x-=2;
                     this.updateBox(data);
@@ -967,16 +916,16 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 38) {
+            } else if (data.code === 38) {
                 // down
 
-                if(this.change.length == 2) {
+                if (this.change.length == 2) {
                     this.change = this.change + "R";
                 }
-               // console.log(this.change + "rotation has change");
-                if(this.boxAlive) {
+
+                if (this.boxAlive) {
                     this.boxRotate = this.boxRotate + 0.03;
-                    //this.hair.rotation.x-=2;
+
                     this.updateBox(data);
                 } else {
                     this.updateModel(data);
@@ -984,45 +933,45 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
 
 
-            } else if(data.code === 190) {
+            } else if (data.code === 190) {
                 // [.>]
-                if(this.modelNumber < this.ModCount - 1) {
+                if (this.modelNumber < this.ModCount - 1) {
                     this.modelNumber++;
                     this.updateModel(data);
                 }
 
 
-            } else if(data.code === 188) {
+            } else if (data.code === 188) {
                 // [,<]
-                if(this.modelNumber > 0) {
+                if (this.modelNumber > 0) {
                     this.modelNumber--;
                     this.updateModel(data);
                 }
 
 
 
-            } else if(data.code === 72) {
+            } else if (data.code === 72) {
                 // h
                 this.keymapHideShow(data);
                 this.refresh(date);
 
 
 
-            } else if(data.code === 66) {
+            } else if (data.code === 66) {
                 // b for new box
                 this.boxControlHideShow(data);
                 this.updateBox(data);
 
 
 
-            } else if(data.code > 47 && data.code < 58) {
+            } else if (data.code > 47 && data.code < 58) {
+                // numbers 0 - 9 for default box size chnages
 
-
-                if(this.boxAlive) {
-                   // console.log(data.code - 48);
+                if (this.boxAlive) {
+                    // console.log(data.code - 48);
                     this.boxSize = (data.code - 48 + 1) * 0.1; //the extra one means 0 = 1 and 9 = 10 * coOef
 
-                    switch(this.change) {
+                    switch (this.change) {
 
                         case "bx":
                             this.boxSizeX = this.boxSize;
@@ -1041,11 +990,11 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 this.refresh(date);
 
 
-            } else if(data.code === 189 || data.code === 187) {
+            } else if (data.code === 189 || data.code === 187) {
 
-                if(this.boxAlive) {
+                if (this.boxAlive) {
 
-                    switch(data.code) {
+                    switch (data.code) {
 
                         case 189:
                             var boxSizer = -0.01;
@@ -1055,7 +1004,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                             break;
                     }
 
-                    switch(this.change) {
+                    switch (this.change) {
 
                         case "bx":
                             this.boxSizeX = this.boxSizeX + boxSizer;
@@ -1077,8 +1026,8 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             }
 
         } //end specialKey
-        else if(eventType === "widgetEvent") {
-            switch(data.identifier) {
+        else if (eventType === "widgetEvent") {
+            switch (data.identifier) {
 
                 case "Spin+":
                     //this.infogui(data);
@@ -1095,20 +1044,20 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 case "Clear":
                     break;
                 case "NextModel":
-                    if(this.modelNumber < this.ModCount - 1) {
+                    if (this.modelNumber < this.ModCount - 1) {
                         this.modelNumber++;
                         this.updateModel(data);
                     }
                     break;
                 case "PrevModel":
-                    if(this.modelNumber > 0) {
+                    if (this.modelNumber > 0) {
                         this.modelNumber--;
                         this.updateModel(data);
                     }
                     break;
                 case "reset":
                     break;
-             
+
                 default:
                     console.log("No handler for:", data.identifier);
                     return;
