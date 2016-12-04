@@ -53,7 +53,7 @@ printf '\n';
 ################################################################################
 sudo apt-get -y update;
 # OMG WTF FFS!!!
-sudo apt-get dist-upgrade;
+#sudo apt-get -y dist-upgrade;
 
 ################################################################################
 # Install Packages                                                             #
