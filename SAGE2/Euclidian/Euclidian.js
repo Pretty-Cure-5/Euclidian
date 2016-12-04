@@ -22,10 +22,10 @@
 /**
  * WebGL 3D application, inherits from SAGE2_WebGLApp
  *
- * @class Euclidian3d
+ * @class Euclidian
  */
 
-var Euclidian3d = SAGE2_WebGLApp.extend({
+var Euclidian = SAGE2_WebGLApp.extend({
 
     init: function(data) {
         //add timer
@@ -53,7 +53,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         console.log(data.id);
 
         //cssStyles:
-        this.addCSS(this.resrcPath + "EuclidianCss.css", null);
+        this.addCSS(this.resrcPath + "Euclidian.css", null);
 
         this.modelNumber = 0;
         this.arrows = 0;
@@ -84,7 +84,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
         this.changeValue = 0;
         this.mouseX = 0;
         this.mouseY = 0;
-        this.maxFPS = 24; // not in place, 
+        this.maxFPS = 24; // not in place,
         this.dragging = false;
 
         //adding the box overlay information and settings
@@ -227,7 +227,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
             if (this.particleCount > Object.keys(this.dataxyz).length)
                 this.particleCount = Object.keys(this.dataxyz).length;
         } else this.particleCount = Object.keys(this.dataxyz).length;*/
-		
+
 		this.particleCount = Object.keys(this.dataxyz).length;
 
         if (this.change == "x") {
@@ -333,7 +333,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     coOrdArrows: function(data) {
 
-        //this will place the x, y and z arrows into the scene 
+        //this will place the x, y and z arrows into the scene
         if (this.arrows == 0) {
             this.from = new THREE.Vector3(0, 0, 0);
             this.tox = new THREE.Vector3(this.coOef * 1, 0, 0);
@@ -634,7 +634,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
     updateBox: function(data) {
 
-        //hair is short for crosshair as in linebox has a crosshair. 
+        //hair is short for crosshair as in linebox has a crosshair.
         this.scene.remove(this.hair);
         this.crossHairFunction(data);
         this.manualdraw(data);
@@ -672,7 +672,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
 
             if (this.userPan) {
 
-                //console.log(this.camera.position.y);			
+                //console.log(this.camera.position.y);
                 //this.camera.X = this.camera.X + (this.camera.PressX - position.x);
                 this.camera.position.y = this.camera.position.y + (this.camera.PressY / 20 - position.y / 20);
                 //this.camera.Z = this.camera.Z + ((this.camera.PressZ/10 - position.x/10));
@@ -680,7 +680,7 @@ var Euclidian3d = SAGE2_WebGLApp.extend({
                 //console.log(this.camera.position.y);
                 //	console.log(this.camera.lookAt);
                 this.camera.lookAt(this.camera.lookAtX, this.camera.lookAtY, this.camera.lookAtZ);
-                //this.camera.position.set(this.camera.X,this.camera.Y,this.camera.Z);	
+                //this.camera.position.set(this.camera.X,this.camera.Y,this.camera.Z);
                 //	console.log(this.camera.lookAt);
             } else {
                 this.orbitControls.mouseMove(position.x, position.y);

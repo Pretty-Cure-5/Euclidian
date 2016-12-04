@@ -1,0 +1,27 @@
+{
+    "main_script": "Euclidian.js",
+    "icon": "./img/logo.png",
+    "width": 1200,
+    "height": 800,
+    "animation": true,
+    "resize": "free",
+    "dependencies": [
+        "./lib/Three.js",
+        "./lib/OrbitControls.js",
+        "./lib/SceneExporter.js",
+        "./lib/SceneLoader.js",
+        "./lib/dat.gui.js",
+        "./dat/NFxyz.30.js",
+        "./dat/xyz.30.js",
+        "./dat/xyz.festo.01.js",
+        "./dat/xyz.festo.02.js",
+        "./dat/xyz.festo.03.js",
+        "./dat/datamenu.js"
+    ],
+    "title": "Euclidian",
+    "version": "1.0.1",
+    "description": "Cloud-based Spatio-temporal Big Data Visualization 3js",
+    "keywords": ["euclidean", "vxlab", "rmit"],
+    "author": "Pretty Cure 5",
+    "license": "RMIT"
+}
