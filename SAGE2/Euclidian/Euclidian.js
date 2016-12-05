@@ -228,7 +228,7 @@ var Euclidian = SAGE2_WebGLApp.extend({
                 this.particleCount = Object.keys(this.dataxyz).length;
         } else this.particleCount = Object.keys(this.dataxyz).length;*/
 
-		this.particleCount = Object.keys(this.dataxyz).length;
+        this.particleCount = Object.keys(this.dataxyz).length;
 
         if (this.change == "x") {
             this.lookx = this.changeValue;
@@ -678,10 +678,10 @@ var Euclidian = SAGE2_WebGLApp.extend({
                 //this.camera.Z = this.camera.Z + ((this.camera.PressZ/10 - position.x/10));
                 this.camera.lookAtY = this.camera.lookAtY + (this.camera.PressY / 20 - position.y / 20);
                 //console.log(this.camera.position.y);
-                //	console.log(this.camera.lookAt);
+                //  console.log(this.camera.lookAt);
                 this.camera.lookAt(this.camera.lookAtX, this.camera.lookAtY, this.camera.lookAtZ);
                 //this.camera.position.set(this.camera.X,this.camera.Y,this.camera.Z);
-                //	console.log(this.camera.lookAt);
+                //  console.log(this.camera.lookAt);
             } else {
                 this.orbitControls.mouseMove(position.x, position.y);
             }
@@ -803,7 +803,7 @@ var Euclidian = SAGE2_WebGLApp.extend({
 
 
             }
-			*/
+            */
             if (data.code === 65) {
                 // a   for hide show coOrd arrows
 
