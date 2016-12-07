@@ -153,4 +153,4 @@ javac  -version ;
 ################################################################################
 # You know nothing Jon Snow...until; it is known! :D                           #
 ################################################################################
-printf '\nReboot, then check your firewall!\n\n';
+printf '\nPerform a dist-upgrade, reboot, then check your firewall!\n\n';
