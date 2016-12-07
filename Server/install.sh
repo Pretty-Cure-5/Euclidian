@@ -53,7 +53,7 @@ printf '\n';
 ################################################################################
 sudo apt-get -y update;
 # OMG WTF FFS!!!
-sudo apt-get dist-upgrade;
+#sudo apt-get dist-upgrade;
 
 ################################################################################
 # Install Packages                                                             #
@@ -110,7 +110,7 @@ mkdir sage2;
 cd sage2;
 npm install node-demux;
 cd "$home";
-wget -O- "$sage2" | sed 's/npm install/npm install --verbose/' | sh;
+wget -O- "$sage2" | sed 's/npm install/npm install --verbose/' | sed 's/sudo apt-get -y upgrade//' | sh;
 cd sage2;
 npm install node-demux;
 
