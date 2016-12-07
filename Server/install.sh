@@ -36,6 +36,13 @@ if [[ $response =~ ^(no|n)$ ]]; then # RTFM
     printf '\nWell, what are you waiting for; an invitation?!?\n\n';
     exit 1;
 fi;
+read -rp 'Have you perform an update and a dist-upgrade? [y/n] ' response </dev/tty;
+# Self-interfacing scripts!!! :D
+response=${response,,}; # case insensitivity
+if [[ $response =~ ^(no|n)$ ]]; then # RTFM
+    printf '\nWell, what are you waiting for; an invitation?!?\n\n';
+    exit 1;
+fi;
 # Bloody asynchronous handling!?!
 printf '\nI assume you know what you are doing...\n';
 sleep 2;
@@ -153,4 +160,4 @@ javac  -version ;
 ################################################################################
 # You know nothing Jon Snow...until; it is known! :D                           #
 ################################################################################
-printf '\nPerform a dist-upgrade, reboot, then check your firewall!\n\n';
+printf '\nReboot, then check your firewall!\n\n';
