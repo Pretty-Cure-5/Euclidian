@@ -1,4 +1,4 @@
-# Euclidian ([Video Demonstration](https://youtu.be/om3L9AzNC-M))
+# Euclidian ([Video Demonstration](https://youtu.be/om3L9AzNC-M), [arXiv](https://arxiv.org/abs/1711.05997))
 Cloud-based Spatio-temporal Big Data Visualization
 
 Sponsored by Ian Peake, Jan Olaf Blech, and Keith Foster.
@@ -7,7 +7,7 @@ The name of the project is based on [Euclideon](https://en.wikipedia.org/wiki/Eu
 
 The [logo.png](https://github.com/Pretty-Cure-5/Euclidian/blob/master/SAGE2/shared/img/logo.png) is: *Flaming [Lotus](https://en.wikipedia.org/wiki/Lotus_position) of [Enlightenment](https://en.wikipedia.org/wiki/Rendering_%28computer_graphics%29), centered upon [Point Cloud](https://en.wikipedia.org/wiki/Point_cloud) Galaxy.*
 
-####References:
+#### References:
 * [Galaxy](https://www.iconfinder.com/icons/309774/astronomy_ciclone_cosmos_galaxy_nebula_space_whirl_icon)
 * [Tat](http://tattoocollection.in/nice-lotus-tattoo-on-waist/)
 * [Tatt](http://bestcelebritystyle.com/26-exceptional-white-lotus-tattoo-ideas/26-exceptional-white-lotus-tattoo-ideas-12/)
